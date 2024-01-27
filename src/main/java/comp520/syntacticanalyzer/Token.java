@@ -1,4 +1,4 @@
-package syntacticanalyzer;
+package comp520.syntacticanalyzer;
 
 public class Token {
     private TokenType _type;

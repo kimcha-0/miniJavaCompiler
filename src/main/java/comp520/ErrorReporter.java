@@ -1,5 +1,7 @@
-import java.util.List;
+package comp520;
+
 import java.util.ArrayList;
+import java.util.List;
 public class ErrorReporter {
     private List<String> _errorQueue;
 

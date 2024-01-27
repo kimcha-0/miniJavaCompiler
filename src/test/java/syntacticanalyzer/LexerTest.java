@@ -1,7 +1,7 @@
 package syntacticanalyzer;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static syntacticanalyzer.TokenType.*;
+import static comp520.syntacticanalyzer.TokenType.*;
 
 class LexerTest {
 
