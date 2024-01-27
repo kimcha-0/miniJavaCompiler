@@ -23,6 +23,12 @@ public class ErrorReporter {
         _errorQueue.add(sb.toString());
     }
 
+    public void outputErrors() {
+        for (String error : _errorQueue) {
+            System.out.println(error);
+        }
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         if (this.hasErrors()) {
