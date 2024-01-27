@@ -1,5 +1,4 @@
 import java.io.FileInputStream;
-import java.io.IOException;
 
 import syntacticanalyzer.*;
 
@@ -13,15 +12,15 @@ public class Compiler {
         }
 
         try(FileInputStream in = new FileInputStream(args[0])) {
-            Scanner scanner = new Scanner(in);
-            Parser parser = new Parser();
+            Lexer lexer = new Lexer(in);
+            Parser parser = new Parser(lexer);
             parser.parse();
         } catch(Exception e) {
             reporter.reportError("error occurred during scanner or parser instantiation");
         }
 
         if (reporter.hasErrors()) {
-
-        }
+            System.out.println("Errors");
+        } else System.out.println("Success");
     }
 }

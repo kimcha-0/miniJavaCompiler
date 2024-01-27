@@ -1,6 +1,6 @@
 package syntacticanalyzer;
 
-public interface ScannerInterface {
+public interface LexerInterface {
     /**
      * @return Token object
      */

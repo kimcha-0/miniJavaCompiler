@@ -3,11 +3,11 @@ package syntacticanalyzer;
 import java.io.InputStream;
 import java.io.FileInputStream;
 
-public class Scanner implements ScannerInterface {
+public class Lexer implements LexerInterface {
     private char _charBuf;
     private StringBuilder _stringBuf;
     private InputStream _in;
-    public Scanner(FileInputStream in) {
+    public Lexer(FileInputStream in) {
         this._stringBuf = new StringBuilder();
         this._in = in;
     }
@@ -24,11 +24,11 @@ public class Scanner implements ScannerInterface {
 
     @Override
     public void takeIt() {
-
+        _stringBuf.append(_charBuf);
     }
 
     @Override
     public void skipIt() {
-
+        nextChar();
     }
 }
