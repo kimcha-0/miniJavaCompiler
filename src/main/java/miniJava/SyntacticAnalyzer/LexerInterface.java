@@ -1,4 +1,4 @@
-package comp520.syntacticanalyzer;
+package miniJava.SyntacticAnalyzer;
 
 public interface LexerInterface {
     /**

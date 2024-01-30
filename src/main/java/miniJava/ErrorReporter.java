@@ -1,4 +1,4 @@
-package comp520;
+package miniJava;
 
 import java.util.ArrayList;
 import java.util.List;

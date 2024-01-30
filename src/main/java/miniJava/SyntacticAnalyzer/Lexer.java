@@ -1,6 +1,6 @@
-package comp520.syntacticanalyzer;
+package miniJava.SyntacticAnalyzer;
 
-import comp520.ErrorReporter;
+import miniJava.ErrorReporter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -57,8 +57,12 @@ public class Lexer implements LexerInterface {
             case '+', '-', '!', '*':
                 takeIt();
                 return TokenType.OPERATOR;
-            default:
-                return TokenType.IDENTIFIER;
+            case '.':
+                takeIt();
+                return TokenType.PERIOD;
+            case ';':
+                takeIt();
+                return TokenType.SEMICOLON;
         }
         return TokenType.ERROR;
     }
@@ -107,6 +111,14 @@ public class Lexer implements LexerInterface {
 
     private void skipIt() {
         nextChar();
+    }
+
+    private boolean isAlpha(char c) {
+        return c >= (int)'a' && c <= (int)'z' || c >= (int)'A' && c <= (int)'Z' || c == (int)'_';
+    }
+
+    private boolean isDigit(char c) {
+        return c >= (int)'0' && c <= (int)'9';
     }
 
     private void lexError(String errorMsg) {

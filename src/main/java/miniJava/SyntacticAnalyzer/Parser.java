@@ -1,6 +1,6 @@
-package comp520.syntacticanalyzer;
+package miniJava.SyntacticAnalyzer;
 
-import comp520.ErrorReporter;
+import miniJava.ErrorReporter;
 
 public class Parser implements ParserInterface {
     private Lexer _lexer;
