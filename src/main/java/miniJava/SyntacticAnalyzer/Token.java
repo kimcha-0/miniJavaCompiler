@@ -1,4 +1,4 @@
-package syntacticanalyzer;
+package miniJava.SyntacticAnalyzer;
 
 public class Token {
     private TokenType _type;
