@@ -4,6 +4,7 @@ import comp520.syntacticanalyzer.Lexer;
 import comp520.syntacticanalyzer.Parser;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 public class Compiler {
     public static void main(String[] args) {
@@ -18,12 +19,13 @@ public class Compiler {
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
             parser.parse();
-        } catch(Exception e) {
-            reporter.reportError("error occurred during scanner or parser instantiation");
+            if (reporter.hasErrors()) {
+                System.out.println("Errors");
+                reporter.outputErrors();
+            } else System.out.println("Success");
+        } catch(IOException e) {
+            reporter.reportError(e.getMessage());
+            e.printStackTrace();
         }
-
-        if (reporter.hasErrors()) {
-            System.out.println("Errors");
-        } else System.out.println("Success");
     }
 }

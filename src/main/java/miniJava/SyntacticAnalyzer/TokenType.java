@@ -1,0 +1,12 @@
+package comp520.syntacticanalyzer;
+
+public enum TokenType {
+    LPAREN, RPAREN, LSQUARE, RSQUARE, LCURLY, RCURLY, COMMA, SEMICOLON,
+    BOOLEAN,
+
+    OPERATOR, EQUALS, CLASS,
+
+    IF, ELSE, WHILE, NEW, PUBLIC, RETURN,
+    IDENTIFIER,
+    ERROR,
+}
