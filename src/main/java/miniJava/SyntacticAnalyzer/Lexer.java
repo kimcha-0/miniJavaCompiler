@@ -6,78 +6,112 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sun.nio.sctp.HandlerResult;
+
 public class Lexer implements LexerInterface {
-    private char _charBuf;
-    private boolean _eot = false;
-    private StringBuilder _stringBuf;
-    private InputStream _in;
-    private ErrorReporter _reporter;
+    private char charBuf;
+    private boolean eot = false;
+    private StringBuilder stringBuf;
+    private InputStream in;
+    private ErrorReporter reporter;
 
     public Lexer(FileInputStream in, ErrorReporter reporter) {
-        this._stringBuf = new StringBuilder();
-        this._in = in;
-        this._reporter = reporter;
-    }
-
-    @Override
-    public TokenType scanToken() {
-        Token token = null;
-        _stringBuf.setLength(0);
-        switch (_charBuf) {
-            case '/':
-                if (peek('/')) {
-                    skipIt();
-                    while (_charBuf != '\n' && !_eot) {
-                        skipIt();
-                    }
-                } else if (peek('*')) {
-                    skipIt();
-                    while (_charBuf != '*' && !_eot) {
-                        skipIt();
-                    }
-                } else {
-                    takeIt();
-                    return TokenType.OPERATOR;
-                }
-                break;
-            case '&':
-                if (peek('&')) {
-                    takeIt();
-                } else {
-                    _reporter.reportError("token not recognized, character after '&' incorrect");
-                }
-                break;
-            case '|':
-                if (peek('|')) {
-                    takeIt();
-                } else {
-                    _reporter.reportError("token not recognized, character after '|' incorrect");
-                }
-                break;
-            case '+', '-', '!', '*':
-                takeIt();
-                return TokenType.OPERATOR;
-            case '.':
-                takeIt();
-                return TokenType.PERIOD;
-            case ';':
-                takeIt();
-                return TokenType.SEMICOLON;
-        }
-        return TokenType.ERROR;
+        this.stringBuf = new StringBuilder();
+        this.in = in;
+        this.reporter = reporter;
     }
 
     @Override
     public Token scan() {
-        _stringBuf.setLength(0);
+        while (charBuf == '\n' || charBuf == '\r' || charBuf == ' ') {
+            this.skipIt();
+        }
+        stringBuf.setLength(0);
         TokenType tokType = scanToken();
-        String text = _stringBuf.toString();
+        String text = stringBuf.toString();
         return new Token(tokType, text);
+    }
+
+    private TokenType scanToken() {
+        // TODO: refactor token handling code to decrease indent levels once I get a working lexer
+        stringBuf.setLength(0);
+        switch (charBuf) {
+            case '/':
+                return handleSlash();
+            case '&':
+                if (peek('&')) {
+                    takeIt();
+                    return TokenType.OPERATOR;
+                } else {
+                    lexError("Unrecognized character'" + charBuf + "' in input");
+                }
+            case '|':
+                if (peek('|')) {
+                    takeIt();
+                    return TokenType.OPERATOR;
+                } else {
+                    reporter.reportError("token not recognized, character after '|' incorrect");
+                }
+            case '+', '-', '!', '*':
+                takeIt();
+                return TokenType.OPERATOR;
+            case '>':
+                if (peek('=')) {
+                    takeIt();
+                    return TokenType.OPERATOR;
+                } else {
+                    lexError("Unrecognized character '" + charBuf + "' in input");
+                }
+            case '<':
+                if (peek('=')) {
+                    takeIt();
+                    return TokenType.OPERATOR;
+                } else {
+                    lexError("");
+                }
+            case '.':
+                takeIt();
+            case ';':
+                return TokenType.SEMICOLON;
+            case '0': case '1': case '2': case '3': case '4':
+            case '5': case '6': case '7': case '8': case '9': 
+                while (isDigit(charBuf)) {
+                    takeIt();
+                }
+                return TokenType.INTLITERAL;
+            default:
+                if (isAlpha(charBuf)) {
+                    return handleIdentifier();
+                }
+                lexError("Unrecognized character '" + charBuf + "' in input");
+                return TokenType.ERROR;
+        }
+    }
+
+    private TokenType handleIdentifier() {
+        return null;
+    }
+
+    private TokenType handleSlash() {
+        if (peek('/')) {
+            this.skipIt();
+            while (charBuf != '\n' && !eot) {
+                skipIt();
+            }
+        } else if (peek('*')) {
+            skipIt();
+            while (charBuf != '*' && !eot) {
+                skipIt();
+            }
+        } else {
+            takeIt();
+            return TokenType.OPERATOR;
+        }
     }
 
     private boolean peek(char expected) {
         nextChar();
-        if (_charBuf == expected) {
+        if (charBuf == expected) {
             return true;
         }
         return false;
@@ -87,26 +121,26 @@ public class Lexer implements LexerInterface {
     private static final char eolWindows = '\r';
 
     private void nextChar() {
-        if (!_eot) {
+        if (!eot) {
             readChar();
         }
     }
 
     private void readChar() {
         try {
-            int c = _in.read();
-            _charBuf = (char) c;
-            if (c == -1 || _charBuf == eolUnix || _charBuf == eolWindows) {
-                _eot = true;
+            int c = in.read();
+            charBuf = (char) c;
+            if (c == -1 || charBuf == eolUnix || charBuf == eolWindows) {
+                eot = true;
             }
         } catch (IOException e) {
             lexError("I/O Exception");
-            _eot = true;
+            eot = true;
         }
     }
 
     private void takeIt() {
-        _stringBuf.append(_charBuf);
+        stringBuf.append(charBuf);
     }
 
     private void skipIt() {
@@ -114,14 +148,14 @@ public class Lexer implements LexerInterface {
     }
 
     private boolean isAlpha(char c) {
-        return c >= (int)'a' && c <= (int)'z' || c >= (int)'A' && c <= (int)'Z' || c == (int)'_';
+        return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c == '_';
     }
 
     private boolean isDigit(char c) {
-        return c >= (int)'0' && c <= (int)'9';
+        return c >= '0' && c <= '9';
     }
 
     private void lexError(String errorMsg) {
-        _reporter.reportError("Lexer Error: " + errorMsg);
+        reporter.reportError("Lexer Error: " + errorMsg);
     }
 }
