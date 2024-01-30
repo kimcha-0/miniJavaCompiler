@@ -1,7 +1,7 @@
-package comp520;
+package miniJava;
 
-import comp520.syntacticanalyzer.Lexer;
-import comp520.syntacticanalyzer.Parser;
+import miniJava.SyntacticAnalyzer.Lexer;
+import miniJava.SyntacticAnalyzer.Parser;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,7 +13,10 @@ public class Compiler {
         if (args.length < 1) {
             System.out.println("File not provided");
             return;
+        } else if (args.length > 2) {
+            return;
         }
+
 
         try(FileInputStream in = new FileInputStream(args[0])) {
             Lexer lexer = new Lexer(in, reporter);
