@@ -31,10 +31,10 @@ public class Lexer implements LexerInterface {
             skipIt();
             skipIt();
         }
-
-        while (!eot && (charBuf == ' ' || charBuf == eolUnix || charBuf == eolWindows)) { 
+        while (!eot && (charBuf == ' ' || charBuf == '\t' || charBuf == eolUnix)) { 
             this.skipIt();
         }
+
         stringBuf.setLength(0);
         TokenType tokType = scanToken();
         String text = stringBuf.toString();
@@ -45,9 +45,51 @@ public class Lexer implements LexerInterface {
         if (eot) return TokenType.EOT;
         // TODO: refactor token handling code to decrease indent levels once I get a working lexer
         switch (charBuf) {
-            case '/':
-                TokenType slashResult = handleSlash();
-                return slashResult != null ? slashResult : TokenType.ERROR;
+            // simple single character cases
+            case '(':
+                takeIt();
+                return TokenType.LPAREN;
+            case ')':
+                takeIt();
+                return TokenType.RPAREN;
+            case '[':
+                takeIt();
+                return TokenType.LSQUARE;
+            case ']':
+                takeIt();
+                return TokenType.RSQUARE;
+            case '{':
+                takeIt();
+                return TokenType.LCURLY;
+            case '}':
+                takeIt();
+                return TokenType.RCURLY;
+            case '+', '-', '*':
+                takeIt();
+                return TokenType.OPERATOR;
+            case '.':
+                takeIt();
+                return TokenType.PERIOD;
+            case ',':
+                takeIt();
+                return TokenType.COMMA;
+            case ';':
+                return TokenType.SEMICOLON;
+            // one or two character lexemes
+            case '=':
+                takeIt();
+                if (peek('=')) {
+                    takeIt();
+                    return TokenType.OPERATOR;
+                }
+                return TokenType.EQUALS;
+            case '!', '>', '<':
+                takeIt();
+                if (peek('=')) {
+                    takeIt();
+                }
+                return TokenType.OPERATOR;
+                // two character lexemes
             case '&':
                 takeIt();
                 if (peek('&')) {
@@ -58,34 +100,20 @@ public class Lexer implements LexerInterface {
                 takeIt();
                 if (peek('|')) {
                     takeIt();
-                }
-                return TokenType.OPERATOR;
-            case '!':
-                takeIt();
-                if (peek('=')) {
-                    takeIt();
-                }
-                return TokenType.OPERATOR;
-            case '+', '-', '*':
-                takeIt();
-                return TokenType.OPERATOR;
-            case '>':
-                takeIt();
-                if (peek('=')) {
-                    takeIt();
-                } 
-                return TokenType.OPERATOR;
-            case '<':
-                if (peek('=')) {
-                    takeIt();
-                    return TokenType.OPERATOR;
                 } else {
-                    lexError("");
+                    lexError("unexpected character: " + charBuf);
+                    return TokenType.ERROR;
                 }
-            case '.':
-                takeIt();
-            case ';':
-                return TokenType.SEMICOLON;
+                return TokenType.OPERATOR;
+                // indefinite lexemes
+            case '/':
+                if (peek('/')) {
+                    while (charBuf != '\n') {
+                        skipIt();
+                    }
+                }
+                TokenType slashResult = handleSlash();
+                return slashResult != null ? slashResult : TokenType.ERROR;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9': 
                 while (isDigit(charBuf)) {
@@ -93,7 +121,10 @@ public class Lexer implements LexerInterface {
                 }
                 return TokenType.INTLITERAL;
             default:
-                if (isAlpha(charBuf)) {
+                if(charBuf == '_') {
+                    lexError("unexpected character: " + charBuf);
+                    return TokenType.ERROR;
+                } else if (isAlpha(charBuf)) {
                     return handleIdentifier();
                 }
                 lexError("Unrecognized character '" + charBuf + "' in input");
@@ -104,8 +135,10 @@ public class Lexer implements LexerInterface {
     static {
         keywordMap = new HashMap<>();
         keywordMap.put("or", TokenType.OR);
+        keywordMap.put("for", TokenType.FOR);
         keywordMap.put("while", TokenType.WHILE);
         keywordMap.put("if", TokenType.IF);
+        keywordMap.put("else", TokenType.ELSE);
         keywordMap.put("new", TokenType.NEW);
         keywordMap.put("class", TokenType.CLASS);
         keywordMap.put("static", TokenType.STATIC);
@@ -114,17 +147,18 @@ public class Lexer implements LexerInterface {
         keywordMap.put("return", TokenType.RETURN);
         keywordMap.put("this", TokenType.THIS);
         keywordMap.put("void", TokenType.VOID);
+        keywordMap.put("true", TokenType.BOOLEAN);
+        keywordMap.put("false", TokenType.BOOLEAN);
+        keywordMap.put("int", TokenType.INT);
     }
 
     private TokenType handleIdentifier() {
 
-        while (charBuf != ' ' && charBuf != eolUnix && charBuf != eolWindows) {
+        while (isAlphaNumeric(charBuf)) {
             takeIt();
         }
-        if (keywordMap.containsKey(stringBuf.toString())) {
-            return keywordMap.get(stringBuf.toString());
-        }
-        return TokenType.IDENTIFIER;
+        TokenType type = keywordMap.get(stringBuf.toString());
+        return type != null ? type : TokenType.IDENTIFIER;
     }
 
     private TokenType handleSlash() {
@@ -147,7 +181,6 @@ public class Lexer implements LexerInterface {
     }
 
     private boolean peek(char expected) {
-        nextChar();
         if (charBuf == expected) {
             return true;
         }
@@ -189,6 +222,10 @@ public class Lexer implements LexerInterface {
 
     private boolean isDigit(char c) {
         return c >= '0' && c <= '9';
+    }
+
+    private boolean isAlphaNumeric(char c) {
+        return isAlpha(c) || isDigit(c);
     }
 
     private void lexError(String errorMsg) {

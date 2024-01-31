@@ -15,21 +15,19 @@ public class Parser implements ParserInterface {
     @Override
     public void parse() {
         currToken = lexer.scan();
-        parseClassDecl();
-        while (currToken.getType() == TokenType.CLASS) {
-            accept(TokenType.CLASS);
+        while (currToken.getType() != TokenType.EOT) {
             parseClassDecl();
         }
+        accept(TokenType.EOT);
     }
 
     private void parseClassDecl() {
-        if (currToken.getType() != TokenType.CLASS) {
-            rejectIt();
-            return;
-        }
+        accept(TokenType.CLASS);
         parseIdentifier();
         accept(TokenType.LCURLY);
-        parseFieldDecl();
+        while (currToken.getType() != TokenType.RCURLY) {
+            parseFieldDecl();
+        }
         accept(TokenType.RCURLY);
     }
 
@@ -37,18 +35,27 @@ public class Parser implements ParserInterface {
         parseVis();
         parseAccess();
         if (currToken.getType() == TokenType.VOID) {
-
+            accept(TokenType.VOID);
         } else parseType();
         parseIdentifier();
         accept(TokenType.LPAREN);
         // parameterList?
         parseParamList();
+        accept(TokenType.RPAREN);
+        accept(TokenType.LCURLY);
+        parseStatement();
+        // Statement*
+        while (true) {
+            parseStatement();
+            break;
+        }
+        accept(TokenType.RCURLY);
     }
 
     private void parseParamList() {
         parseType();
         parseIdentifier();
-        // (, Expression)*
+        // parseIdentifier
     }
 
     private void parseArgList() {
@@ -60,49 +67,75 @@ public class Parser implements ParserInterface {
         parseAccess();
         parseType();
         parseIdentifier();
+        accept(TokenType.SEMICOLON);
     }
 
     private void parseType() {
         // int | boolean | (int | id)[]
+        if (matchType(TokenType.INT)) {
+            acceptIt();
+        } else if (matchType(TokenType.BOOLEAN)) {
+            acceptIt();
+        } else if(matchType(TokenType.INT) || matchType(TokenType.IDENTIFIER){
+            accept(TokenType.LSQUARE);
+            accept(TokenType.RSQUARE);
+        }
+        parseError("unkown type: " + currToken.getType());
     }
 
     private void parseAccess() {
         // static ?
+        if (matchType(TokenType.STATIC)) {
+            acceptIt();
+        }
     }
 
     private void parseVis() {
         // public | private ?
+        if (matchType(TokenType.PUBLIC) || matchType(TokenType.PRIVATE)) {
+            acceptIt();
+        }
     }
 
     private void parseIdentifier() {
-        if (currToken.getType() != TokenType.IDENTIFIER) {
-            rejectIt();
-            return;
-        }
+        accept(TokenType.IDENTIFIER);
     }
 
     private void parseRef() {
         // id | this | Reference.id
+        // (id | this)(Reference.id)*
+        if (matchType(TokenType.IDENTIFIER) || matchType(TokenType.THIS)) {
+            acceptIt();
+            while (matchType(TokenType.PERIOD)) {
+                accept(TokenType.PERIOD);
+                parseRef();
+                accept(TokenType.IDENTIFIER);
+            }
+        }
+        parseError("reference expected but received: " + currToken.getType());
     }
 
     private void parseStatement() {
-
     }
     private void parseExpr() {
+    }
 
+    private void acceptIt() {
+        accept(currToken.getType());
     }
 
     private void accept(TokenType expect) {
-        if (currToken.getType() == expect) {
+        if (matchType(expect)) {
            currToken= lexer.scan();
-        }
+        } else  parseError("expected token '" + expect 
+                + "' but received '" + currToken.getType() + "'");
     }
 
-    private void rejectIt() {
-        parseError();
+    private void parseError(String errorMsg) {
+        reporter.reportError("Parse error: " + errorMsg);
     }
 
-    private void parseError() {
-        reporter.reportError("Parse error: ");
+    private boolean matchType(TokenType expected) {
+        return expected == currToken.getType();
     }
 }
