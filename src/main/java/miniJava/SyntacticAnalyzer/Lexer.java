@@ -23,20 +23,24 @@ public class Lexer implements LexerInterface {
         this.stringBuf = new StringBuilder();
         this.in = in;
         this.reporter = reporter;
+        nextChar();
     }
 
     @Override
     public Token scan() {
+        System.out.println("Scanning...");
+        stringBuf.setLength(0);
+        while (!eot && (charBuf == ' ' || charBuf == '\t'
+        || charBuf == eolUnix || charBuf == eolWindows)) {
+            // System.out.println("skipping whitespace");
+            this.skipIt();
+        }
         if (charBuf == eolWindows) {
             skipIt();
             skipIt();
         }
-        while (!eot && (charBuf == ' ' || charBuf == '\t' || charBuf == eolUnix)) { 
-            this.skipIt();
-        }
-
-        stringBuf.setLength(0);
-        TokenType tokType = scanToken();
+        TokenType tokType;
+        while ((tokType = scanToken()) == null);
         String text = stringBuf.toString();
         return new Token(tokType, text);
     }
@@ -74,46 +78,41 @@ public class Lexer implements LexerInterface {
                 takeIt();
                 return TokenType.COMMA;
             case ';':
+                takeIt();
                 return TokenType.SEMICOLON;
             // one or two character lexemes
             case '=':
                 takeIt();
-                if (peek('=')) {
+                if (charBuf == '=') {
                     takeIt();
                     return TokenType.OPERATOR;
                 }
                 return TokenType.EQUALS;
             case '!', '>', '<':
                 takeIt();
-                if (peek('=')) {
+                if (charBuf == '=') {
                     takeIt();
+//                    System.out.println("operator: " + stringBuf.toString());
                 }
+//                System.out.println("operator: " + stringBuf.toString());
                 return TokenType.OPERATOR;
                 // two character lexemes
             case '&':
                 takeIt();
-                if (peek('&')) {
+                if (charBuf == '&') {
                     takeIt();
                 }
                 return TokenType.OPERATOR;
             case '|':
                 takeIt();
-                if (peek('|')) {
+                if (charBuf == '|') {
                     takeIt();
-                } else {
-                    lexError("unexpected character: " + charBuf);
-                    return TokenType.ERROR;
                 }
                 return TokenType.OPERATOR;
                 // indefinite lexemes
             case '/':
-                if (peek('/')) {
-                    while (charBuf != '\n') {
-                        skipIt();
-                    }
-                }
                 TokenType slashResult = handleSlash();
-                return slashResult != null ? slashResult : TokenType.ERROR;
+                return slashResult;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9': 
                 while (isDigit(charBuf)) {
@@ -121,10 +120,7 @@ public class Lexer implements LexerInterface {
                 }
                 return TokenType.INTLITERAL;
             default:
-                if(charBuf == '_') {
-                    lexError("unexpected character: " + charBuf);
-                    return TokenType.ERROR;
-                } else if (isAlpha(charBuf)) {
+                if (isAlpha(charBuf)) {
                     return handleIdentifier();
                 }
                 lexError("Unrecognized character '" + charBuf + "' in input");
@@ -135,29 +131,32 @@ public class Lexer implements LexerInterface {
     static {
         keywordMap = new HashMap<>();
         keywordMap.put("or", TokenType.OR);
-        keywordMap.put("for", TokenType.FOR);
         keywordMap.put("while", TokenType.WHILE);
         keywordMap.put("if", TokenType.IF);
         keywordMap.put("else", TokenType.ELSE);
         keywordMap.put("new", TokenType.NEW);
         keywordMap.put("class", TokenType.CLASS);
         keywordMap.put("static", TokenType.STATIC);
+        keywordMap.put("boolean", TokenType.BOOLEAN);
         keywordMap.put("public", TokenType.VISIBILITY);
         keywordMap.put("private", TokenType.VISIBILITY);
         keywordMap.put("return", TokenType.RETURN);
         keywordMap.put("this", TokenType.THIS);
         keywordMap.put("void", TokenType.VOID);
-        keywordMap.put("true", TokenType.BOOLEAN);
-        keywordMap.put("false", TokenType.BOOLEAN);
+        keywordMap.put("true", TokenType.TRUE);
+        keywordMap.put("false", TokenType.FALSE);
         keywordMap.put("int", TokenType.INT);
     }
 
     private TokenType handleIdentifier() {
-
         while (isAlphaNumeric(charBuf)) {
             takeIt();
         }
         TokenType type = keywordMap.get(stringBuf.toString());
+        if (stringBuf.charAt(0) == '_') {
+            lexError("cannot start identifier with underscore" + stringBuf.toString());
+            return TokenType.ERROR;
+        }
         return type != null ? type : TokenType.IDENTIFIER;
     }
 
@@ -167,6 +166,8 @@ public class Lexer implements LexerInterface {
             while (charBuf != '\n' && !eot) {
                 skipIt();
             }
+            skipIt();
+            // System.out.println("single line comment" + charBuf);
             return null;
         } else if (peek('*')) {
             skipIt();
@@ -181,6 +182,7 @@ public class Lexer implements LexerInterface {
     }
 
     private boolean peek(char expected) {
+        nextChar();
         if (charBuf == expected) {
             return true;
         }
@@ -201,6 +203,7 @@ public class Lexer implements LexerInterface {
             if (c == -1) {
                 eot = true;
             }
+            //System.out.println("read: " + (char)c);
         } catch (IOException e) {
             lexError("I/O Exception");
             eot = true;
