@@ -40,7 +40,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try(FileInputStream in = new FileInputStream("pa1-tests-partial/fail101.java")) {
+        try(FileInputStream in = new FileInputStream("pa1-tests-partial/fail102.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
