@@ -34,10 +34,14 @@ public class Parser implements ParserInterface {
             parseAccess();
             if (matchType(TokenType.VOID)) {
                 acceptIt();
-            } else parseType();
-            accept(TokenType.IDENTIFIER);
-            if (matchType(LPAREN)) parseMethodDecl();
-            else parseFieldDecl();
+                accept(IDENTIFIER);
+                parseMethodDecl();
+            } else {
+                parseType();
+                accept(IDENTIFIER);
+                if (matchType(LPAREN)) parseMethodDecl();
+                else parseFieldDecl();
+            }
         }
         accept(TokenType.RCURLY);
     }
@@ -125,6 +129,7 @@ public class Parser implements ParserInterface {
     }
 
     private void parseStatement() {
+//        System.out.println("parsing stmt");
         switch (currToken.getType()) {
             case LCURLY:
                 acceptIt();
@@ -136,7 +141,7 @@ public class Parser implements ParserInterface {
             case RETURN:
                 acceptIt();
                 // Expression?
-                if (!matchType(TokenType.EOT)) {
+                if (!matchType(TokenType.SEMICOLON)) {
                     parseExpr();
                 }
                 accept(TokenType.SEMICOLON);
@@ -159,9 +164,10 @@ public class Parser implements ParserInterface {
                 accept(TokenType.RPAREN);
                 parseStatement();
                 return;
-            case IDENTIFIER:
+            case IDENTIFIER, THIS:
                 acceptIt();
-                if (matchType(IDENTIFIER)) {
+                System.out.println("parse stmt identifier");
+                if (matchType(IDENTIFIER) || matchType(THIS)) {
                     acceptIt();
                     parseAssignment();
                 } else if (matchType(LSQUARE)) {
@@ -179,6 +185,7 @@ public class Parser implements ParserInterface {
                     }
                 } else {
                     // reference cases
+                    System.out.println("reference" + currToken.getText());
                     if (matchType(PERIOD)) {
                         acceptIt();
                         parseRef();
@@ -206,6 +213,7 @@ public class Parser implements ParserInterface {
                 }
                 return;
             case BOOLEAN, INT:
+                System.out.println("hi");
                 // Type id = Expression;
                 parseType();
                 accept(TokenType.IDENTIFIER);
@@ -302,7 +310,16 @@ public class Parser implements ParserInterface {
                 parseExpr();
                 accept(TokenType.RPAREN);
                 return;
+            case INTLITERAL, TRUE, FALSE:
+                acceptIt();
+                return;
+            case NEW:
+//                System.out.println("new!");
+                acceptIt();
+                handleNew();
+                return;
             case IDENTIFIER, THIS:
+            default:
                 // Reference ( [ Expression ] | ( Expression ) )?
                 acceptIt();
                 if (matchType(PERIOD)) {
@@ -318,16 +335,6 @@ public class Parser implements ParserInterface {
                     parseExpr();
                     accept(RPAREN);
                 }
-                return;
-            case INTLITERAL, TRUE, FALSE:
-                acceptIt();
-                return;
-            case NEW:
-//                System.out.println("new!");
-                acceptIt();
-                handleNew();
-                return;
-
         }
     }
 
@@ -360,8 +367,8 @@ public class Parser implements ParserInterface {
     }
 
     private void accept(TokenType expect) throws SyntaxError {
-//        System.out.println("expected token '" + expect
-//                + "' but received '" + currToken.getType() + "'");
+        System.out.println("expected token '" + expect
+                + "' but received '" + currToken.getType() + "'");
         if (expect == currToken.getType()) {
             currToken = lexer.scan();
         } else {
@@ -370,8 +377,9 @@ public class Parser implements ParserInterface {
         }
     }
 
-    private void parseError(String errorMsg) {
+    private void parseError(String errorMsg) throws SyntaxError {
         reporter.reportError("Parse error: " + errorMsg);
+        throw new SyntaxError();
     }
 
     private boolean matchType(TokenType expected) {
