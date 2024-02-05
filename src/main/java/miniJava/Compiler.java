@@ -12,13 +12,8 @@ public class Compiler {
         ErrorReporter reporter = new ErrorReporter();
 
         if (args.length < 1) {
-            System.out.println("File not provided");
-            return;
-        } else if (args.length > 2) {
-            return;
+            throw new IllegalArgumentException("File must be provided for compilation");
         }
-
-
         try(FileInputStream in = new FileInputStream(args[0])) {
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);

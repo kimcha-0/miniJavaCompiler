@@ -2,6 +2,8 @@ package miniJava.SyntacticAnalyzer;
 
 import miniJava.ErrorReporter;
 
+import static miniJava.SyntacticAnalyzer.TokenType.*;
+
 public class Parser implements ParserInterface {
     private Lexer lexer;
     private Token currToken;
@@ -30,17 +32,17 @@ public class Parser implements ParserInterface {
         while (currToken.getType() != TokenType.RCURLY) {
             parseVis();
             parseAccess();
-            if (matchType(TokenType.IDENTIFIER)) {
-                accept(TokenType.VOID);
+            if (matchType(TokenType.VOID)) {
+                acceptIt();
             } else parseType();
             accept(TokenType.IDENTIFIER);
-            if (matchType(TokenType.LPAREN)) parseMethodDecl();
+            if (matchType(LPAREN)) parseMethodDecl();
         }
         accept(TokenType.RCURLY);
     }
 
     private void parseMethodDecl() {
-        accept(TokenType.LPAREN);
+        accept(LPAREN);
         // parameterList?
         if (!matchType(TokenType.RPAREN)) parseParamList();
         accept(TokenType.RPAREN);
@@ -84,10 +86,11 @@ public class Parser implements ParserInterface {
             acceptIt();
         } else if (matchType(TokenType.INT) || matchType(TokenType.IDENTIFIER)) {
             acceptIt();
-            accept(TokenType.LSQUARE);
+            accept(LSQUARE);
             accept(TokenType.RSQUARE);
+        } else {
+            parseError("unkown type: " + currToken.getType());
         }
-        parseError("unkown type: " + currToken.getType());
     }
 
     private void parseAccess() {
@@ -114,8 +117,9 @@ public class Parser implements ParserInterface {
                 parseRef();
                 accept(TokenType.IDENTIFIER);
             }
+        } else {
+            parseError("reference expected but received: " + currToken.getType());
         }
-        parseError("reference expected but received: " + currToken.getType());
     }
 
     private void parseStatement() {
@@ -135,7 +139,7 @@ public class Parser implements ParserInterface {
                 return;
             case IF:
                 acceptIt();
-                accept(TokenType.LPAREN);
+                accept(LPAREN);
                 parseExpr();
                 accept(TokenType.RPAREN);
                 parseStatement();
@@ -146,7 +150,7 @@ public class Parser implements ParserInterface {
                 return;
             case WHILE:
                 acceptIt();
-                accept(TokenType.LPAREN);
+                accept(LPAREN);
                 parseExpr();
                 accept(TokenType.RPAREN);
                 parseStatement();
@@ -188,12 +192,92 @@ public class Parser implements ParserInterface {
     }
 
     private void parseExpr() {
+        parseOrExpr();
+    }
+
+    private void parseOrExpr() {
+//        System.out.println("or");
+        parseAndExpr();
+        while (currToken.getText().equals("||")) {
+            acceptIt();
+            parseAndExpr();
+        }
+    }
+
+    private void parseAndExpr() {
+//        System.out.println("and");
+        parseEqualityExpr();
+        while (currToken.getText().equals("&&")) {
+            acceptIt();
+            parseEqualityExpr();
+        }
+    }
+
+    private void parseEqualityExpr() {
+//        System.out.println("==");
+        parseRelExpr();
+        while (currToken.getText().equals("==")) {
+            acceptIt();
+            parseRelExpr();
+        }
+    }
+
+    private void parseRelExpr() {
+//        System.out.println("<>=");
+        parseAddExpr();
+        while (currToken.getText().equals(">") || currToken.getText().equals("<") || currToken.getText().equals(">=")
+                || currToken.getText().equals("<=")) {
+            acceptIt();
+            System.out.println("Token: " + currToken.getText());
+            parseAddExpr();
+        }
+    }
+
+    private void parseAddExpr() {
+//        System.out.println("+");
+        parseMulExpr();
+        while (currToken.getText().equals("+") || currToken.getText().equals("-")) {
+            acceptIt();
+            parseMulExpr();
+        }
+    }
+
+    private void parseMulExpr() {
+//        System.out.println("*");
+        parseUnaryOpExpr();
+        while (currToken.getText().equals("*") || currToken.getText().equals("/")) {
+            acceptIt();
+            parseUnaryOpExpr();
+        }
+    }
+
+    private void parseUnaryOpExpr() {
+//        System.out.println("unary");
+        if (currToken.getText().equals("-") || currToken.getText().equals("!")) {
+            acceptIt();
+            parseUnaryOpExpr();
+        } else parseDefaultExpr();
+    }
+
+    private void parseDefaultExpr() {
+//        System.out.println("default expr");
         switch (currToken.getType()) {
-            case OPERATOR:
-                // unop Expression
-                if (currToken.getText().equals("!") || currToken.getText().equals("-")) {
+            case LPAREN:
+                acceptIt();
+                parseExpr();
+                accept(TokenType.RPAREN);
+                return;
+            case IDENTIFIER, THIS:
+                // Reference ( [ Expression ] | ( Expression ) )?
+                parseRef();
+                if (matchType(LSQUARE)) {
                     acceptIt();
                     parseExpr();
+                    accept(RSQUARE);
+                } else if (matchType(LPAREN)) {
+                    acceptIt();
+                    parseExpr();
+                    accept(RPAREN);
                 }
                 return;
             case INTLITERAL, TRUE, FALSE:
@@ -202,26 +286,8 @@ public class Parser implements ParserInterface {
             case NEW:
                 acceptIt();
                 handleNew();
-                break;
-            case LPAREN:
-                acceptIt();
-                parseExpr();
-                accept(TokenType.RPAREN);
-                break;
-            default:
-                parseRef();
-                switch (currToken.getType()) {
-                    case LSQUARE:
-                        acceptIt();
-                        parseExpr();
-                        accept(TokenType.RSQUARE);
-                        return;
-                    case LPAREN:
-                        acceptIt();
-                        if (!matchType(TokenType.RPAREN)) parseArgList();
-                        accept(TokenType.RPAREN);
-                        return;
-                }
+                return;
+
         }
     }
 
@@ -229,18 +295,20 @@ public class Parser implements ParserInterface {
         switch (currToken.getType()) {
             case IDENTIFIER:
                 acceptIt();
-                if (currToken.getType() == TokenType.LPAREN) {
-                    accept(TokenType.LPAREN);
+                if (currToken.getType() == LPAREN) {
+                    acceptIt();
                     accept(TokenType.RPAREN);
-                } else {
-                    accept(TokenType.LSQUARE);
+                } else if (currToken.getType() == LSQUARE) {
+                    acceptIt();
                     parseExpr();
                     accept(TokenType.RSQUARE);
+                } else {
+                    parseError("Expression syntax error");
                 }
                 break;
             case INT:
                 acceptIt();
-                accept(TokenType.LSQUARE);
+                accept(LSQUARE);
                 parseExpr();
                 accept(TokenType.RSQUARE);
                 break;
@@ -252,9 +320,9 @@ public class Parser implements ParserInterface {
     }
 
     private void accept(TokenType expect) throws SyntaxError {
-//        System.out.println("expected token '" + expect
-//                + "' but received '" + currToken.getType() + "'");
-        if (matchType(expect)) {
+        System.out.println("expected token '" + expect
+                + "' but received '" + currToken.getType() + "'");
+        if (expect == currToken.getType()) {
             currToken = lexer.scan();
         } else {
             parseError("expected token '" + expect + "' but received '" + currToken.getType() + "'");
