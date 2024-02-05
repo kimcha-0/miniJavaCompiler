@@ -37,7 +37,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try(FileInputStream in = new FileInputStream("pa1-tests-partial/fail117.java")) {
+        try(FileInputStream in = new FileInputStream("pa1-tests-partial/pass133.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
@@ -46,9 +46,14 @@ class PA1Test {
             } catch (SyntaxError e) {
                 e.printStackTrace();
             }
-            assert(reporter.hasErrors());
-            if (reporter.hasErrors()) reporter.outputErrors();
-            else System.out.println("Success");
+            finally {
+                assert(!reporter.hasErrors());
+                if (reporter.hasErrors()) {
+                    System.out.println("Error");
+                    reporter.outputErrors();
+                }
+                else System.out.println("Success");
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }

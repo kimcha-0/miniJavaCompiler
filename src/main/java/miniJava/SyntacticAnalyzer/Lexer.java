@@ -28,7 +28,6 @@ public class Lexer implements LexerInterface {
 
     @Override
     public Token scan() {
-        System.out.println("Scanning...");
         stringBuf.setLength(0);
         while (!eot && (charBuf == ' ' || charBuf == '\t'
         || charBuf == eolUnix || charBuf == eolWindows)) {
