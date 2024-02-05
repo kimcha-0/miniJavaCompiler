@@ -5,6 +5,7 @@ import miniJava.SyntacticAnalyzer.Parser;
 import miniJava.SyntacticAnalyzer.SyntaxError;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Compiler {
@@ -13,7 +14,8 @@ public class Compiler {
         if (args.length < 1) {
             throw new IllegalArgumentException("File must be provided for compilation");
         }
-        try(FileInputStream in = new FileInputStream(args[0])) {
+        try {
+            FileInputStream in = new FileInputStream(args[0]);
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
             try {
@@ -25,8 +27,9 @@ public class Compiler {
                     reporter.outputErrors();
                 } else System.out.println("Success");
             }
-        } catch(IOException e) {
-            reporter.reportError(e.getMessage());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+
     }
 }
