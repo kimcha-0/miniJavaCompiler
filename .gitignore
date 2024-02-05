@@ -3,6 +3,7 @@
 *.class
 
 pa1-tests-partial
+src/test
 
 # Log file
 *.log
