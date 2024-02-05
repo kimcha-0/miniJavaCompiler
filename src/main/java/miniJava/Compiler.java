@@ -19,7 +19,6 @@ public class Compiler {
             try {
                 parser.parse();
             } catch (SyntaxError e) {
-                e.printStackTrace();
             } finally {
                 if (reporter.hasErrors()) {
                     System.out.println("Error");
