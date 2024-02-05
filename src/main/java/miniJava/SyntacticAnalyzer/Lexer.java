@@ -50,12 +50,12 @@ public class Lexer implements LexerInterface {
             tokType = scanToken();
         }
         String text = stringBuf.toString();
-        System.out.println(text);
+//        System.out.println(text);
         return new Token(tokType, text);
     }
 
     private TokenType scanToken() throws LexerError {
-        System.out.println("scanning...");
+//        System.out.println("scanning...");
         if (eot) return TokenType.EOT;
         // TODO: refactor token handling code to decrease indent levels once I get a working lexer
         switch (charBuf) {
@@ -121,8 +121,9 @@ public class Lexer implements LexerInterface {
                 return OPERATOR;
                 // indefinite lexemes
             case '/':
-                skipIt();
+                takeIt();
                 if (charBuf == '/') {
+                    stringBuf.setLength(0);
                     skipIt();
                     while (charBuf != '\n' && !eot) {
                         skipIt();
@@ -210,7 +211,7 @@ public class Lexer implements LexerInterface {
             if (c == -1) {
                 eot = true;
             }
-            System.out.println("read: " + (char)c);
+//            System.out.println("read: " + (char)c);
         } catch (IOException e) {
             lexError("I/O Exception");
             eot = true;

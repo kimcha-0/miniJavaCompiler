@@ -10,7 +10,6 @@ import java.io.IOException;
 public class Compiler {
     public static void main(String[] args) {
         ErrorReporter reporter = new ErrorReporter();
-
         if (args.length < 1) {
             throw new IllegalArgumentException("File must be provided for compilation");
         }
