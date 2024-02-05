@@ -2,6 +2,8 @@
 # Compiled class file
 *.class
 
+pa1-tests-partial
+
 # Log file
 *.log
 

@@ -1,5 +1,7 @@
-import java.util.List;
+package miniJava;
+
 import java.util.ArrayList;
+import java.util.List;
 public class ErrorReporter {
     private List<String> _errorQueue;
 
@@ -19,6 +21,16 @@ public class ErrorReporter {
         }
 
         _errorQueue.add(sb.toString());
+    }
+
+    public void clearErrors() {
+        this._errorQueue.clear();
+    }
+
+    public void outputErrors() {
+        for (String error : _errorQueue) {
+            System.out.println(error);
+        }
     }
 
     public String toString() {
