@@ -166,7 +166,7 @@ public class Parser implements ParserInterface {
                 return;
             case IDENTIFIER, THIS:
                 acceptIt();
-                System.out.println("parse stmt identifier");
+//                System.out.println("parse stmt identifier");
                 if (matchType(IDENTIFIER) || matchType(THIS)) {
                     acceptIt();
                     parseAssignment();
@@ -185,7 +185,7 @@ public class Parser implements ParserInterface {
                     }
                 } else {
                     // reference cases
-                    System.out.println("reference" + currToken.getText());
+//                    System.out.println("reference" + currToken.getText());
                     if (matchType(PERIOD)) {
                         acceptIt();
                         parseRef();
@@ -213,7 +213,7 @@ public class Parser implements ParserInterface {
                 }
                 return;
             case BOOLEAN, INT:
-                System.out.println("hi");
+//                System.out.println("hi");
                 // Type id = Expression;
                 parseType();
                 accept(TokenType.IDENTIFIER);
@@ -367,8 +367,8 @@ public class Parser implements ParserInterface {
     }
 
     private void accept(TokenType expect) throws SyntaxError {
-        System.out.println("expected token '" + expect
-                + "' but received '" + currToken.getType() + "'");
+//        System.out.println("expected token '" + expect
+//                + "' but received '" + currToken.getType() + "'");
         if (expect == currToken.getType()) {
             currToken = lexer.scan();
         } else {
