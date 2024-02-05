@@ -41,6 +41,7 @@ public class Lexer implements LexerInterface {
         TokenType tokType;
         while ((tokType = scanToken()) == null);
         String text = stringBuf.toString();
+        System.out.println(text);
         return new Token(tokType, text);
     }
 
@@ -160,7 +161,9 @@ public class Lexer implements LexerInterface {
     }
 
     private TokenType handleSlash() {
-        if (peek('/')) {
+        char temp = charBuf;
+        nextChar();
+        if (charBuf == '/') {
             this.skipIt();
             while (charBuf != '\n' && !eot) {
                 skipIt();
@@ -168,13 +171,11 @@ public class Lexer implements LexerInterface {
             skipIt();
             // System.out.println("single line comment" + charBuf);
             return null;
-        } else if (peek('*')) {
-            skipIt();
-            while (charBuf != '*' && !eot) {
-                skipIt();
-            }
+        } else if (charBuf == '*') {
             return null;
         } else {
+            charBuf = temp;
+            System.out.println("slash: " + charBuf);
             takeIt();
             return TokenType.OPERATOR;
         }
@@ -211,6 +212,7 @@ public class Lexer implements LexerInterface {
 
     private void takeIt() {
         stringBuf.append(charBuf);
+//        System.out.println("StringBuf: " + stringBuf);
         nextChar();
     }
 
