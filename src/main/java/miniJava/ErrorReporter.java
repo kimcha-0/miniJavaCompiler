@@ -23,6 +23,10 @@ public class ErrorReporter {
         _errorQueue.add(sb.toString());
     }
 
+    public void clearErrors() {
+        this._errorQueue.clear();
+    }
+
     public void outputErrors() {
         for (String error : _errorQueue) {
             System.out.println(error);
