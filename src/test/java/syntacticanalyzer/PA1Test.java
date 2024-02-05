@@ -1,10 +1,7 @@
 package syntacticanalyzer;
 
 import miniJava.ErrorReporter;
-import miniJava.SyntacticAnalyzer.Lexer;
-import miniJava.SyntacticAnalyzer.Parser;
-import miniJava.SyntacticAnalyzer.Token;
-import miniJava.SyntacticAnalyzer.TokenType;
+import miniJava.SyntacticAnalyzer.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static miniJava.SyntacticAnalyzer.TokenType.*;
@@ -40,14 +37,23 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try(FileInputStream in = new FileInputStream("pa1-tests-partial/fail101.java")) {
+        try(FileInputStream in = new FileInputStream("pa1-tests-partial/pass133.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
-            parser.parse();
-            assert(reporter.hasErrors());
-            if (reporter.hasErrors()) reporter.outputErrors();
-            else System.out.println("Success");
+            try {
+                parser.parse();
+            } catch (SyntaxError e) {
+                e.printStackTrace();
+            }
+            finally {
+                assert(!reporter.hasErrors());
+                if (reporter.hasErrors()) {
+                    System.out.println("Error");
+                    reporter.outputErrors();
+                }
+                else System.out.println("Success");
+            }
         } catch(IOException e) {
             e.printStackTrace();
         }
