@@ -8,6 +8,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static miniJava.SyntacticAnalyzer.TokenType.OPERATOR;
+
 public class Lexer implements LexerInterface {
     private static Map<String, TokenType> keywordMap;
     private char charBuf;
@@ -38,14 +40,22 @@ public class Lexer implements LexerInterface {
             skipIt();
             skipIt();
         }
-        TokenType tokType;
-        while ((tokType = scanToken()) == null);
+        TokenType tokType = scanToken();
+        while (tokType == null) {
+            while (!eot && (charBuf == ' ' || charBuf == '\t'
+                    || charBuf == eolUnix || charBuf == eolWindows)) {
+                // System.out.println("skipping whitespace");
+                this.skipIt();
+            }
+            tokType = scanToken();
+        }
         String text = stringBuf.toString();
         System.out.println(text);
         return new Token(tokType, text);
     }
 
-    private TokenType scanToken() {
+    private TokenType scanToken() throws LexerError {
+        System.out.println("scanning...");
         if (eot) return TokenType.EOT;
         // TODO: refactor token handling code to decrease indent levels once I get a working lexer
         switch (charBuf) {
@@ -70,7 +80,7 @@ public class Lexer implements LexerInterface {
                 return TokenType.RCURLY;
             case '+', '-', '*':
                 takeIt();
-                return TokenType.OPERATOR;
+                return OPERATOR;
             case '.':
                 takeIt();
                 return TokenType.PERIOD;
@@ -85,7 +95,7 @@ public class Lexer implements LexerInterface {
                 takeIt();
                 if (charBuf == '=') {
                     takeIt();
-                    return TokenType.OPERATOR;
+                    return OPERATOR;
                 }
                 return TokenType.EQUALS;
             case '!', '>', '<':
@@ -95,23 +105,42 @@ public class Lexer implements LexerInterface {
 //                    System.out.println("operator: " + stringBuf.toString());
                 }
 //                System.out.println("operator: " + stringBuf.toString());
-                return TokenType.OPERATOR;
+                return OPERATOR;
                 // two character lexemes
             case '&':
                 takeIt();
                 if (charBuf == '&') {
                     takeIt();
                 }
-                return TokenType.OPERATOR;
+                return OPERATOR;
             case '|':
                 takeIt();
                 if (charBuf == '|') {
                     takeIt();
                 }
-                return TokenType.OPERATOR;
+                return OPERATOR;
                 // indefinite lexemes
             case '/':
-                return handleSlash();
+                skipIt();
+                if (charBuf == '/') {
+                    skipIt();
+                    while (charBuf != '\n' && !eot) {
+                        skipIt();
+                    }
+                    return null;
+                } else if (charBuf == '*') {
+                    skipIt();
+                    while (!eot) {
+                        if (charBuf == '*') {
+                            skipIt();
+                            if (charBuf == '/') {
+                                skipIt();
+                                return null;
+                            } else throw new LexerError();
+                        }
+                        skipIt();
+                    }
+                } else return OPERATOR;
             case '0': case '1': case '2': case '3': case '4':
             case '5': case '6': case '7': case '8': case '9': 
                 while (isDigit(charBuf)) {
@@ -137,8 +166,8 @@ public class Lexer implements LexerInterface {
         keywordMap.put("class", TokenType.CLASS);
         keywordMap.put("static", TokenType.STATIC);
         keywordMap.put("boolean", TokenType.BOOLEAN);
-        keywordMap.put("public", TokenType.VISIBILITY);
-        keywordMap.put("private", TokenType.VISIBILITY);
+        keywordMap.put("public", TokenType.PUBLIC);
+        keywordMap.put("private", TokenType.PRIVATE);
         keywordMap.put("return", TokenType.RETURN);
         keywordMap.put("this", TokenType.THIS);
         keywordMap.put("void", TokenType.VOID);
@@ -157,27 +186,6 @@ public class Lexer implements LexerInterface {
             return TokenType.ERROR;
         }
         return type != null ? type : TokenType.IDENTIFIER;
-    }
-
-    private TokenType handleSlash() {
-        char temp = charBuf;
-        nextChar();
-        if (charBuf == '/') {
-            this.skipIt();
-            while (charBuf != '\n' && !eot) {
-                skipIt();
-            }
-            skipIt();
-            // System.out.println("single line comment" + charBuf);
-            return null;
-        } else if (charBuf == '*') {
-            return null;
-        } else {
-            charBuf = temp;
-            System.out.println("slash: " + charBuf);
-            takeIt();
-            return TokenType.OPERATOR;
-        }
     }
 
     private boolean peek(char expected) {
@@ -202,7 +210,7 @@ public class Lexer implements LexerInterface {
             if (c == -1) {
                 eot = true;
             }
-            //System.out.println("read: " + (char)c);
+            System.out.println("read: " + (char)c);
         } catch (IOException e) {
             lexError("I/O Exception");
             eot = true;
