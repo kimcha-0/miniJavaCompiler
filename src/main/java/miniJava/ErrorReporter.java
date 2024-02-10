@@ -2,6 +2,7 @@ package miniJava;
 
 import java.util.ArrayList;
 import java.util.List;
+
 public class ErrorReporter {
     private List<String> _errorQueue;
 
@@ -13,7 +14,7 @@ public class ErrorReporter {
         return !this._errorQueue.isEmpty();
     }
 
-    public void reportError(String ...error) {
+    public void reportError(String... error) {
         StringBuilder sb = new StringBuilder();
 
         for (String s : error) {

@@ -32,8 +32,7 @@ public class Lexer implements LexerInterface {
     public Token scan() {
 //        System.out.println("scanning...");
         stringBuf.setLength(0);
-        while (!eot && (charBuf == ' ' || charBuf == '\t'
-        || charBuf == eolUnix || charBuf == eolWindows)) {
+        while (!eot && (charBuf == ' ' || charBuf == '\t' || charBuf == eolUnix || charBuf == eolWindows)) {
             // System.out.println("skipping whitespace");
             this.skipIt();
         }
@@ -61,7 +60,9 @@ public class Lexer implements LexerInterface {
             case '}':
                 takeIt();
                 return new Token(RCURLY, "}");
-            case '+', '-', '*':
+            case '+':
+            case '-':
+            case '*':
                 takeIt();
                 return new Token(OPERATOR, stringBuf.toString());
             case '.':
@@ -81,7 +82,9 @@ public class Lexer implements LexerInterface {
                     return new Token(OPERATOR, "==");
                 }
                 return new Token(EQUALS, "=");
-            case '!', '>', '<':
+            case '!':
+            case '>':
+            case '<':
                 takeIt();
                 if (charBuf == '=') {
                     takeIt();
@@ -132,8 +135,16 @@ public class Lexer implements LexerInterface {
                     skipIt();
                     return scan();
                 } else return new Token(OPERATOR, "/");
-            case '0': case '1': case '2': case '3': case '4':
-            case '5': case '6': case '7': case '8': case '9':
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
                 while (isDigit(charBuf)) {
                     takeIt();
                 }
@@ -189,7 +200,7 @@ public class Lexer implements LexerInterface {
             lexError("cannot start identifier with underscore" + stringBuf.toString());
             return new Token(ERROR, stringBuf.toString());
         }
-        return type != null ?  createToken(type, stringBuf.toString()) : createToken(IDENTIFIER, stringBuf.toString());
+        return type != null ? createToken(type, stringBuf.toString()) : createToken(IDENTIFIER, stringBuf.toString());
     }
 
     private boolean peek(char expected) {

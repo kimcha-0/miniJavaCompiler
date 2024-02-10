@@ -6,7 +6,6 @@ import miniJava.SyntacticAnalyzer.SyntaxError;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 public class Compiler {
     public static void main(String[] args) {
@@ -21,14 +20,15 @@ public class Compiler {
             try {
                 parser.parse();
             } catch (SyntaxError e) {
-            } finally {
-                if (reporter.hasErrors()) {
-                    System.out.println("Error");
-                    reporter.outputErrors();
-                } else System.out.println("Success");
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            if (reporter.hasErrors()) {
+                System.out.println("Error");
+                reporter.outputErrors();
+            } else System.out.println("Success");
+
         }
 
     }

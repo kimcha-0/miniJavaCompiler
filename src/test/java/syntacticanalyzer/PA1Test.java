@@ -70,7 +70,7 @@ class PA1Test {
 
     @Test
     void compile() {
-        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa1-tests-partial");
+        File folder = new File("/Users/davidkim/Downloads/pa1_tests");
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");
@@ -82,9 +82,9 @@ class PA1Test {
                 Parser parser = new Parser(lexer, reporter);
                 try {
                     parser.parse();
-                } catch(LexerError e) {
+                } catch (LexerError e) {
 
-                } catch(SyntaxError e) {
+                } catch (SyntaxError e) {
 
                 }
             } catch (IOException e) {
@@ -96,10 +96,11 @@ class PA1Test {
                     reporter.outputErrors();
                 }
                 if (file.getName().indexOf('f') == 0) {
-                    assert(reporter.hasErrors());
+                    assert (reporter.hasErrors());
                 } else {
-                    assert(!reporter.hasErrors());
+                    assert (!reporter.hasErrors());
                 }
+                System.out.println('\n');
             }
         }
     }
