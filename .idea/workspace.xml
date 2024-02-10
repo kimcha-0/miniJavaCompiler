@@ -5,10 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0161dc8f-daa7-40cc-87b5-9199fb934d4e" name="Changes" comment="created source package and began working on Lexer class">
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp520/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp520/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/LexerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/LexerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/comp520/syntacticanalyzer/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ErrorReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ErrorReporter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +33,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -48,6 +65,9 @@
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
 }</component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -63,11 +83,14 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.compile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.parse.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
     &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_directory_selection&quot;: &quot;/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/main/java/comp520&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/davidkim/spring-2024/comp520/miniJavaCompiler&quot;,
@@ -110,6 +133,65 @@
       <command value="node --version" />
     </option>
   </component>
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
+    <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="miniJava.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PA1Test.compile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
+      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
+      <option name="METHOD_NAME" value="compile" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PA1Test.parse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
+      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
+      <option name="METHOD_NAME" value="parse" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Compiler" />
+      <item itemvalue="JUnit.PA1Test.compile" />
+      <item itemvalue="JUnit.PA1Test.parse" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.PA1Test.compile" />
+        <item itemvalue="Application.Compiler" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -139,6 +221,7 @@
       <workItem from="1706479743470" duration="13765000" />
       <workItem from="1706586901925" duration="60000" />
       <workItem from="1706587037263" duration="63000" />
+      <workItem from="1707603568095" duration="158000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />

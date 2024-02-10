@@ -130,7 +130,10 @@ public class Lexer implements LexerInterface {
                         } else {
                             skipIt();
                         }
-                        if (eot) throw new SyntaxError();
+                        if (eot) {
+                            lexError("Comment not terminated properly.");
+                            throw new SyntaxError();
+                        }
                     }
                     skipIt();
                     return scan();
