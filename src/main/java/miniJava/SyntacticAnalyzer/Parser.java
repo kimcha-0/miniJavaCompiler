@@ -133,7 +133,7 @@ public class Parser implements ParserInterface {
         switch (currToken.getType()) {
             case LCURLY:
                 acceptIt();
-                while (!matchType(TokenType.RCURLY))  {
+                while (!matchType(TokenType.RCURLY)) {
                     parseStatement();
                 }
                 acceptIt();
@@ -164,7 +164,8 @@ public class Parser implements ParserInterface {
                 accept(TokenType.RPAREN);
                 parseStatement();
                 return;
-            case IDENTIFIER, THIS:
+            case IDENTIFIER:
+            case THIS:
                 acceptIt();
 //                System.out.println("parse stmt identifier");
                 if (matchType(IDENTIFIER) || matchType(THIS)) {
@@ -212,7 +213,8 @@ public class Parser implements ParserInterface {
                     return;
                 }
                 return;
-            case BOOLEAN, INT:
+            case BOOLEAN:
+            case INT:
 //                System.out.println("hi");
                 // Type id = Expression;
                 parseType();
@@ -310,7 +312,9 @@ public class Parser implements ParserInterface {
                 parseExpr();
                 accept(TokenType.RPAREN);
                 return;
-            case INTLITERAL, TRUE, FALSE:
+            case INTLITERAL:
+            case TRUE:
+            case FALSE:
                 acceptIt();
                 return;
             case NEW:
@@ -318,7 +322,8 @@ public class Parser implements ParserInterface {
                 acceptIt();
                 handleNew();
                 return;
-            case IDENTIFIER, THIS:
+            case IDENTIFIER:
+            case THIS:
             default:
                 // Reference ( [ Expression ] | ( Expression ) )?
                 acceptIt();
