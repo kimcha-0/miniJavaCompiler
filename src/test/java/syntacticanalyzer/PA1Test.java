@@ -40,13 +40,13 @@ class PA1Test {
 
     void assertToken(Lexer lexer, TokenType expectType, String expectStr) {
         Token token = lexer.scan();
-        assertEquals(expectType, token.getType());
-        assertEquals(expectStr, token.getText());
+        assertEquals(expectType, token.getTokenType());
+        assertEquals(expectStr, token.getTokenText());
     }
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("pa1_tests/fail166.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/fail170.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
@@ -69,7 +69,7 @@ class PA1Test {
 
     @Test
     void compile() {
-        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa1_tests");
+        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests");
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");

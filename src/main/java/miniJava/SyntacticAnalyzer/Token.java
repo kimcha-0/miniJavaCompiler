@@ -8,11 +8,15 @@ public class Token {
         this._text = text;
     }
 
-    public TokenType getType() {
+    public TokenType getTokenType() {
         return _type;
     }
 
-    public String getText() {
+    public SourcePosition getTokenPosition() {
+        return null;
+    }
+
+    public String getTokenText() {
         return _text;
     }
 }

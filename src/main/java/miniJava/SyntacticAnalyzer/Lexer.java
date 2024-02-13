@@ -124,6 +124,7 @@ public class Lexer implements LexerInterface {
                     boolean endComment = false;
                     skipIt();
                     while (!endComment) {
+                        System.out.println(charBuf);
                         if (charBuf == '*') {
                             skipIt();
                             endComment = charBuf == '/';
@@ -164,14 +165,6 @@ public class Lexer implements LexerInterface {
     private Token createToken(TokenType type, String text) {
 //        System.out.println("new Token Type: " + type + ", text: '" + text + "'");
         return new Token(type, text);
-    }
-
-    private void handleComment() {
-        stringBuf.setLength(0);
-        if (charBuf == '/') {
-
-        }
-
     }
 
     static {
