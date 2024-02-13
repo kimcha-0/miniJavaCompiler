@@ -4,16 +4,6 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0161dc8f-daa7-40cc-87b5-9199fb934d4e" name="Changes" comment="created source package and began working on Lexer class">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ErrorReporter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ErrorReporter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
-    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -82,45 +72,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-<<<<<<< HEAD
-    "Application.Compiler.executor": "Run",
-=======
->>>>>>> test
     "JUnit.PA1Test.compile.executor": "Run",
     "JUnit.PA1Test.parse.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-<<<<<<< HEAD
-    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "JUnit.PA1Test.scan.executor": "Run",
     "git-widget-placeholder": "main",
-=======
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
-    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
-    "git-widget-placeholder": "test",
->>>>>>> test
-    "kotlin-language-version-configured": "true",
-    "last_directory_selection": "/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/main/java/comp520",
-    "last_opened_file_path": "/Users/davidkim/spring-2024/comp520/miniJavaCompiler",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "project.propGUI",
-    "vue.rearranger.settings.migration": "true"
-  },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
-    ]
+    "node.js.selected.package.tslint": "(autodetect)"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -143,24 +99,7 @@
       <command value="node --version" />
     </option>
   </component>
-<<<<<<< HEAD
   <component name="RunManager" selected="JUnit.PA1Test.compile">
-    <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
-      <module name="miniJavaCompiler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="miniJava.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-=======
-  <component name="RunManager" selected="JUnit.PA1Test.parse">
->>>>>>> test
     <configuration name="PA1Test.compile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
@@ -193,35 +132,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PA1Test.scan" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
+      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
+      <option name="METHOD_NAME" value="scan" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
-<<<<<<< HEAD
-      <item itemvalue="Application.Compiler" />
-=======
->>>>>>> test
+      <item itemvalue="JUnit.PA1Test.scan" />
       <item itemvalue="JUnit.PA1Test.compile" />
       <item itemvalue="JUnit.PA1Test.parse" />
     </list>
     <recent_temporary>
       <list>
-<<<<<<< HEAD
         <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="JUnit.PA1Test.parse" />
-        <item itemvalue="Application.Compiler" />
-=======
-        <item itemvalue="JUnit.PA1Test.parse" />
-        <item itemvalue="JUnit.PA1Test.compile" />
->>>>>>> test
+        <item itemvalue="JUnit.PA1Test.scan" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-11.0.22-corretto-11.0.22-f644763e9732-6ddbcd97" />
-        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-203781b8" />
-        <option value="jdk-20.0.2-corretto-20.0.2.1-f644763e9732-447c96ba" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -374,6 +312,21 @@
     <MESSAGE value="created source package and began working on Lexer class" />
     <MESSAGE value="finished ErrorReporter class" />
     <option name="LAST_COMMIT_MESSAGE" value="finished ErrorReporter class" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>70</line>
+          <properties class="syntacticanalyzer.PA1Test" method="compile">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -124,16 +124,15 @@ public class Lexer implements LexerInterface {
                     boolean endComment = false;
                     skipIt();
                     while (!endComment) {
-                        System.out.println(charBuf);
+                        if (eot) {
+                            lexError("Comment not terminated properly.");
+                            throw new SyntaxError();
+                        }
                         if (charBuf == '*') {
                             skipIt();
                             endComment = charBuf == '/';
                         } else {
                             skipIt();
-                        }
-                        if (eot) {
-                            lexError("Comment not terminated properly.");
-                            throw new SyntaxError();
                         }
                     }
                     skipIt();

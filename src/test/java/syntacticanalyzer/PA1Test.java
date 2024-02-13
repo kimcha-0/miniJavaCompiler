@@ -15,7 +15,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void scan() {
-        try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail151.java")) {
+        try (FileInputStream in = new FileInputStream("pa1-tests-partial/pass158.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             assertToken(lexer, CLASS, "class");
@@ -46,7 +46,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/fail170.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/pass170.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
@@ -60,7 +60,7 @@ class PA1Test {
                     reporter.outputErrors();
                 } else System.out.println("Success");
 
-                assert (reporter.hasErrors());
+                assert (!reporter.hasErrors());
             }
         } catch (IOException e) {
             e.printStackTrace();

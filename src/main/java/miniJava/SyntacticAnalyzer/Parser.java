@@ -73,6 +73,7 @@ public class Parser implements ParserInterface {
 
     private void parseArgList() {
         parseExpr();
+        //System.out.println(currToken.getTokenText());
         while (!matchType(TokenType.RPAREN)) {
             accept(TokenType.COMMA);
             parseExpr();
@@ -116,15 +117,14 @@ public class Parser implements ParserInterface {
     private void parseRef() {
         // id | this | Reference.id
         // (id | this)(Reference.id)*
-        if (matchType(TokenType.IDENTIFIER) || matchType(TokenType.THIS)) {
+        if (matchType(THIS)) {
             acceptIt();
-            while (matchType(TokenType.PERIOD)) {
-                acceptIt();
-                parseRef();
-                accept(TokenType.IDENTIFIER);
-            }
         } else {
-            parseError("reference expected but received: " + currToken.getTokenType());
+            accept(IDENTIFIER);
+        }
+        while (matchType(TokenType.PERIOD)) {
+            acceptIt();
+            accept(IDENTIFIER);
         }
     }
 
@@ -176,6 +176,25 @@ public class Parser implements ParserInterface {
                 return;
             case THIS:
                 parseRef();
+                if (currToken.getTokenType() == LSQUARE) {
+                    acceptIt();
+                    parseExpr();
+                    accept(RSQUARE);
+                    accept(EQUALS);
+                    parseExpr();
+                    accept(SEMICOLON);
+                } else if (currToken.getTokenType() == LPAREN) {
+                    acceptIt();
+                    if (currToken.getTokenType() != RPAREN) {
+                        parseArgList();
+                    }
+                    accept(RPAREN);
+                    accept(SEMICOLON);
+                } else {
+                    accept(EQUALS);
+                    parseExpr();
+                    accept(SEMICOLON);
+                }
                 return;
             case IDENTIFIER:
             default:
@@ -237,10 +256,11 @@ public class Parser implements ParserInterface {
                         }
                         return;
                     case EQUALS:
-                        // id = Expression;
+                        // id = Expression;o
                         acceptIt();
                         parseExpr();
                         accept(SEMICOLON);
+                        return;
                     case LPAREN:
                         // id();
                         acceptIt();
@@ -249,6 +269,7 @@ public class Parser implements ParserInterface {
                         }
                         acceptIt();
                         accept(SEMICOLON);
+                        return;
                 }
         }
     }
@@ -351,18 +372,16 @@ public class Parser implements ParserInterface {
             case THIS:
             default:
                 // Reference ( [ Expression ] | ( Expression ) )?
-                acceptIt();
-                if (matchType(TokenType.PERIOD)) {
-                    acceptIt();
-                    parseRef();
-                }
+//                System.out.println(currToken.getTokenType());
+//                System.out.println(currToken.getTokenText());
+                parseRef();
                 if (matchType(TokenType.LSQUARE)) {
                     acceptIt();
                     parseExpr();
                     accept(RSQUARE);
                 } else if (matchType(TokenType.LPAREN)) {
                     acceptIt();
-                    parseExpr();
+                    if (currToken.getTokenType() != RPAREN) parseArgList();
                     accept(TokenType.RPAREN);
                 }
         }
