@@ -4,13 +4,12 @@ import miniJava.ErrorReporter;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static miniJava.SyntacticAnalyzer.TokenType.*;
-
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import static miniJava.SyntacticAnalyzer.TokenType.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PA1Test {
 
@@ -41,13 +40,13 @@ class PA1Test {
 
     void assertToken(Lexer lexer, TokenType expectType, String expectStr) {
         Token token = lexer.scan();
-        assertEquals(expectType, token.getType());
-        assertEquals(expectStr, token.getText());
+        assertEquals(expectType, token.getTokenType());
+        assertEquals(expectStr, token.getTokenText());
     }
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail157.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/fail170.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
@@ -70,7 +69,7 @@ class PA1Test {
 
     @Test
     void compile() {
-        File folder = new File("/Users/davidkim/Downloads/pa1_tests");
+        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests");
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");
