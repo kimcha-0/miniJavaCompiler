@@ -14,6 +14,8 @@ public class Lexer implements LexerInterface {
     private static Map<String, TokenType> keywordMap;
     private char charBuf;
     private boolean eot = false;
+    private int currLine;
+    private int currCol;
     private StringBuilder stringBuf;
     private InputStream in;
     private ErrorReporter reporter;
@@ -22,6 +24,8 @@ public class Lexer implements LexerInterface {
     private static final char eolWindows = '\r';
 
     public Lexer(FileInputStream in, ErrorReporter reporter) {
+        this.currLine = 1;
+        this.currCol = 1;
         this.stringBuf = new StringBuilder();
         this.in = in;
         this.reporter = reporter;
@@ -38,50 +42,50 @@ public class Lexer implements LexerInterface {
         }
         // handle windows carry return
 
-        if (eot) return new Token(EOT, null);
+        if (eot) return new Token(EOT, null, new SourcePosition(currLine, currCol));
         // TODO: refactor token handling code to decrease indent levels once I get a working lexer
         switch (charBuf) {
             // simple single character cases
             case '(':
                 takeIt();
-                return new Token(LPAREN, "(");
+                return new Token(LPAREN, "(", new SourcePosition(currLine, currCol));
             case ')':
                 takeIt();
-                return new Token(RPAREN, ")");
+                return new Token(RPAREN, ")", new SourcePosition(currLine, currCol));
             case '[':
                 takeIt();
-                return new Token(LSQUARE, "[");
+                return new Token(LSQUARE, "[", new SourcePosition(currLine, currCol));
             case ']':
                 takeIt();
-                return new Token(RSQUARE, "]");
+                return new Token(RSQUARE, "]", new SourcePosition(currLine, currCol));
             case '{':
                 takeIt();
-                return new Token(LCURLY, "{");
+                return new Token(LCURLY, "{", new SourcePosition(currLine, currCol));
             case '}':
                 takeIt();
-                return new Token(RCURLY, "}");
+                return new Token(RCURLY, "}", new SourcePosition(currLine, currCol));
             case '+':
             case '-':
             case '*':
                 takeIt();
-                return new Token(OPERATOR, stringBuf.toString());
+                return new Token(OPERATOR, stringBuf.toString(), new SourcePosition(currLine, currCol));
             case '.':
                 takeIt();
-                return new Token(PERIOD, ".");
+                return new Token(PERIOD, ".", new SourcePosition(currLine, currCol));
             case ',':
                 takeIt();
-                return new Token(COMMA, ",");
+                return new Token(COMMA, ",", new SourcePosition(currLine, currCol));
             case ';':
                 takeIt();
-                return new Token(SEMICOLON, ";");
+                return new Token(SEMICOLON, ";", new SourcePosition(currLine, currCol));
             // one or two character lexemes
             case '=':
                 takeIt();
                 if (charBuf == '=') {
                     takeIt();
-                    return new Token(OPERATOR, "==");
+                    return new Token(OPERATOR, "==", new SourcePosition(currLine, currCol));
                 }
-                return new Token(EQUALS, "=");
+                return new Token(EQUALS, "=", new SourcePosition(currLine, currCol));
             case '!':
             case '>':
             case '<':
@@ -91,24 +95,24 @@ public class Lexer implements LexerInterface {
 //                    System.out.println("operator: " + stringBuf.toString());
                 }
 //                System.out.println("operator: " + stringBuf.toString());
-                return new Token(OPERATOR, stringBuf.toString());
+                return new Token(OPERATOR, stringBuf.toString(), new SourcePosition(currLine, currCol));
             // two character lexemes
             case '&':
                 takeIt();
                 if (charBuf == '&') {
                     takeIt();
-                    return new Token(OPERATOR, "&&");
+                    return new Token(OPERATOR, "&&", new SourcePosition(currLine, currCol));
                 }
                 lexError("& followed by: '" + charBuf + "'");
-                return new Token(ERROR, stringBuf.toString());
+                return new Token(ERROR, stringBuf.toString(), new SourcePosition(currLine, currCol));
             case '|':
                 takeIt();
                 if (charBuf == '|') {
                     takeIt();
-                    return new Token(OPERATOR, "||");
+                    return new Token(OPERATOR, "||", new SourcePosition(currLine, currCol));
                 }
                 lexError("| followed by: '" + charBuf + "'");
-                return new Token(ERROR, stringBuf.toString());
+                return new Token(ERROR, stringBuf.toString(), new SourcePosition(currLine, currCol));
             // indefinite lexemes
             case '/':
                 takeIt();
@@ -137,7 +141,7 @@ public class Lexer implements LexerInterface {
                     }
                     skipIt();
                     return scan();
-                } else return new Token(OPERATOR, "/");
+                } else return new Token(OPERATOR, "/", new SourcePosition(currLine, currCol));
             case '0':
             case '1':
             case '2':
@@ -151,20 +155,16 @@ public class Lexer implements LexerInterface {
                 while (isDigit(charBuf)) {
                     takeIt();
                 }
-                return createToken(INTLITERAL, stringBuf.toString());
+                return new Token(INTLITERAL, stringBuf.toString(), new SourcePosition(currLine, currCol));
             default:
                 if (isAlpha(charBuf)) {
                     return handleIdentifier();
                 }
                 lexError("Unrecognized character '" + charBuf + "' in input");
-                return new Token(ERROR, stringBuf.toString());
+                return new Token(ERROR, stringBuf.toString(), new SourcePosition(currLine, currCol));
         }
     }
 
-    private Token createToken(TokenType type, String text) {
-//        System.out.println("new Token Type: " + type + ", text: '" + text + "'");
-        return new Token(type, text);
-    }
 
     static {
         keywordMap = new HashMap<>();
@@ -193,9 +193,9 @@ public class Lexer implements LexerInterface {
         TokenType type = keywordMap.get(stringBuf.toString());
         if (stringBuf.charAt(0) == '_') {
             lexError("cannot start identifier with underscore" + stringBuf.toString());
-            return new Token(ERROR, stringBuf.toString());
+            return new Token(ERROR, stringBuf.toString(), new SourcePosition(currLine, currCol));
         }
-        return type != null ? createToken(type, stringBuf.toString()) : createToken(IDENTIFIER, stringBuf.toString());
+        return type != null ? new Token(type, stringBuf.toString(), new SourcePosition(currLine, currCol)) : new Token(IDENTIFIER, stringBuf.toString(), new SourcePosition(currLine, currCol));
     }
 
     private boolean peek(char expected) {

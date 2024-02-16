@@ -1,6 +1,8 @@
 package miniJava.SyntacticAnalyzer;
 
+import miniJava.AbstractSyntaxTrees.Package;
+
 public interface ParserInterface {
     /** entry point into recursive parsing */
-    void parse();
+   Package parse();
 }

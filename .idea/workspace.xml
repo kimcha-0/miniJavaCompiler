@@ -4,6 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+    <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/SourcePosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/SourcePosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Token.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -72,11 +81,26 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Compiler.executor": "Run",
     "JUnit.PA1Test.compile.executor": "Run",
     "JUnit.PA1Test.parse.executor": "Run",
     "JUnit.PA1Test.scan.executor": "Run",
-    "git-widget-placeholder": "main",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "git-widget-placeholder": "test",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
@@ -99,7 +123,20 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.compile">
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
+    <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="miniJava.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="PA1Test.compile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
@@ -108,6 +145,8 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
       <option name="PACKAGE_NAME" value="syntacticanalyzer" />
       <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
       <option name="METHOD_NAME" value="compile" />
@@ -149,22 +188,31 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Compiler" />
       <item itemvalue="JUnit.PA1Test.scan" />
       <item itemvalue="JUnit.PA1Test.compile" />
       <item itemvalue="JUnit.PA1Test.parse" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.PA1Test.compile" />
+        <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.scan" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-20.0.2-corretto-20.0.2.1-f644763e9732-447c96ba" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0161dc8f-daa7-40cc-87b5-9199fb934d4e" name="Changes" comment="" />
+      <changelist id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="" />
       <created>1706314928979</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -183,6 +231,12 @@
       <workItem from="1706586901925" duration="60000" />
       <workItem from="1706587037263" duration="63000" />
       <workItem from="1707603568095" duration="158000" />
+      <workItem from="1707808484043" duration="230000" />
+      <workItem from="1707808719757" duration="917000" />
+      <workItem from="1707856727182" duration="1484000" />
+      <workItem from="1707887384921" duration="751000" />
+      <workItem from="1707975616777" duration="1379000" />
+      <workItem from="1708019059214" duration="8946000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -318,12 +372,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>70</line>
+          <line>76</line>
           <properties class="syntacticanalyzer.PA1Test" method="compile">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>77</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

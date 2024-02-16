@@ -1,5 +1,7 @@
 package syntacticanalyzer;
 
+import miniJava.AbstractSyntaxTrees.AST;
+import miniJava.AbstractSyntaxTrees.ASTDisplay;
 import miniJava.ErrorReporter;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
@@ -46,19 +48,23 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/pass170.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa2_tests_partial/pass208.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
+            AST ast = null;
             try {
-                parser.parse();
+                ast = parser.parse();
             } catch (SyntaxError e) {
                 e.printStackTrace();
             } finally {
                 if (reporter.hasErrors()) {
                     System.out.println("Error");
                     reporter.outputErrors();
-                } else System.out.println("Success");
+                } else {
+                    ASTDisplay display = new ASTDisplay();
+                    display.showTree(ast);
+                }
 
                 assert (!reporter.hasErrors());
             }
@@ -73,6 +79,7 @@ class PA1Test {
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");
+        AST syntaxTree = null;
         for (File file : files) {
             System.out.println("File: " + file.getName());
             try (FileInputStream in = new FileInputStream(file.getPath())) {
@@ -80,7 +87,7 @@ class PA1Test {
                 Lexer lexer = new Lexer(in, reporter);
                 Parser parser = new Parser(lexer, reporter);
                 try {
-                    parser.parse();
+                    syntaxTree = parser.parse();
                 } catch (LexerError e) {
 
                 } catch (SyntaxError e) {
@@ -89,7 +96,10 @@ class PA1Test {
             } catch (IOException e) {
 
             } finally {
-                if (!reporter.hasErrors()) System.out.println("Success");
+                if (!reporter.hasErrors()) {
+                    ASTDisplay astDisplay = new ASTDisplay();
+                    astDisplay.showTree(syntaxTree);
+                }
                 else {
                     System.out.println("Error");
                     reporter.outputErrors();
