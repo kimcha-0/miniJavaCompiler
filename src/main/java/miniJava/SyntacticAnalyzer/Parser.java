@@ -118,7 +118,6 @@ public class Parser implements ParserInterface {
         ExprList exprList = new ExprList();
         Expression expression = parseExpr();
         exprList.add(expression);
-        //System.out.println(currToken.getTokenText());
         while (!matchType(TokenType.RPAREN)) {
             accept(TokenType.COMMA);
             expression = parseExpr();
@@ -212,26 +211,34 @@ public class Parser implements ParserInterface {
     }
 
     private Statement parseStatement() {
+        SourcePosition posn = null;
+        Statement statement = null;
+        Expression expression = null;
+        Expression insideExpr = null;
+        VarDecl varDecl = null;
 //        System.out.println("parsing stmt");
         switch (currToken.getTokenType()) {
             case LCURLY:
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 StatementList blockStmtList = new StatementList();
                 while (!matchType(TokenType.RCURLY)) {
                     Statement stmt = parseStatement();
+                    blockStmtList.add(stmt);
                 }
                 acceptIt();
-                return new BlockStmt(blockStmtList, null);
+                return new BlockStmt(blockStmtList, posn);
             case RETURN:
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 // Expression?
-                Expression expression = null;
                 if (!matchType(SEMICOLON)) {
                     expression = parseExpr();
                 }
                 accept(SEMICOLON);
-                return new ReturnStmt(expression, null);
+                return new ReturnStmt(expression, posn);
             case IF:
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 accept(TokenType.LPAREN);
                 Expression b = parseExpr();
@@ -241,82 +248,101 @@ public class Parser implements ParserInterface {
                     acceptIt();
                     parseStatement();
                 }
-                return new IfStmt(b, t, null);
+                return new IfStmt(b, t, posn);
             case WHILE:
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 accept(TokenType.LPAREN);
-                parseExpr();
+                expression = parseExpr();
                 accept(TokenType.RPAREN);
-                parseStatement();
-                return new WhileStmt(null, null, null);
+                statement = parseStatement();
+                return new WhileStmt(expression, statement, posn);
             case BOOLEAN:
             case INT:
 //                System.out.println("hi");
                 // Type id = Expression;
-                parseType();
+                posn = currToken.getTokenPosition();
+                TypeDenoter type = parseType();
+
+                Identifier id = new Identifier(currToken);
                 accept(TokenType.IDENTIFIER);
+                Reference assnRef = new IdRef(id, posn);
                 accept(EQUALS);
-                parseExpr();
+                expression = parseExpr();
                 accept(SEMICOLON);
-                return new IxAssignStmt(null, null, null, null);
+                varDecl = new VarDecl(type, id.spelling, posn);
+                return new VarDeclStmt(varDecl, expression, posn);
             case THIS:
+                posn = currToken.getTokenPosition();
                 Reference ref = parseRef();
-                Expression thisExpr;
                 ExprList exprList = new ExprList();
                 if (currToken.getTokenType() == LSQUARE) {
+                    // Ref [ Expression ] = Expression;
                     acceptIt();
-                    thisExpr = parseExpr();
+                    insideExpr = parseExpr();
                     accept(RSQUARE);
                     accept(EQUALS);
-                    thisExpr = parseExpr();
+                    expression = parseExpr();
                     accept(SEMICOLON);
-                    return null;
+                    return new IxAssignStmt(ref, insideExpr, expression, posn);
                 } else if (currToken.getTokenType() == LPAREN) {
+                    // Ref ( ArgList?);
                     acceptIt();
+                    ExprList eL = null;
                     if (currToken.getTokenType() != RPAREN) {
-                        parseArgList();
+                        eL = parseArgList();
                     }
                     accept(RPAREN);
                     accept(SEMICOLON);
+                    return new CallStmt(ref, eL, posn);
                 } else {
                     accept(EQUALS);
-                    parseExpr();
+                    expression = parseExpr();
                     accept(SEMICOLON);
-                }
-                return null;
+                    return new AssignStmt(ref, expression, posn); }
             case IDENTIFIER:
             default:
+                id = new Identifier(currToken);
+                posn = currToken.getTokenPosition();
                 accept(IDENTIFIER);
                 switch (currToken.getTokenType()) {
                     case IDENTIFIER:
                         // Type id = Expression;
+                        Identifier varId = new Identifier(currToken);
                         accept(IDENTIFIER);
                         accept(EQUALS);
-                        parseExpr();
+                        expression = parseExpr();
                         accept(SEMICOLON);
-                        return new IxAssignStmt(null, null, null, null);
+                        varDecl = new VarDecl(new ClassType(id, posn), varId.spelling, posn);
+                        return new VarDeclStmt(varDecl, expression, posn);
                     case LSQUARE:
                         acceptIt();
                         if (currToken.getTokenType() != RSQUARE) {
                             // Ref[Expression] = Expression;
-                            parseExpr();
+                            insideExpr = parseExpr();
                             accept(RSQUARE);
                             accept(EQUALS);
-                            parseExpr();
+                            expression = parseExpr();
                             accept(SEMICOLON);
+                            return new IxAssignStmt(new IdRef(id, posn), insideExpr, expression, posn);
                         } else {
                             // id[] id = Expression;
                             accept(RSQUARE);
+                            String name = currToken.getTokenText();
                             accept(IDENTIFIER);
                             accept(EQUALS);
-                            parseExpr();
+                            expression = parseExpr();
                             accept(SEMICOLON);
+                            varDecl = new VarDecl(new ArrayType(new ClassType(id, posn), posn), name, posn);
+                            return new VarDeclStmt(varDecl, expression, posn);
                         }
-                        return new AssignStmt(null, null, null);
                     case PERIOD:
                         acceptIt();
+                        if (matchType(THIS)) {
+                            parseError("Reference error");
+                            throw new SyntaxError();
+                        }
                         Reference qualRef = parseRef();
-                        Expression expr = null;
                         ExprList exprList1 = new ExprList();
                         if (currToken.getTokenType() == LSQUARE) {
                             // id.id[5] = Expression;
@@ -324,15 +350,17 @@ public class Parser implements ParserInterface {
                             accept(INTLITERAL);
                             accept(RSQUARE);
                             accept(EQUALS);
-                            expr = parseExpr();
+                            expression = parseExpr();
                             accept(SEMICOLON);
+                            return new AssignStmt(qualRef, expression, posn);
                         } else if (currToken.getTokenType() == EQUALS) {
                             // id.id = Expression;
                             acceptIt();
-                            expr = parseExpr();
+                            expression = parseExpr();
                             accept(SEMICOLON);
+                            return new AssignStmt(qualRef, expression, posn);
                         } else {
-                            // id.id() = Expression;
+                            // id.id();
                             accept(LPAREN);
                             if (currToken.getTokenType() != RPAREN) {
                                 exprList1 = parseArgList();
@@ -341,167 +369,200 @@ public class Parser implements ParserInterface {
                             accept(SEMICOLON);
                             return new CallStmt(qualRef, exprList1, null);
                         }
-                        return new AssignStmt(qualRef, expr, null);
                     case EQUALS:
-                        // id = Expression;o
+                        // id = Expression;
                         acceptIt();
-                        parseExpr();
+                        expression = parseExpr();
                         accept(SEMICOLON);
-                        return new AssignStmt(null, null, null);
+                        return new AssignStmt(new IdRef(id, posn), expression, posn);
                     case LPAREN:
                         // id();
                         acceptIt();
+                        ExprList exprList2 = new ExprList();
                         if (currToken.getTokenType() != RPAREN) {
-                            parseArgList();
+                            exprList2 = parseArgList();
                         }
                         acceptIt();
                         accept(SEMICOLON);
-                        return new CallStmt(null, null, null);
+                        return new CallStmt(new IdRef(id, posn), exprList2, posn);
                 }
         }
         return null;
     }
 
     private Expression parseExpr() {
-        Expression expr = parseOrExpr();
-        return null;
+        return parseOrExpr();
     }
 
     private Expression parseOrExpr() {
-        Operator op = null;
 //        System.out.println("or");
         Expression expr1 = parseAndExpr();
-        Expression expr2 = null;
         while (currToken.getTokenText().equals("||")) {
-            op = new Operator(currToken);
+            Operator op = new Operator(currToken);
             acceptIt();
-            expr2 = parseAndExpr();
+            Expression expr2 = parseAndExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
-        return new BinaryExpr(op, expr1, expr2, null);
+        return expr1;
     }
 
     private Expression parseAndExpr() {
 //        System.out.println("and");
         Expression expr1 = parseEqualityExpr();
-        Expression expr2 = null;
         while (currToken.getTokenText().equals("&&")) {
+            Operator op = new Operator(currToken);
             acceptIt();
-            expr2 = parseEqualityExpr();
+            Expression expr2 = parseEqualityExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
-        return null;
+        return expr1;
     }
 
 
     private Expression parseEqualityExpr() {
 //        System.out.println("eq==");
-        parseRelExpr();
+        Expression expr1 = parseRelExpr();
         while (currToken.getTokenText().equals("==") || currToken.getTokenText().equals("!=")) {
+            Operator op = new Operator(currToken);
             acceptIt();
-            parseRelExpr();
+            Expression expr2 = parseRelExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
+        return expr1;
     }
 
-    private void parseRelExpr() {
+    private Expression parseRelExpr() {
 //        System.out.println("<>=");
-        parseAddExpr();
+        Expression expr1 = parseAddExpr();
         while (currToken.getTokenText().equals(">") || currToken.getTokenText().equals("<") || currToken.getTokenText().equals(">=")
                 || currToken.getTokenText().equals("<=")) {
+            Operator op = new Operator(currToken);
             acceptIt();
 //            System.out.println("Token: " + currToken.getText());
-            parseAddExpr();
+            Expression expr2 = parseAddExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
+        return expr1;
     }
 
-    private void parseAddExpr() {
+    private Expression parseAddExpr() {
 //        System.out.println("+");
-        parseMulExpr();
+        Expression expr1 = parseMulExpr();
         while (currToken.getTokenText().equals("+") || currToken.getTokenText().equals("-")) {
+            Operator op = new Operator(currToken);
             acceptIt();
-            parseMulExpr();
+            Expression expr2 = parseMulExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
+        return expr1;
     }
 
-    private void parseMulExpr() {
+    private Expression parseMulExpr() {
 //        System.out.println("*");
-        parseUnaryOpExpr();
+        Expression expr1 = parseUnaryOpExpr();
 //        System.out.println("currToken" + currToken.getText());
         while (currToken.getTokenText().equals("*") || currToken.getTokenText().equals("/")) {
 //            System.out.println("MultExpr: " + currToken.getText() + currToken.getType());
+            Operator op = new Operator(currToken);
             acceptIt();
-            parseUnaryOpExpr();
+            Expression expr2 = parseUnaryOpExpr();
+            expr1 = new BinaryExpr(op, expr1, expr2, null);
         }
+        return expr1;
     }
 
-    private void parseUnaryOpExpr() {
+    private Expression parseUnaryOpExpr() {
 //        System.out.println("unary");
         if (currToken.getTokenText().equals("-") || currToken.getTokenText().equals("!")) {
+            Operator op = new Operator(currToken);
             acceptIt();
-            parseUnaryOpExpr();
-        } else parseDefaultExpr();
+            Expression expr = parseUnaryOpExpr();
+            return new UnaryExpr(op, expr, null);
+        } else return parseDefaultExpr();
     }
 
     private Expression parseDefaultExpr() {
+        SourcePosition posn;
 //        System.out.println("default expr");
         switch (currToken.getTokenType()) {
             case LPAREN:
                 acceptIt();
-                parseExpr();
+                Expression expression = parseExpr();
                 accept(TokenType.RPAREN);
-                return new CallExpr();
+                return expression;
             case INTLITERAL:
-                Token temp = currToken;
+                IntLiteral intLiteral = new IntLiteral(currToken);
                 acceptIt();
-                return new IntLiteral(currToken);
+                return new LiteralExpr(intLiteral, currToken.getTokenPosition());
 
             case TRUE:
             case FALSE:
+                posn = currToken.getTokenPosition();
+                BooleanLiteral bool = new BooleanLiteral(currToken);
                 acceptIt();
+                return new LiteralExpr(bool, posn);
             case NEW:
 //                System.out.println("new!");
+                posn = currToken.getTokenPosition();
                 acceptIt();
-                handleNew();
-                return;
+                Expression newExpr = handleNew();
+                return null;
             case IDENTIFIER:
             case THIS:
             default:
                 // Reference ( [ Expression ] | ( Expression ) )?
 //                System.out.println(currToken.getTokenType());
 //                System.out.println(currToken.getTokenText());
-                parseRef();
+                Reference refr = parseRef();
                 if (matchType(TokenType.LSQUARE)) {
                     acceptIt();
-                    parseExpr();
+                    Expression e = parseExpr();
                     accept(RSQUARE);
+                    return new IxExpr(refr, e, null);
                 } else if (matchType(TokenType.LPAREN)) {
                     acceptIt();
-                    if (currToken.getTokenType() != RPAREN) parseArgList();
+                    ExprList el = new ExprList();
+                    if (currToken.getTokenType() != RPAREN) el = parseArgList();
                     accept(TokenType.RPAREN);
+                    return new CallExpr(refr, el, null);
                 }
+                return null;
         }
     }
 
-    private void handleNew() {
+    private Expression handleNew() {
+        SourcePosition posn;
+        Expression expr;
         switch (currToken.getTokenType()) {
             case IDENTIFIER:
+                Identifier id = new Identifier(currToken);
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 if (currToken.getTokenType() == LPAREN) {
+                    // new A()
                     acceptIt();
                     accept(TokenType.RPAREN);
+                    return new NewObjectExpr(new ClassType(id, posn), posn);
                 } else if (currToken.getTokenType() == LSQUARE) {
+                    // new A[]
                     acceptIt();
-                    parseExpr();
+                    expr = parseExpr();
                     accept(RSQUARE);
+                    return new NewArrayExpr(new ClassType(id, posn), expr, posn);
                 } else {
                     parseError("Expression syntax error");
                 }
-                return;
+                return null;
             case INT:
+                // new int[]
+                posn = currToken.getTokenPosition();
                 acceptIt();
                 accept(TokenType.LSQUARE);
-                parseExpr();
+                expr = parseExpr();
                 accept(RSQUARE);
-                return;
+                return new NewArrayExpr(new BaseType(TypeKind.INT, posn), expr, posn);
         }
+        return null;
     }
 
     private void acceptIt() {
