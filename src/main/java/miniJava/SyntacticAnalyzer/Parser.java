@@ -46,13 +46,13 @@ public class Parser implements ParserInterface {
         while (currToken.getTokenType() != TokenType.RCURLY) {
             FieldDecl fieldDecl;
             boolean isPublic = parseVis();
-            System.out.println(isPublic);
+//            System.out.println(isPublic);
             boolean isStatic = parseAccess();
             if (matchType(TokenType.VOID)) {
                 acceptIt();
                 String name = currToken.getTokenText();
                 accept(TokenType.IDENTIFIER);
-                fieldDecl = new FieldDecl(!isPublic, isStatic, new BaseType(TypeKind.VOID, null), name,  null);
+                fieldDecl = new FieldDecl(!isPublic, isStatic, new BaseType(TypeKind.VOID, null), name, null);
                 MethodDecl methodDecl = parseMethodDecl(fieldDecl);
                 methodDeclList.add(methodDecl);
             } else {
@@ -63,8 +63,7 @@ public class Parser implements ParserInterface {
                 if (matchType(TokenType.LPAREN)) {
                     MethodDecl methodDecl = parseMethodDecl(fieldDecl);
                     methodDeclList.add(methodDecl);
-                }
-                else {
+                } else {
                     fieldDeclList.add(fieldDecl);
                     accept(SEMICOLON);
                 }
@@ -125,6 +124,7 @@ public class Parser implements ParserInterface {
         }
         return exprList;
     }
+
     private TypeDenoter parseType() {
         // int | boolean | (int | id)[]
         TypeDenoter type;
@@ -183,31 +183,26 @@ public class Parser implements ParserInterface {
         // id | this | Reference.id
         // (id | this)(Reference.id)*
         SourcePosition posn = currToken.getTokenPosition();
-        ThisRef thisRef = null;
-        IdRef idRef = null;
+        Reference r;
         Identifier identifier = null;
         if (matchType(THIS)) {
             acceptIt();
             // ThisRef
-            thisRef = new ThisRef(posn);
-            if (!matchType(PERIOD)) return thisRef;
+            r = new ThisRef(posn);
         } else {
             identifier = new Identifier(currToken);
             accept(IDENTIFIER);
             // IdRef
-            idRef = new IdRef(identifier, posn);
-            if (!matchType(PERIOD)) return idRef;
+            r = new IdRef(identifier, posn);
         }
-        if (matchType(PERIOD)) {
-            while (matchType(TokenType.PERIOD)) {
-                acceptIt();
-                identifier = new Identifier(currToken);
-                accept(IDENTIFIER);
-                // qualRef
-            }
-            return new QualRef(thisRef, identifier, posn);
+        while (matchType(TokenType.PERIOD)) {
+            acceptIt();
+            identifier = new Identifier(currToken);
+            accept(IDENTIFIER);
+            // qualRef
+            r = new QualRef(r, identifier, null);
         }
-        return null;
+        return r;
     }
 
     private Statement parseStatement() {
@@ -223,8 +218,7 @@ public class Parser implements ParserInterface {
                 acceptIt();
                 StatementList blockStmtList = new StatementList();
                 while (!matchType(TokenType.RCURLY)) {
-                    Statement stmt = parseStatement();
-                    blockStmtList.add(stmt);
+                    blockStmtList.add(parseStatement());
                 }
                 acceptIt();
                 return new BlockStmt(blockStmtList, posn);
@@ -244,9 +238,11 @@ public class Parser implements ParserInterface {
                 Expression b = parseExpr();
                 accept(TokenType.RPAREN);
                 Statement t = parseStatement();
+                Statement e;
                 if (matchType(TokenType.ELSE)) {
                     acceptIt();
-                    parseStatement();
+                    e = parseStatement();
+                    return new IfStmt(b, t, e, posn);
                 }
                 return new IfStmt(b, t, posn);
             case WHILE:
@@ -257,6 +253,19 @@ public class Parser implements ParserInterface {
                 accept(TokenType.RPAREN);
                 statement = parseStatement();
                 return new WhileStmt(expression, statement, posn);
+            default:
+                return parsePureStatement();
+
+        }
+    }
+
+    private Statement parsePureStatement() {
+        SourcePosition posn = null;
+        Expression expression = null;
+        VarDecl varDecl = null;
+        Expression insideExpr = null;
+        switch (currToken.getTokenType()) {
+
             case BOOLEAN:
             case INT:
 //                System.out.println("hi");
@@ -288,7 +297,7 @@ public class Parser implements ParserInterface {
                 } else if (currToken.getTokenType() == LPAREN) {
                     // Ref ( ArgList?);
                     acceptIt();
-                    ExprList eL = null;
+                    ExprList eL = new ExprList();
                     if (currToken.getTokenType() != RPAREN) {
                         eL = parseArgList();
                     }
@@ -299,10 +308,12 @@ public class Parser implements ParserInterface {
                     accept(EQUALS);
                     expression = parseExpr();
                     accept(SEMICOLON);
-                    return new AssignStmt(ref, expression, posn); }
+                    return new AssignStmt(ref, expression, posn);
+                }
             case IDENTIFIER:
             default:
                 id = new Identifier(currToken);
+//                System.out.println(currToken.getTokenText());
                 posn = currToken.getTokenPosition();
                 accept(IDENTIFIER);
                 switch (currToken.getTokenType()) {
@@ -337,13 +348,22 @@ public class Parser implements ParserInterface {
                             return new VarDeclStmt(varDecl, expression, posn);
                         }
                     case PERIOD:
+                        Reference qualRef = new IdRef(id, null);
                         acceptIt();
                         if (matchType(THIS)) {
                             parseError("Reference error");
                             throw new SyntaxError();
                         }
-                        Reference qualRef = parseRef();
-                        ExprList exprList1 = new ExprList();
+                        Identifier id2 = new Identifier(currToken);
+                        accept(IDENTIFIER);
+                        qualRef = new QualRef(qualRef, id2, null);
+                        while (currToken.getTokenType() == PERIOD) {
+                            acceptIt();
+                            Identifier id3 = new Identifier(currToken);
+//                            System.out.println("CURRTOKEN: " + currToken.getTokenText());
+                            accept(IDENTIFIER);
+                            qualRef = new QualRef(qualRef, id3, null);
+                        }
                         if (currToken.getTokenType() == LSQUARE) {
                             // id.id[5] = Expression;
                             acceptIt();
@@ -360,8 +380,10 @@ public class Parser implements ParserInterface {
                             accept(SEMICOLON);
                             return new AssignStmt(qualRef, expression, posn);
                         } else {
+//                            System.out.println("HELLO");
                             // id.id();
                             accept(LPAREN);
+                            ExprList exprList1 = new ExprList();
                             if (currToken.getTokenType() != RPAREN) {
                                 exprList1 = parseArgList();
                             }
@@ -376,6 +398,7 @@ public class Parser implements ParserInterface {
                         accept(SEMICOLON);
                         return new AssignStmt(new IdRef(id, posn), expression, posn);
                     case LPAREN:
+                    default:
                         // id();
                         acceptIt();
                         ExprList exprList2 = new ExprList();
@@ -387,7 +410,6 @@ public class Parser implements ParserInterface {
                         return new CallStmt(new IdRef(id, posn), exprList2, posn);
                 }
         }
-        return null;
     }
 
     private Expression parseExpr() {
@@ -473,6 +495,7 @@ public class Parser implements ParserInterface {
 
     private Expression parseUnaryOpExpr() {
 //        System.out.println("unary");
+
         if (currToken.getTokenText().equals("-") || currToken.getTokenText().equals("!")) {
             Operator op = new Operator(currToken);
             acceptIt();
@@ -505,13 +528,13 @@ public class Parser implements ParserInterface {
 //                System.out.println("new!");
                 posn = currToken.getTokenPosition();
                 acceptIt();
-                Expression newExpr = handleNew();
-                return null;
+                return handleNew();
             case IDENTIFIER:
             case THIS:
             default:
                 // Reference ( [ Expression ] | ( Expression ) )?
 //                System.out.println(currToken.getTokenType());
+//                System.out.println(currToken.getTokenText());
 //                System.out.println(currToken.getTokenText());
                 Reference refr = parseRef();
                 if (matchType(TokenType.LSQUARE)) {
@@ -525,8 +548,9 @@ public class Parser implements ParserInterface {
                     if (currToken.getTokenType() != RPAREN) el = parseArgList();
                     accept(TokenType.RPAREN);
                     return new CallExpr(refr, el, null);
+                } else {
+                    return new RefExpr(refr, null);
                 }
-                return null;
         }
     }
 
@@ -554,6 +578,7 @@ public class Parser implements ParserInterface {
                 }
                 return null;
             case INT:
+            default:
                 // new int[]
                 posn = currToken.getTokenPosition();
                 acceptIt();
@@ -562,7 +587,6 @@ public class Parser implements ParserInterface {
                 accept(RSQUARE);
                 return new NewArrayExpr(new BaseType(TypeKind.INT, posn), expr, posn);
         }
-        return null;
     }
 
     private void acceptIt() {
