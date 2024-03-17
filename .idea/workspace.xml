@@ -120,7 +120,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.parse">
+  <component name="RunManager" selected="JUnit.PA1Test.compile">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -192,8 +192,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.PA1Test.compile" />
+        <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.scan" />
       </list>
