@@ -1,0 +1,2 @@
+added `NullLiteral` and `NullRef` AST classes
+added `visitNullLiteral` and `visitNullRef` visit methods

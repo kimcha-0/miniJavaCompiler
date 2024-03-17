@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/SourcePosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/SourcePosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Identifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Visitor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,9 +22,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -79,30 +76,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Compiler.executor": "Run",
-    "JUnit.PA1Test.compile.executor": "Run",
-    "JUnit.PA1Test.parse.executor": "Run",
-    "JUnit.PA1Test.scan.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "git-widget-placeholder": "test",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.compile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.parse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.scan.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;test&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
@@ -123,7 +120,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.compile">
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -189,14 +186,14 @@
     </configuration>
     <list>
       <item itemvalue="Application.Compiler" />
-      <item itemvalue="JUnit.PA1Test.scan" />
       <item itemvalue="JUnit.PA1Test.compile" />
       <item itemvalue="JUnit.PA1Test.parse" />
+      <item itemvalue="JUnit.PA1Test.scan" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.scan" />
       </list>
@@ -237,6 +234,13 @@
       <workItem from="1707887384921" duration="751000" />
       <workItem from="1707975616777" duration="1379000" />
       <workItem from="1708019059214" duration="16595000" />
+      <workItem from="1708490132402" duration="5361000" />
+      <workItem from="1708537357049" duration="3243000" />
+      <workItem from="1708634794488" duration="819000" />
+      <workItem from="1708830345260" duration="1380000" />
+      <workItem from="1708836706093" duration="1254000" />
+      <workItem from="1708965065584" duration="6000" />
+      <workItem from="1710559007460" duration="107000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -294,7 +298,23 @@
       <option name="project" value="LOCAL" />
       <updated>1706394108535</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="finished ErrorReporter class">
+      <option name="closed" value="true" />
+      <created>1708831123830</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1708831123830</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added NullLiteral and NullRef AST classes">
+      <option name="closed" value="true" />
+      <created>1708831161170</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1708831161170</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -365,7 +385,8 @@
     <MESSAGE value="init JUnit Test suit" />
     <MESSAGE value="created source package and began working on Lexer class" />
     <MESSAGE value="finished ErrorReporter class" />
-    <option name="LAST_COMMIT_MESSAGE" value="finished ErrorReporter class" />
+    <MESSAGE value="Added NullLiteral and NullRef AST classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added NullLiteral and NullRef AST classes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
