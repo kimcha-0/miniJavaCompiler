@@ -8,12 +8,10 @@ import java.util.Stack;
 public class ScopedIdentification implements Visitor {
     private Stack<Map<String, Declaration>> siTable;
 
-    public ScopedIdentification() {
+    public ScopedIdentification(AST ast) {
+        // init idTable stack
         this.siTable = new Stack<>();
-        // push Level 0 and 1 IDTables
-        for (int i = 0; i < 2; i++) {
-            this.siTable.push(new HashMap<>());
-        }
+        ast.visit(this, "");
     }
 
     public void openScope() {
@@ -36,25 +34,53 @@ public class ScopedIdentification implements Visitor {
                 return idTable.get(id.spelling);
             }
         }
-        return null;
+        throw new IdentificationError();
     }
     @Override
     public Object visitPackage(Package prog, Object arg) {
+        openScope();
+        ClassDeclList cl = prog.classDeclList;
+        String pfx = arg + "  . ";
+        for (ClassDecl c: prog.classDeclList){
+            c.visit(this, pfx);
+        }
         return null;
     }
 
     @Override
     public Object visitClassDecl(ClassDecl cd, Object arg) {
+        addDeclaration(cd.name, cd);
+        // open level 1 idTable
+        openScope();
+        String pfx = arg + "  . ";
+        for (FieldDecl f: cd.fieldDeclList)
+            f.visit(this, pfx);
+        for (MethodDecl m: cd.methodDeclList)
+            m.visit(this, pfx);
         return null;
     }
 
     @Override
     public Object visitFieldDecl(FieldDecl fd, Object arg) {
+        addDeclaration(fd.name, fd);
+        // visit Type
+        fd.type.visit(this, indent(arg));
         return null;
     }
 
     @Override
     public Object visitMethodDecl(MethodDecl md, Object arg) {
+        addDeclaration(md.name, md);
+        md.type.visit(this, indent(arg));
+        ParameterDeclList pdl = md.parameterDeclList;
+        String pfx = ((String) arg) + "  . ";
+        for (ParameterDecl pd: pdl) {
+            pd.visit(this, pfx);
+        }
+        StatementList sl = md.statementList;
+        for (Statement s: sl) {
+            s.visit(this, pfx);
+        }
         return null;
     }
 
