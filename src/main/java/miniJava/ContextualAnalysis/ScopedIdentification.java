@@ -1,86 +1,46 @@
-package miniJava.AbstractSyntaxTrees;
+package miniJava.ContextualAnalysis;
 
-import miniJava.IdentificationError;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-public class ScopedIdentification implements Visitor {
-    private Stack<Map<String, Declaration>> siTable;
+import miniJava.AbstractSyntaxTrees.Package;
+import miniJava.AbstractSyntaxTrees.*;
+import miniJava.ErrorReporter;
+public class ScopedIdentification implements Visitor<Object, Object> {
+    private IdentificationTable idTables;
 
     public ScopedIdentification(AST ast) {
         // init idTable stack
-        this.siTable = new Stack<>();
-        ast.visit(this, "");
+        this.idTables = new IdentificationTable(new ErrorReporter());
+        ast.visit(this, null);
     }
 
-    public void openScope() {
-        Map<String, Declaration> idTable = new HashMap<>();
-        this.siTable.push(idTable);
-    }
-
-    public Map<String, Declaration> closeScope() {
-        return this.siTable.pop();
-    }
-
-    public void addDeclaration(String spelling, Declaration decl) {
-        if (this.siTable.peek().containsKey(spelling)) throw new IdentificationError();
-        else this.siTable.peek().put(spelling, decl);
-    }
-
-    public Declaration findDeclaration(Identifier id) {
-        for (Map<String, Declaration> idTable : this.siTable) {
-            if (idTable.containsKey(id.spelling)) {
-                return idTable.get(id.spelling);
-            }
-        }
-        throw new IdentificationError();
-    }
     @Override
     public Object visitPackage(Package prog, Object arg) {
-        openScope();
-        ClassDeclList cl = prog.classDeclList;
-        String pfx = arg + "  . ";
-        for (ClassDecl c: prog.classDeclList){
-            c.visit(this, pfx);
-        }
+        idTables.openScope();
+        prog.classDeclList.forEach(cd -> idTables.addDeclaration(cd));
+        prog.classDeclList.forEach(cd -> cd.visit(this, prog));
+        idTables.closeScope();
         return null;
     }
 
     @Override
     public Object visitClassDecl(ClassDecl cd, Object arg) {
-        addDeclaration(cd.name, cd);
-        // open level 1 idTable
-        openScope();
-        String pfx = arg + "  . ";
-        for (FieldDecl f: cd.fieldDeclList)
-            f.visit(this, pfx);
-        for (MethodDecl m: cd.methodDeclList)
-            m.visit(this, pfx);
+        idTables.openScope();
+        cd.fieldDeclList.forEach(fd -> fd.visit(this, cd));
+        cd.methodDeclList.forEach(md -> md.visit(this, cd));
+        idTables.closeScope();
         return null;
     }
 
     @Override
     public Object visitFieldDecl(FieldDecl fd, Object arg) {
-        addDeclaration(fd.name, fd);
-        // visit Type
-        fd.type.visit(this, indent(arg));
+        fd.type.visit(this, null);
+        ClassDecl context = (ClassDecl) arg;
+        fd.inClass = context;
+        this.idTables.addDeclaration(fd);
         return null;
     }
 
     @Override
     public Object visitMethodDecl(MethodDecl md, Object arg) {
-        addDeclaration(md.name, md);
-        md.type.visit(this, indent(arg));
-        ParameterDeclList pdl = md.parameterDeclList;
-        String pfx = ((String) arg) + "  . ";
-        for (ParameterDecl pd: pdl) {
-            pd.visit(this, pfx);
-        }
-        StatementList sl = md.statementList;
-        for (Statement s: sl) {
-            s.visit(this, pfx);
-        }
         return null;
     }
 

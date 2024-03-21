@@ -48,26 +48,26 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa2_tests_partial/pass215.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/pass154.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
+            ASTDisplay display = new ASTDisplay();
             AST ast = null;
             try {
                 ast = parser.parse();
-            } catch (SyntaxError e) {
-                e.printStackTrace();
-            } finally {
                 if (reporter.hasErrors()) {
                     System.out.println("Error");
+                    display.showTree(ast);
                     reporter.outputErrors();
                 } else {
-                    ASTDisplay display = new ASTDisplay();
+                    System.out.println("Success");
                     display.showTree(ast);
                 }
-
-                assert (!reporter.hasErrors());
+            } catch (SyntaxError e) {
+                e.printStackTrace();
             }
+            assert (!reporter.hasErrors());
         } catch (IOException e) {
             e.printStackTrace();
         }
