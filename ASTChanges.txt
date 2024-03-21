@@ -1,2 +1,4 @@
 added `NullLiteral` and `NullRef` AST classes
 added `visitNullLiteral` and `visitNullRef` visit methods
+added `classContext` field in `MemberDecl` class
+added a `Declaration` field to the `Identifier` class
