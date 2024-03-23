@@ -80,6 +80,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitClassType(ClassType type, Object arg) {
+        // System.out.println("checking classType " + type.className.spelling);
         this.idTables.findDeclaration(type.className, null);
         return null;
     }

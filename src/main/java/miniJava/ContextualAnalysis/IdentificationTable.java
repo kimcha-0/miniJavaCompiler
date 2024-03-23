@@ -23,11 +23,12 @@ public class IdentificationTable {
     }
 
     public void addDeclaration(Declaration decl) {
-        Map<String, Declaration> idTable = this.tables.peek();
-        if (idTable.containsKey(decl.name)) {
-            idError(decl.name + " already declared!");
-            System.out.println(decl.name);
-            return;
+        for (int i = tables.size() - 1; i >= 0; i--) {
+            if (tables.get(i).containsKey(decl.name)) {
+                idError(decl.name + " already declared!");
+                System.out.println(decl.name);
+                return;
+            }
         }
         tables.peek().put(decl.name, decl);
     }
@@ -46,11 +47,13 @@ public class IdentificationTable {
         for (int i = tables.size() - 1; i >= 0; i--) {
             Declaration candidate = tables.get(i).get(iden.spelling);
             if (candidate != null) {
+                // System.out.println(candidate.name);
                 ret = candidate;
             }
         }
         if (ret == null) {
             this.reporter.reportError("Attempts to reference: " + iden.spelling + " which was not found!");
+            return null;
         }
         return ret;
     }
