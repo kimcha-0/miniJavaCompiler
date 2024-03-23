@@ -13,17 +13,17 @@ abstract public class MemberDecl extends Declaration {
         super(name, mt, posn);
         this.isPrivate = isPrivate;
         this.isStatic = isStatic;
-        this.inClass = null;
+        this.classContext = null;
     }
     
     public MemberDecl(MemberDecl md, SourcePosition posn){
     	super(md.name, md.type, posn);
     	this.isPrivate = md.isPrivate;
     	this.isStatic = md.isStatic;
-        this.inClass = md.inClass;
+        this.classContext = md.classContext;
     }
     
     public boolean isPrivate;
     public boolean isStatic;
-    public ClassDecl inClass;
+    public ClassDecl classContext;
 }

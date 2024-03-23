@@ -1,8 +1,9 @@
 package miniJava.ContextualAnalysis;
 
 import miniJava.AbstractSyntaxTrees.Declaration;
+import miniJava.AbstractSyntaxTrees.Identifier;
+import miniJava.AbstractSyntaxTrees.MethodDecl;
 import miniJava.ErrorReporter;
-import miniJava.IdentificationError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,10 +18,16 @@ public class IdentificationTable {
         this.tables = new Stack<>();
     }
 
+    public ErrorReporter getReporter() {
+        return this.reporter;
+    }
+
     public void addDeclaration(Declaration decl) {
         Map<String, Declaration> idTable = this.tables.peek();
         if (idTable.containsKey(decl.name)) {
-            throw new IdentificationError();
+            idError(decl.name + " already declared!");
+            System.out.println(decl.name);
+            return;
         }
         tables.peek().put(decl.name, decl);
     }
@@ -34,8 +41,18 @@ public class IdentificationTable {
     }
 
 
-    public Declaration findDeclaration(Declaration decl) {
-        return this.tables.peek().containsKey(decl.name) ? decl : null;
+    public Declaration findDeclaration(Identifier iden, MethodDecl methodDecl) {
+        Declaration ret = null;
+        for (int i = tables.size() - 1; i >= 0; i--) {
+            Declaration candidate = tables.get(i).get(iden.spelling);
+            if (candidate != null) {
+                ret = candidate;
+            }
+        }
+        if (ret == null) {
+            this.reporter.reportError("Attempts to reference: " + iden.spelling + " which was not found!");
+        }
+        return ret;
     }
 
     public void idError(String error) {

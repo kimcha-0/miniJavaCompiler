@@ -36,7 +36,6 @@ public class Parser implements ParserInterface {
 
         MethodDeclList methodDeclList = new MethodDeclList();
         FieldDeclList fieldDeclList = new FieldDeclList();
-        MemberDecl memberDecl;
 
         accept(TokenType.CLASS);
         ClassDecl classDecl = new ClassDecl(currToken.getTokenText(), fieldDeclList, methodDeclList, currToken.getTokenPosition());

@@ -12,6 +12,7 @@ public class ThisRef extends BaseRef {
 	public ThisRef(SourcePosition posn) {
 		super(posn);
 	}
+	public ClassDecl classContext;
 
 	@Override
 	public <A, R> R visit(Visitor<A, R> v, A o) {

@@ -2,6 +2,7 @@ package syntacticanalyzer;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ErrorReporter;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests/pass154.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail302.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
@@ -63,6 +64,9 @@ class PA1Test {
                 } else {
                     System.out.println("Success");
                     display.showTree(ast);
+                    ScopedIdentification sI = null;
+                    sI = new ScopedIdentification(ast);
+                    sI.idTables.getReporter().outputErrors();
                 }
             } catch (SyntaxError e) {
                 e.printStackTrace();
