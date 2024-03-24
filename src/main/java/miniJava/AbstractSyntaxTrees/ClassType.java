@@ -19,4 +19,5 @@ public class ClassType extends TypeDenoter
     }
 
     public Identifier className;
+    public Declaration classDecl;
 }

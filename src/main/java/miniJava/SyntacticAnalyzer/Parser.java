@@ -43,6 +43,7 @@ public class Parser implements ParserInterface {
         accept(TokenType.LCURLY);
 
         while (currToken.getTokenType() != TokenType.RCURLY) {
+            parseClassMember();
             FieldDecl fieldDecl;
             boolean isPublic = parseVis();
 //            System.out.println(isPublic);
@@ -70,6 +71,10 @@ public class Parser implements ParserInterface {
         }
         accept(TokenType.RCURLY);
         return classDecl;
+    }
+
+    private void parseClassMember() {
+
     }
 
     private MethodDecl parseMethodDecl(MemberDecl md) {
@@ -366,12 +371,12 @@ public class Parser implements ParserInterface {
                         if (currToken.getTokenType() == LSQUARE) {
                             // id.id[5] = Expression;
                             acceptIt();
-                            accept(INTLITERAL);
+                            Expression ixExpression = parseExpr();
                             accept(RSQUARE);
                             accept(EQUALS);
                             expression = parseExpr();
                             accept(SEMICOLON);
-                            return new AssignStmt(qualRef, expression, posn);
+                            return new IxAssignStmt(qualRef, ixExpression, expression, posn);
                         } else if (currToken.getTokenType() == EQUALS) {
                             // id.id = Expression;
                             acceptIt();
@@ -577,7 +582,6 @@ public class Parser implements ParserInterface {
                 }
                 return null;
             case INT:
-            default:
                 // new int[]
                 posn = currToken.getTokenPosition();
                 acceptIt();
@@ -585,6 +589,9 @@ public class Parser implements ParserInterface {
                 expr = parseExpr();
                 accept(RSQUARE);
                 return new NewArrayExpr(new BaseType(TypeKind.INT, posn), expr, posn);
+            default:
+                parseError("Incorrect Type for new Object: " + currToken.getTokenText());
+                return null;
         }
     }
 

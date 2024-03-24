@@ -8,16 +8,15 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     public IdentificationTable idTables;
 
     public ScopedIdentification(AST ast) {
-        // init idTable stack
-        this.idTables = new IdentificationTable(new ErrorReporter());
+        idTables = new IdentificationTable(new ErrorReporter());
         ast.visit(this, null);
-    }
 
+    }
     @Override
     public Object visitPackage(Package prog, Object arg) {
+        prog.classDeclList.forEach(cd -> idTables.enter(cd));
         idTables.openScope();
-        prog.classDeclList.forEach(cd -> idTables.addDeclaration(cd));
-        prog.classDeclList.forEach(cd -> cd.visit(this, prog));
+        prog.classDeclList.forEach(cd -> cd.visit(this, null));
         idTables.closeScope();
         return null;
     }
@@ -25,51 +24,42 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     @Override
     public Object visitClassDecl(ClassDecl cd, Object arg) {
         idTables.openScope();
-        cd.fieldDeclList.forEach(fd -> fd.visit(this, cd));
-        cd.methodDeclList.forEach(md -> md.visit(this, cd));
+        cd.fieldDeclList.forEach(fd -> fd.visit(this, null));
+        cd.methodDeclList.forEach(md -> md.visit(this, null));
         idTables.closeScope();
         return null;
     }
 
     @Override
     public Object visitFieldDecl(FieldDecl fd, Object arg) {
+        idTables.enter(fd);
         fd.type.visit(this, null);
-        ClassDecl context = (ClassDecl) arg;
-        fd.classContext = context;
-        this.idTables.addDeclaration(fd);
         return null;
     }
 
     @Override
     public Object visitMethodDecl(MethodDecl md, Object arg) {
-        ClassDecl context = (ClassDecl)arg;
-        md.classContext = context;
-        this.idTables.addDeclaration(md);
+        idTables.enter(md);
         md.type.visit(this, null);
-
-        this.idTables.openScope();
+        idTables.openScope();
         md.parameterDeclList.forEach(pd -> pd.visit(this, md));
-
-        this.idTables.openScope();
         md.statementList.forEach(stmt -> stmt.visit(this, md));
-
-        this.idTables.closeScope();
-        this.idTables.closeScope();
-
+        idTables.closeScope();
         return null;
     }
 
     @Override
     public Object visitParameterDecl(ParameterDecl pd, Object arg) {
-        pd.type.visit(this, null);
-        this.idTables.addDeclaration(pd);
+        MethodDecl md = (MethodDecl)arg;
+        pd.type.visit(this, arg);
+        idTables.enter(pd);
         return null;
     }
 
     @Override
-    public Object visitVarDecl(VarDecl vd, Object arg) {
-        vd.type.visit(this, null);
-        this.idTables.addDeclaration(vd);
+    public Object visitVarDecl(VarDecl decl, Object arg) {
+        decl.type.visit(this, null);
+        idTables.enter(decl);
         return null;
     }
 
@@ -80,125 +70,118 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitClassType(ClassType type, Object arg) {
-        // System.out.println("checking classType " + type.className.spelling);
-        this.idTables.findDeclaration(type.className, null);
+        Declaration ret = idTables.retrieve(type.className, null);
+        if (!(ret instanceof ClassDecl)) idTables.idError("Attempt to reference class " + type.className.spelling + " but not found");
+        else type.classDecl = (ClassDecl)ret;
         return null;
     }
 
     @Override
     public Object visitArrayType(ArrayType type, Object arg) {
-        type.eltType.visit(this, null);
+        MethodDecl md = (MethodDecl)arg;
+        type.eltType.visit(this, md);
         return null;
     }
 
     @Override
     public Object visitBlockStmt(BlockStmt stmt, Object arg) {
         MethodDecl md = (MethodDecl)arg;
-        this.idTables.openScope();
-        stmt.sl.forEach(s -> s.visit(this, md));
-        this.idTables.closeScope();
+        idTables.openScope();
+        stmt.sl.forEach(statement -> statement.visit(this, md));
+        idTables.closeScope();
         return null;
     }
 
     @Override
     public Object visitVardeclStmt(VarDeclStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
         stmt.varDecl.visit(this, null);
-        stmt.initExp.visit(this, md);
+        stmt.initExp.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitAssignStmt(AssignStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        stmt.ref.visit(this, md);
-        stmt.val.visit(this, md);
+        stmt.ref.visit(this, null);
+        stmt.val.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitIxAssignStmt(IxAssignStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        stmt.ref.visit(this, md);
-        stmt.ix.visit(this, md);
-        stmt.exp.visit(this, md);
+        stmt.ref.visit(this, null);
+        stmt.ix.visit(this, null);
+        stmt.exp.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitCallStmt(CallStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        stmt.methodRef.visit(this, md);
-        stmt.argList.forEach(argu -> argu.visit(this, md));
+        stmt.methodRef.visit(this, null);
+        stmt.argList.forEach(argu -> argu.visit(this, null));
         return null;
     }
 
     @Override
     public Object visitReturnStmt(ReturnStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        if (stmt.returnExpr != null) stmt.returnExpr.visit(this, md);
+        if (stmt.returnExpr != null) {
+            stmt.returnExpr.visit(this, null);
+        }
         return null;
     }
 
     @Override
     public Object visitIfStmt(IfStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        stmt.cond.visit(this, md);
-        stmt.thenStmt.visit(this, md);
-        if (stmt.elseStmt != null) stmt.elseStmt.visit(this, md);
+        stmt.cond.visit(this, null);
+        stmt.thenStmt.visit(this, null);
+        if (stmt.elseStmt != null) stmt.elseStmt.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitWhileStmt(WhileStmt stmt, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        stmt.cond.visit(this, md);
-        stmt.body.visit(this, md);
+        stmt.cond.visit(this, null);
+        stmt.body.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitUnaryExpr(UnaryExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
         expr.operator.visit(this, null);
-        expr.expr.visit(this, md);
+        expr.expr.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitBinaryExpr(BinaryExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
+        expr.left.visit(this, null);
         expr.operator.visit(this, null);
-        expr.left.visit(this, md);
-        expr.right.visit(this, md);
+        expr.right.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitRefExpr(RefExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        expr.ref.visit(this, md);
+        expr.ref.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitIxExpr(IxExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        expr.ref.visit(this, md);
-        expr.ixExpr.visit(this, md);
+        expr.ref.visit(this, null);
+        expr.ixExpr.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitCallExpr(CallExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        expr.functionRef.visit(this, md);
-        expr.argList.forEach(argu -> argu.visit(this, md));
+        expr.functionRef.visit(this, null);
+        expr.argList.forEach(argu -> argu.visit(this, null));
         return null;
     }
 
     @Override
     public Object visitLiteralExpr(LiteralExpr expr, Object arg) {
+        expr.lit.visit(this, null);
         return null;
     }
 
@@ -211,9 +194,8 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitNewArrayExpr(NewArrayExpr expr, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        expr.eltType.visit(this, md);
-        expr.sizeExpr.visit(this, md);
+        expr.eltType.visit(this, null);
+        expr.sizeExpr.visit(this, null);
         return null;
     }
 
@@ -221,29 +203,22 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     public Object visitThisRef(ThisRef ref, Object arg) {
         MethodDecl md = (MethodDecl)arg;
         if (md.isStatic) {
-            idTables.idError("attempts to reference non-static this");
+            idTables.idError("Tried to reference non-static this!");
         }
-        ref.classContext = md.classContext;
         return null;
     }
 
     @Override
     public Object visitIdRef(IdRef ref, Object arg) {
-        MethodDecl md = (MethodDecl)arg;
-        ref.id.visit(this, md);
+        ref.decl = (Declaration)ref.id.visit(this, null);
         return null;
     }
 
     @Override
     public Object visitQRef(QualRef ref, Object arg) {
-        // get overall context
         MethodDecl md = (MethodDecl)arg;
         ref.ref.visit(this, md);
         Declaration context = ref.ref.decl;
-        if (context == null) {
-            this.idTables.idError("no context found for reference " + ref.id.spelling);
-            return null;
-        }
         return null;
     }
 
@@ -254,7 +229,11 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitIdentifier(Identifier id, Object arg) {
-        return idTables.findDeclaration(id, (MethodDecl)arg);
+        MethodDecl md = (MethodDecl)arg;
+        Declaration decl = idTables.retrieve(id, md);
+        id.setDecl(decl);
+        return decl;
+
     }
 
     @Override

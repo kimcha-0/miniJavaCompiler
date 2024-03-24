@@ -49,27 +49,29 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail307.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail334.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
             ASTDisplay display = new ASTDisplay();
+            ScopedIdentification sI = null;
             AST ast = null;
             try {
                 ast = parser.parse();
-                if (reporter.hasErrors()) {
-                    System.out.println("Error");
-                    display.showTree(ast);
-                    reporter.outputErrors();
-                } else {
-                    System.out.println("Success");
-                    display.showTree(ast);
-                    ScopedIdentification sI = null;
-                    sI = new ScopedIdentification(ast);
-                    sI.idTables.getReporter().outputErrors();
-                }
             } catch (SyntaxError e) {
                 e.printStackTrace();
+            } finally {
+                if (!reporter.hasErrors()) {
+                    System.out.println("Success");
+                    display.showTree(ast);
+                    sI = new ScopedIdentification(ast);
+                    sI.idTables.reporter.outputErrors();
+                } else {
+                    System.out.println("Error");
+                }
+                reporter.outputErrors();
+
+
             }
             assert (!reporter.hasErrors());
         } catch (IOException e) {
@@ -79,7 +81,7 @@ class PA1Test {
 
     @Test
     void compile() {
-        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src/test/pa1_tests");
+        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa2_tests");
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");

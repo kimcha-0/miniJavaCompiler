@@ -2,6 +2,7 @@ package miniJava;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.SyntacticAnalyzer.Lexer;
 import miniJava.SyntacticAnalyzer.Parser;
 import miniJava.SyntacticAnalyzer.SyntaxError;
@@ -33,8 +34,10 @@ public class Compiler {
             } else {
                 ASTDisplay astDisplay = new ASTDisplay();
                 astDisplay.showTree(syntaxTree);
-            }
+                ScopedIdentification sI = new ScopedIdentification(syntaxTree);
+                if (sI.idTables.reporter.hasErrors()) sI.idTables.reporter.outputErrors();
 
+            }
         }
 
     }

@@ -11,7 +11,12 @@ public class FieldDeclList implements Iterable<FieldDecl>
 {
 	public FieldDeclList() {
 		fieldDeclList = new ArrayList<FieldDecl>();
-	}   
+	}
+
+	public FieldDeclList(FieldDecl fd) {
+		this();
+		add(fd);
+	}
 
 	public void add(FieldDecl cd){
 		fieldDeclList.add(cd);
