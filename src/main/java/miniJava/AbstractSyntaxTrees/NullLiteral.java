@@ -9,6 +9,7 @@ public class NullLiteral extends Terminal {
 
     @Override
     public <A, R> R visit(Visitor<A, R> v, A o) {
-        return null;
+        return v.visitNullLiteral(this, o);
     }
+
 }

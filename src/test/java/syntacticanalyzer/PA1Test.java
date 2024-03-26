@@ -2,7 +2,6 @@ package syntacticanalyzer;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
-import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ErrorReporter;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void scan() {
-        try (FileInputStream in = new FileInputStream("pa1-tests-partial/pass158.java")) {
+        try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail322.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             assertToken(lexer, CLASS, "class");
@@ -49,12 +48,11 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail334.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/pass400.java")) {
             ErrorReporter reporter = new ErrorReporter();
             Lexer lexer = new Lexer(in, reporter);
             Parser parser = new Parser(lexer, reporter);
             ASTDisplay display = new ASTDisplay();
-            ScopedIdentification sI = null;
             AST ast = null;
             try {
                 ast = parser.parse();
@@ -62,18 +60,26 @@ class PA1Test {
                 e.printStackTrace();
             } finally {
                 if (!reporter.hasErrors()) {
-                    System.out.println("Success");
-                    display.showTree(ast);
-                    sI = new ScopedIdentification(ast);
-                    sI.idTables.reporter.outputErrors();
+//                    display.showTree(ast);
+                    if (reporter.hasErrors()) {
+                        System.out.println("Error");
+                        reporter.outputErrors();
+                    } else {
+                        display.showTree(ast);
+                        if (reporter.hasErrors()) {
+                            System.out.println("Error");
+                            reporter.outputErrors();
+                        } else {
+                            System.out.println("Success");
+                        }
+                    }
                 } else {
                     System.out.println("Error");
+                    reporter.outputErrors();
                 }
-                reporter.outputErrors();
 
 
             }
-            assert (!reporter.hasErrors());
         } catch (IOException e) {
             e.printStackTrace();
         }

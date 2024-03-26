@@ -521,7 +521,10 @@ public class Parser implements ParserInterface {
                 IntLiteral intLiteral = new IntLiteral(currToken);
                 acceptIt();
                 return new LiteralExpr(intLiteral, currToken.getTokenPosition());
-
+            case NULL:
+                NullLiteral nullLiteral = new NullLiteral(currToken);
+                acceptIt();
+                return new LiteralExpr(nullLiteral, currToken.getTokenPosition());
             case TRUE:
             case FALSE:
                 posn = currToken.getTokenPosition();

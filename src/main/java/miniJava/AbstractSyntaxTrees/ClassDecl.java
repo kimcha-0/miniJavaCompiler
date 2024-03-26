@@ -5,14 +5,20 @@
  */
 package miniJava.AbstractSyntaxTrees;
 
-import  miniJava.SyntacticAnalyzer.SourcePosition;
+import miniJava.SyntacticAnalyzer.SourcePosition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassDecl extends Declaration {
 
-  public ClassDecl(String cn, FieldDeclList fdl, MethodDeclList mdl, SourcePosition posn) {
+    public List<FieldDecl> toInitialize;
+
+    public ClassDecl(String cn, FieldDeclList fdl, MethodDeclList mdl, SourcePosition posn) {
 	  super(cn, null, posn);
 	  fieldDeclList = fdl;
 	  methodDeclList = mdl;
+      toInitialize = new ArrayList<>();
   }
   
   public <A,R> R visit(Visitor<A, R> v, A o) {

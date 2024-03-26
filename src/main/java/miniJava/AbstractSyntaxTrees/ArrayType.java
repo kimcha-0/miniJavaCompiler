@@ -19,6 +19,10 @@ public class ArrayType extends TypeDenoter {
 	        return v.visitArrayType(this, o);
 	    }
 
+	@Override
+	public boolean equals(TypeDenoter other){
+		return other != null && this.typeKind == other.typeKind && other instanceof ArrayType && this.eltType.equals(((ArrayType)other).eltType);
+	}
 	    public TypeDenoter eltType;
 	}
 

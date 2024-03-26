@@ -18,6 +18,13 @@ public class ClassType extends TypeDenoter
         return v.visitClassType(this, o);
     }
 
+    @Override
+    public boolean equals(TypeDenoter other){
+        return other != null && ((typeKind == other.typeKind && other instanceof ClassType && classDecl.equals(((ClassType) other).classDecl))
+                || (other.typeKind == TypeKind.CLASS && other instanceof BaseType)); // null is fine
+    }
+
+
     public Identifier className;
     public Declaration classDecl;
 }

@@ -184,6 +184,7 @@ public class Lexer implements LexerInterface {
         keywordMap.put("true", TokenType.TRUE);
         keywordMap.put("false", TokenType.FALSE);
         keywordMap.put("int", TokenType.INT);
+        keywordMap.put("null", TokenType.NULL);
     }
 
     private Token handleIdentifier() {
@@ -216,10 +217,14 @@ public class Lexer implements LexerInterface {
     private void readChar() {
         try {
             int c = in.read();
-            charBuf = (char) c;
             if (c == -1) {
                 eot = true;
+            } else if (c == '\n') {
+                currLine++;
+                currCol = 0;
             }
+            currCol++;
+            charBuf = (char) c;
 //            System.out.println("read: " + (char)c);
         } catch (IOException e) {
             lexError("I/O Exception");
