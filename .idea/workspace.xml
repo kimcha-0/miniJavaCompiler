@@ -5,26 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/LexerImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ArrayType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ArrayType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/BaseType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/BaseType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ClassDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ClassDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ClassType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ClassType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/FieldDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/FieldDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Identifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/NullLiteral.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/NullLiteral.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/NullRef.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/TypeDenoter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/TypeDenoter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/VarDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/VarDecl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Visitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Visitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa3_tests/pass400.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass400.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Reference.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Reference.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ConflictingMethodDecl.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/LexerInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -278,6 +271,10 @@
       <workItem from="1711327118982" duration="14661000" />
       <workItem from="1711405339016" duration="10240000" />
       <workItem from="1711471764376" duration="3483000" />
+      <workItem from="1711749674744" duration="7802000" />
+      <workItem from="1711765444893" duration="1341000" />
+      <workItem from="1711771402757" duration="23000" />
+      <workItem from="1711771530086" duration="6757000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -430,7 +427,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>49</line>
+          <line>50</line>
           <properties class="syntacticanalyzer.PA1Test" method="parse">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -439,12 +436,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>89</line>
+          <line>90</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>107</line>
+          <line>108</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

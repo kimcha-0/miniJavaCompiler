@@ -2,8 +2,8 @@ package miniJava;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
-import miniJava.SyntacticAnalyzer.Lexer;
-import miniJava.SyntacticAnalyzer.Parser;
+import miniJava.SyntacticAnalyzer.LexerImpl;
+import miniJava.SyntacticAnalyzer.ParserImpl;
 import miniJava.SyntacticAnalyzer.SyntaxError;
 
 import java.io.FileInputStream;
@@ -18,8 +18,8 @@ public class Compiler {
         }
         try {
             FileInputStream in = new FileInputStream(args[0]);
-            Lexer lexer = new Lexer(in, reporter);
-            Parser parser = new Parser(lexer, reporter);
+            LexerImpl lexer = new LexerImpl(in, reporter);
+            ParserImpl parser = new ParserImpl(lexer, reporter);
             try {
             syntaxTree = parser.parse();
             } catch (SyntaxError e) {

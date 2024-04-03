@@ -2,7 +2,6 @@ class A {
     B b;
     int x;
 }
-
 class B {
     C c;
     int x;
@@ -10,15 +9,10 @@ class B {
         c.fun();
     }
 }
-
 class C {
     int x;
+    A a;
     void fun() {
-        int c = 4;
-        int x = 5;
-        B b = new B();
-        A a = new A();
-        a.b.c.x = 6;
-        b.c.x = 2;
+        a.b.c.x = 2;
     }
 }

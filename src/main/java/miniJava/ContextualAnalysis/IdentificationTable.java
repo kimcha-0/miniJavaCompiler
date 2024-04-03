@@ -1,7 +1,6 @@
 package miniJava.ContextualAnalysis;
 
-import miniJava.AbstractSyntaxTrees.Declaration;
-import miniJava.AbstractSyntaxTrees.Identifier;
+import miniJava.AbstractSyntaxTrees.*;
 import miniJava.ErrorReporter;
 
 import java.util.HashMap;
@@ -15,8 +14,15 @@ public class IdentificationTable {
     public IdentificationTable(ErrorReporter reporter) {
         this.reporter = reporter;
         this.tables = new Stack<>();
-        // init String, System
         openScope();
+        // class System { public static _PrintStream out; }
+        // class _PrintStream { public void println( int n ) { } }
+        // class String { }
+        ClassDecl systemDecl;
+        ClassDecl printStreamDecl;
+        ClassDecl stringDecl;
+
+
     }
 
     public void openScope() {
@@ -30,15 +36,23 @@ public class IdentificationTable {
     }
 
     public void enter(Declaration decl) {
-        if (this.tables.peek().containsKey(decl.name)) {
+        Map<String, Declaration> idTable = this.tables.peek();
+        if (idTable.containsKey(decl.name)) {
+            if (decl instanceof MemberDecl) {
+                if (((MemberDecl)idTable.get(decl.name)).classContext != ((MemberDecl) decl).classContext) {
+                    idTable.put(decl.name, decl);
+                    return;
+                }
+            }
             this.reporter.reportError(decl.name + " has already been declared as a " + this.tables.peek().get(decl.name));
         } else {
             this.tables.peek().put(decl.name, decl);
         }
     }
 
-    public Declaration retrieve(Identifier iden) {
+    public Declaration retrieve(Identifier iden, Declaration context) {
         Declaration ret = null;
+
         for (int i = this.tables.size() - 1; i > -1; i--) {
             if (this.tables.get(i).containsKey(iden.spelling)) {
                 ret = this.tables.get(i).get(iden.spelling);

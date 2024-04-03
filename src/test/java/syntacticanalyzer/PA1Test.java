@@ -2,6 +2,7 @@ package syntacticanalyzer;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ErrorReporter;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ class PA1Test {
     void scan() {
         try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail322.java")) {
             ErrorReporter reporter = new ErrorReporter();
-            Lexer lexer = new Lexer(in, reporter);
+            LexerImpl lexer = new LexerImpl(in, reporter);
             assertToken(lexer, CLASS, "class");
             assertToken(lexer, IDENTIFIER, "LValueFail");
             assertToken(lexer, LCURLY, "{");
@@ -40,7 +41,7 @@ class PA1Test {
         }
     }
 
-    void assertToken(Lexer lexer, TokenType expectType, String expectStr) {
+    void assertToken(LexerImpl lexer, TokenType expectType, String expectStr) {
         Token token = lexer.scan();
         assertEquals(expectType, token.getTokenType());
         assertEquals(expectStr, token.getTokenText());
@@ -50,8 +51,8 @@ class PA1Test {
     void parse() {
         try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/pass400.java")) {
             ErrorReporter reporter = new ErrorReporter();
-            Lexer lexer = new Lexer(in, reporter);
-            Parser parser = new Parser(lexer, reporter);
+            LexerImpl lexer = new LexerImpl(in, reporter);
+            ParserImpl parser = new ParserImpl(lexer, reporter);
             ASTDisplay display = new ASTDisplay();
             AST ast = null;
             try {
@@ -60,12 +61,12 @@ class PA1Test {
                 e.printStackTrace();
             } finally {
                 if (!reporter.hasErrors()) {
-//                    display.showTree(ast);
+                    display.showTree(ast);
+                    ScopedIdentification sI = new ScopedIdentification(reporter, ast);
                     if (reporter.hasErrors()) {
                         System.out.println("Error");
                         reporter.outputErrors();
                     } else {
-                        display.showTree(ast);
                         if (reporter.hasErrors()) {
                             System.out.println("Error");
                             reporter.outputErrors();
@@ -96,8 +97,8 @@ class PA1Test {
             System.out.println("File: " + file.getName());
             try (FileInputStream in = new FileInputStream(file.getPath())) {
                 reporter.clearErrors();
-                Lexer lexer = new Lexer(in, reporter);
-                Parser parser = new Parser(lexer, reporter);
+                LexerImpl lexer = new LexerImpl(in, reporter);
+                ParserImpl parser = new ParserImpl(lexer, reporter);
                 try {
                     syntaxTree = parser.parse();
                 } catch (LexerError e) {
