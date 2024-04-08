@@ -5,7 +5,7 @@ import miniJava.AbstractSyntaxTrees.*;
 import miniJava.ErrorReporter;
 import miniJava.IdentificationError;
 
-public class ScopedIdentification implements Visitor<Object, Object> {
+public class ScopedIdentification implements Visitor<Object, Declaration> {
 
     private ErrorReporter reporter;
     private IdentificationTable tables;
@@ -17,7 +17,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitPackage(Package prog, Object arg) {
+    public Declaration visitPackage(Package prog, Object arg) {
         // enter all classDecl to handle out of order references
         prog.classDeclList.forEach(cd -> tables.enter(cd));
         this.tables.openScope();
@@ -41,7 +41,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitClassDecl(ClassDecl cd, Object arg) {
+    public Declaration visitClassDecl(ClassDecl cd, Object arg) {
         // member Declarations already entered
         if (arg == null) {
             cd.fieldDeclList.forEach(fd -> fd.visit(this, cd));
@@ -63,7 +63,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitFieldDecl(FieldDecl fd, Object arg) {
+    public Declaration visitFieldDecl(FieldDecl fd, Object arg) {
         if (fd.initExpression != null) {
             fd.initExpression.visit(this, null);
         }
@@ -71,7 +71,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitMethodDecl(MethodDecl md, Object arg) {
+    public Declaration visitMethodDecl(MethodDecl md, Object arg) {
         this.tables.openScope();
         md.parameterDeclList.forEach(param -> param.visit(this, md));
         md.statementList.forEach(stmt -> stmt.visit(this, md));
@@ -80,7 +80,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitParameterDecl(ParameterDecl pd, Object arg) {
+    public Declaration visitParameterDecl(ParameterDecl pd, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         pd.type.visit(this, context);
         // enter ParameterDecl
@@ -89,7 +89,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitVarDecl(VarDecl decl, Object arg) {
+    public Declaration visitVarDecl(VarDecl decl, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         decl.type.visit(this, context);
         // enter VarDecl
@@ -98,45 +98,44 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitBaseType(BaseType type, Object arg) {
+    public Declaration visitBaseType(BaseType type, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitClassType(ClassType type, Object arg) {
+    public Declaration visitClassType(ClassType type, Object arg) {
         type.classDecl = tables.retrieve(type.className, null);
         return null;
     }
 
     @Override
-    public Object visitArrayType(ArrayType type, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
-        type.eltType.visit(this, context);
+    public Declaration visitArrayType(ArrayType type, Object arg) {
+        type.eltType.visit(this, null);
         return null;
     }
 
     @Override
-    public Object visitBlockStmt(BlockStmt stmt, Object arg) {
+    public Declaration visitBlockStmt(BlockStmt stmt, Object arg) {
         this.tables.openScope();
-        stmt.sl.forEach(s -> s.visit(this, arg));
+        stmt.sl.forEach(s -> s.visit(this, null));
         this.tables.closeScope();
         return null;
     }
 
     @Override
-    public Object visitVardeclStmt(VarDeclStmt stmt, Object arg) {
-        if (arg.equals("then") || arg.equals("else")) {
-            reporter.reportError("Attempt to declare variable in if statement");
+    public Declaration visitVardeclStmt(VarDeclStmt stmt, Object arg) {
+        if (arg != null) {
+            // cannot declare variable in its own scope.
+            reporter.reportError("Cannot declare variable in its own scope");
             throw new IdentificationError();
         }
-        MethodDecl context = (MethodDecl)arg;
-        stmt.varDecl.visit(this, context);
+        stmt.varDecl.visit(this, null);
         stmt.initExp.visit(this, stmt.varDecl);
         return null;
     }
 
     @Override
-    public Object visitAssignStmt(AssignStmt stmt, Object arg) {
+    public Declaration visitAssignStmt(AssignStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.ref.visit(this, context);
         stmt.val.visit(this, context);
@@ -144,7 +143,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitIxAssignStmt(IxAssignStmt stmt, Object arg) {
+    public Declaration visitIxAssignStmt(IxAssignStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.ref.visit(this, context);
         stmt.ix.visit(this, context);
@@ -153,15 +152,14 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitCallStmt(CallStmt stmt, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
-        stmt.methodRef.visit(this, context);
-        stmt.argList.forEach(args -> args.visit(this, context));
+    public Declaration visitCallStmt(CallStmt stmt, Object arg) {
+        stmt.methodRef.visit(this, "call");
+        stmt.argList.forEach(args -> args.visit(this, null));
         return null;
     }
 
     @Override
-    public Object visitReturnStmt(ReturnStmt stmt, Object arg) {
+    public Declaration visitReturnStmt(ReturnStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         if (stmt.returnExpr != null) {
             stmt.returnExpr.visit(this, context);
@@ -170,7 +168,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitIfStmt(IfStmt stmt, Object arg) {
+    public Declaration visitIfStmt(IfStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.cond.visit(this, context);
         stmt.thenStmt.visit(this, "then");
@@ -179,7 +177,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitWhileStmt(WhileStmt stmt, Object arg) {
+    public Declaration visitWhileStmt(WhileStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.cond.visit(this, context);
         stmt.body.visit(this, context);
@@ -187,14 +185,14 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitUnaryExpr(UnaryExpr expr, Object arg) {
+    public Declaration visitUnaryExpr(UnaryExpr expr, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         expr.expr.visit(this, context);
         return null;
     }
 
     @Override
-    public Object visitBinaryExpr(BinaryExpr expr, Object arg) {
+    public Declaration visitBinaryExpr(BinaryExpr expr, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         expr.left.visit(this, context);
         expr.right.visit(this, context);
@@ -202,48 +200,45 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitRefExpr(RefExpr expr, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
-        expr.ref.visit(this, context);
+    public Declaration visitRefExpr(RefExpr expr, Object arg) {
+        expr.ref.visit(this, null);
         return null;
     }
 
     @Override
-    public Object visitIxExpr(IxExpr expr, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
-        expr.ref.visit(this, context);
-        expr.ixExpr.visit(this, context);
+    public Declaration visitIxExpr(IxExpr expr, Object arg) {
+        expr.ref.visit(this, null);
+        expr.ixExpr.visit(this, null);
         return null;
     }
 
     @Override
-    public Object visitCallExpr(CallExpr expr, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
-        expr.functionRef.visit(this, context);
-        expr.argList.forEach(args -> args.visit(this, context));
+    public Declaration visitCallExpr(CallExpr expr, Object arg) {
+        expr.functionRef.visit(this, null);
+        expr.argList.forEach(args -> args.visit(this, null));
         return null;
     }
 
     @Override
-    public Object visitLiteralExpr(LiteralExpr expr, Object arg) {
+    public Declaration visitLiteralExpr(LiteralExpr expr, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitNewObjectExpr(NewObjectExpr expr, Object arg) {
+    public Declaration visitNewObjectExpr(NewObjectExpr expr, Object arg) {
         expr.classtype.visit(this, null);
         return null;
     }
 
     @Override
-    public Object visitNewArrayExpr(NewArrayExpr expr, Object arg) {
+    public Declaration visitNewArrayExpr(NewArrayExpr expr, Object arg) {
         expr.eltType.visit(this, null);
         expr.sizeExpr.visit(this, null);
         return null;
     }
 
     @Override
-    public Object visitThisRef(ThisRef ref, Object arg) {
+    public Declaration visitThisRef(ThisRef ref, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         if (!context.isStatic) {
             reporter.reportError("Attempt to reference this in a non-static context");
@@ -252,14 +247,14 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitIdRef(IdRef ref, Object arg) {
+    public Declaration visitIdRef(IdRef ref, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         ref.decl = (Declaration) ref.id.visit(this, context);
         return ref.decl;
     }
 
     @Override
-    public Object visitQRef(QualRef ref, Object arg) {
+    public Declaration visitQRef(QualRef ref, Object arg) {
         // A a = new A(); a.x = 2;
         // QualRef(IdRef("a"), "x");
         System.out.println("qual ref visit");
@@ -268,6 +263,19 @@ public class ScopedIdentification implements Visitor<Object, Object> {
         if (context == null) {
             this.reporter.reportError("no context found for reference " + ref.id.spelling);
             throw new IdentificationError();
+        } else if (context instanceof ClassDecl) {
+            // can only access static members
+            ClassDecl classDeclContext = (ClassDecl)context;
+            Declaration idDecl = (Declaration)context.visit(this, ref.id);
+            if (idDecl instanceof MemberDecl) {
+                MemberDecl md = (MemberDecl)idDecl;
+                if (!md.isStatic) {
+                    this.reporter.reportError("Attempt to access non-static member in class context " + classDeclContext.name);
+                }
+                ref.id.decl = idDecl;
+                ref.decl = ref.id.decl;
+                return null;
+            }
         } else if (context instanceof LocalDecl) {
 //            System.out.println("Referencing local");
             LocalDecl ld = (LocalDecl)context;
@@ -280,6 +288,7 @@ public class ScopedIdentification implements Visitor<Object, Object> {
                         this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + ((ClassType)ld.type).classDecl.name);
                         throw new IdentificationError();
                     }
+                    System.out.println("Declaration " + member + " found for identifier " + ref.id);
                     ref.id.decl = member;
                     ref.decl = ref.id.decl;
                     break;
@@ -303,7 +312,13 @@ public class ScopedIdentification implements Visitor<Object, Object> {
                     if (member == null) {
                         this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + md.classContext.name);
                         throw new IdentificationError();
+                    } else if (arg == null) {
+                        if (member instanceof MethodDecl) {
+                            this.reporter.reportError("Attempt to reference " + member + " in incorrect context");
+                            throw new IdentificationError();
+                        }
                     }
+                    System.out.println("Declaration " + member + " found for identifier " + ref.id);
                     ref.id.decl = member;
                     ref.decl = ref.id.decl;
                     break;
@@ -325,29 +340,29 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     }
 
     @Override
-    public Object visitIdentifier(Identifier id, Object arg) {
+    public Declaration visitIdentifier(Identifier id, Object arg) {
         Declaration ret = this.tables.retrieve(id, null);
         id.decl = ret;
         return ret;
     }
 
     @Override
-    public Object visitOperator(Operator op, Object arg) {
+    public Declaration visitOperator(Operator op, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitIntLiteral(IntLiteral num, Object arg) {
+    public Declaration visitIntLiteral(IntLiteral num, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitBooleanLiteral(BooleanLiteral bool, Object arg) {
+    public Declaration visitBooleanLiteral(BooleanLiteral bool, Object arg) {
         return null;
     }
 
     @Override
-    public Object visitNullLiteral(NullLiteral nil, Object arg) {
+    public Declaration visitNullLiteral(NullLiteral nil, Object arg) {
         return null;
     }
 }
