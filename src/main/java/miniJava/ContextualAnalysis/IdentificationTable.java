@@ -75,7 +75,7 @@ public class IdentificationTable {
         for (int i = this.tables.size() - 1; i > -1; i--) {
             if (this.tables.get(i).containsKey(iden.spelling)) {
                 ret = this.tables.get(i).get(iden.spelling);
-                System.out.println("Declaration " + this.tables.get(i).get(iden.spelling) + " found for identifier " + iden.spelling);
+//                System.out.println("Declaration " + this.tables.get(i).get(iden.spelling) + " found for identifier " + iden.spelling);
                 break;
             }
         }

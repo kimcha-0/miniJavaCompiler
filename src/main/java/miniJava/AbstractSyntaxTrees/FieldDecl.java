@@ -10,6 +10,7 @@ import miniJava.SyntacticAnalyzer.SourcePosition;
 public class FieldDecl extends MemberDecl {
 
     public Expression initExpression;
+    public ClassDecl inClass;
 
     public FieldDecl(boolean isPrivate, boolean isStatic, TypeDenoter t, String name, SourcePosition posn){
     super(isPrivate, isStatic, t, name, posn);
