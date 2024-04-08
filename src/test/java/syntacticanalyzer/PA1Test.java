@@ -4,6 +4,7 @@ import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
 import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ErrorReporter;
+import miniJava.IdentificationError;
 import miniJava.SyntacticAnalyzer.*;
 import org.junit.jupiter.api.Test;
 
@@ -62,16 +63,21 @@ class PA1Test {
             } finally {
                 if (!reporter.hasErrors()) {
                     display.showTree(ast);
-                    ScopedIdentification sI = new ScopedIdentification(reporter, ast);
-                    if (reporter.hasErrors()) {
-                        System.out.println("Error");
-                        reporter.outputErrors();
-                    } else {
+                    try {
+                        ScopedIdentification sI = new ScopedIdentification(reporter, ast);
+                    } catch (IdentificationError e) {
+//                        e.printStackTrace();
+                    } finally {
                         if (reporter.hasErrors()) {
                             System.out.println("Error");
                             reporter.outputErrors();
                         } else {
-                            System.out.println("Success");
+                            if (reporter.hasErrors()) {
+                                System.out.println("Error");
+                                reporter.outputErrors();
+                            } else {
+                                System.out.println("Success");
+                            }
                         }
                     }
                 } else {

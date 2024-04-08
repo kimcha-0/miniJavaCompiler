@@ -3,6 +3,7 @@ package miniJava.ContextualAnalysis;
 import miniJava.AbstractSyntaxTrees.Package;
 import miniJava.AbstractSyntaxTrees.*;
 import miniJava.ErrorReporter;
+import miniJava.IdentificationError;
 
 public class ScopedIdentification implements Visitor<Object, Object> {
 
@@ -23,13 +24,16 @@ public class ScopedIdentification implements Visitor<Object, Object> {
         for (ClassDecl classDecl : prog.classDeclList) {
             for (FieldDecl fd : classDecl.fieldDeclList) {
                 fd.classContext = classDecl;
+                fd.type.visit(this, null);
                 this.tables.enter(fd);
             }
+            for (MethodDecl md : classDecl.methodDeclList) {
+                md.classContext = classDecl;
+                md.type.visit(this, null);
+                this.tables.enter(md);
+            }
         }
-        prog.classDeclList.forEach(cd -> cd.methodDeclList.forEach(md -> {
-            md.classContext = cd;
-            this.tables.enter(md);
-        }));
+
         prog.classDeclList.forEach(cd -> cd.visit(this, null));
         this.tables.closeScope();
         this.tables.closeScope();
@@ -60,7 +64,6 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitFieldDecl(FieldDecl fd, Object arg) {
-        fd.type.visit(this, null);
         if (fd.initExpression != null) {
             fd.initExpression.visit(this, null);
         }
@@ -70,7 +73,6 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     @Override
     public Object visitMethodDecl(MethodDecl md, Object arg) {
         this.tables.openScope();
-        md.type.visit(this, md);
         md.parameterDeclList.forEach(param -> param.visit(this, md));
         md.statementList.forEach(stmt -> stmt.visit(this, md));
         this.tables.closeScope();
@@ -115,24 +117,28 @@ public class ScopedIdentification implements Visitor<Object, Object> {
 
     @Override
     public Object visitBlockStmt(BlockStmt stmt, Object arg) {
-        MethodDecl context = (MethodDecl)arg;
         this.tables.openScope();
-        stmt.sl.forEach(s -> s.visit(this, context));
+        stmt.sl.forEach(s -> s.visit(this, arg));
         this.tables.closeScope();
         return null;
     }
 
     @Override
     public Object visitVardeclStmt(VarDeclStmt stmt, Object arg) {
+        if (arg.equals("then") || arg.equals("else")) {
+            reporter.reportError("Attempt to declare variable in if statement");
+            throw new IdentificationError();
+        }
         MethodDecl context = (MethodDecl)arg;
         stmt.varDecl.visit(this, context);
-        stmt.initExp.visit(this, context);
+        stmt.initExp.visit(this, stmt.varDecl);
         return null;
     }
 
     @Override
     public Object visitAssignStmt(AssignStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
+        stmt.ref.visit(this, context);
         stmt.val.visit(this, context);
         return null;
     }
@@ -167,8 +173,8 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     public Object visitIfStmt(IfStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.cond.visit(this, context);
-        stmt.thenStmt.visit(this, context);
-        if (stmt.elseStmt != null) stmt.elseStmt.visit(this, context);
+        stmt.thenStmt.visit(this, "then");
+        if (stmt.elseStmt != null) stmt.elseStmt.visit(this, "else");
         return null;
     }
 
@@ -249,18 +255,78 @@ public class ScopedIdentification implements Visitor<Object, Object> {
     public Object visitIdRef(IdRef ref, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         ref.decl = (Declaration) ref.id.visit(this, context);
-        return null;
+        return ref.decl;
     }
 
     @Override
     public Object visitQRef(QualRef ref, Object arg) {
+        // A a = new A(); a.x = 2;
+        // QualRef(IdRef("a"), "x");
+        System.out.println("qual ref visit");
+        ref.ref.visit(this, null);
+        Declaration context = ref.ref.decl;
+        if (context == null) {
+            this.reporter.reportError("no context found for reference " + ref.id.spelling);
+            throw new IdentificationError();
+        } else if (context instanceof LocalDecl) {
+//            System.out.println("Referencing local");
+            LocalDecl ld = (LocalDecl)context;
+            switch (ld.type.typeKind) {
+                case CLASS:
+                    // local instance of a class; search corresponding class for correct member
+//                    System.out.println("referencing class member");
+                    Declaration member = (Declaration) ((ClassType)ld.type).classDecl.visit(this, ref.id);
+                    if (member == null) {
+                        this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + ((ClassType)ld.type).classDecl.name);
+                        throw new IdentificationError();
+                    }
+                    ref.id.decl = member;
+                    ref.decl = ref.id.decl;
+                    break;
+                case ARRAY:
+                    if (ref.id.spelling.equals("length")) {
+                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null), "length", null);
+                        ref.decl = ref.id.decl;
+                        break;
+                    }
+                default:
+                    this.reporter.reportError("attempt to reference " + ref.id.spelling + " for type " + ld.type.typeKind);
+                    throw new IdentificationError();
+            }
+        } else if (context instanceof MemberDecl) {
+//            System.out.println("Referencing a member");
+            MemberDecl md = (MemberDecl)context;
+            switch (md.type.typeKind) {
+                case CLASS:
+//                    System.out.println("referencing class member");
+                    Declaration member = (Declaration)((ClassType)md.type).classDecl.visit(this, ref.id);
+                    if (member == null) {
+                        this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + md.classContext.name);
+                        throw new IdentificationError();
+                    }
+                    ref.id.decl = member;
+                    ref.decl = ref.id.decl;
+                    break;
+                    // class member reference
+                case ARRAY:
+                    // int[] x = new int[5]; x.length();
+//                    System.out.println("referencing length method");
+                    if (ref.id.spelling.equals("length")) {
+                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null), "length", null);
+                        ref.decl = ref.id.decl;
+                        break;
+                    }
+                default:
+                    this.reporter.reportError("attempt to reference " + ref.id.spelling + " for type " + md.type.typeKind);
+                    throw new IdentificationError();
+            }
+        }
         return null;
     }
 
     @Override
     public Object visitIdentifier(Identifier id, Object arg) {
-        Declaration ret = null;
-        ret = this.tables.retrieve(id, null);
+        Declaration ret = this.tables.retrieve(id, null);
         id.decl = ret;
         return ret;
     }

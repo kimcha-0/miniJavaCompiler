@@ -1,18 +1,25 @@
 class A {
-    B b;
-    int x;
+     C c;
+     int x;
+    public static void main(String[] args) {
+        int[] x = new int[1];
+        x.length();
+
+    }
+
+    public B seeB() {
+        return b;
+    }
 }
 class B {
-    C c;
-    int x;
-    void main() {
-        c.fun();
-    }
-}
-class C {
     int x;
     A a;
-    void fun() {
-        a.b.c.x = 2;
+
+    public int seeX() {
+        return x;
     }
+}
+
+class C {
+    B b;
 }

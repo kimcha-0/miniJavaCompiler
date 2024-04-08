@@ -11,6 +11,14 @@ public class TypeChecker implements Visitor<Object, Object> {
         this.reporter = reporter;
         ast.visit(this, null);
     }
+
+    private boolean verifyBinaryOp(TypeDenoter type1, TypeDenoter type2) {
+        return false;
+    }
+
+    private boolean matchType(TypeKind type1, TypeKind type2) {
+        return false;
+    }
     @Override
     public Object visitPackage(Package prog, Object arg) {
         prog.classDeclList.forEach(cd -> cd.visit(this, null));

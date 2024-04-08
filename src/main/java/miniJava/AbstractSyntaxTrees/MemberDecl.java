@@ -22,7 +22,15 @@ abstract public class MemberDecl extends Declaration {
     	this.isStatic = md.isStatic;
         this.classContext = md.classContext;
     }
-    
+
+    @Override
+    public String toString() {
+        if (classContext != null) {
+            return this.name + " context: " + classContext.name;
+        }
+        return this.name;
+    }
+
     public boolean isPrivate;
     public boolean isStatic;
     public ClassDecl classContext;
