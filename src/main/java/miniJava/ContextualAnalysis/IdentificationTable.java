@@ -18,6 +18,7 @@ public class IdentificationTable {
         this.tables = new Stack<>();
         openScope();
         // class System { public static _PrintStream out; }
+        // fielddecl is static, public,
         // class _PrintStream { public void println( int n ) { } }
         // class String { }
 
@@ -30,14 +31,16 @@ public class IdentificationTable {
                 printlnParams, new StatementList(), null);
         printlnMethodList.add(println);
         ClassDecl printStreamDecl = new ClassDecl("_PrintStream", new FieldDeclList(), printlnMethodList, null);
+        println.classContext = printStreamDecl;
 
         ClassDecl stringDecl = new ClassDecl("String", new FieldDeclList(), new MethodDeclList(), null);
         FieldDeclList systemFieldDeclList = new FieldDeclList();
-        systemFieldDeclList.add(new FieldDecl(false, true, new ClassType(
-                new Identifier(new Token(TokenType.IDENTIFIER, "_PrintStream", null),
-                        printStreamDecl), null), "out", null));
+        ClassType printStreamType = new ClassType(new Identifier(new Token(TokenType.IDENTIFIER, "_PrintStream", null)), null);
+        printStreamType.classDecl = printStreamDecl;
+        FieldDecl out = new FieldDecl(false, true, printStreamType, "out", null);
         ClassDecl systemDecl = new ClassDecl("System", systemFieldDeclList, new MethodDeclList(), null);
-
+        out.classContext = systemDecl;
+        systemFieldDeclList.add(out);
         this.enter(stringDecl);
         this.enter(printStreamDecl);
         this.enter(systemDecl);

@@ -243,10 +243,11 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     @Override
     public Declaration visitThisRef(ThisRef ref, Object arg) {
         MethodDecl context = (MethodDecl)arg;
-        if (!context.isStatic) {
-            reporter.reportError("Attempt to reference this in a non-static context");
+        if (context.isStatic) {
+            reporter.reportError("Attempt to reference this in a static context");
         }
-        return null;
+        ref.decl = context.inClass;
+        return ref.decl;
     }
 
     @Override
@@ -261,8 +262,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
         MethodDecl currMethodContext = (MethodDecl)arg;
         // A a = new A(); a.x = 2;
         // QualRef(IdRef("a"), "x");
-        System.out.println("qual ref visit");
-        ref.ref.visit(this, null);
+//        System.out.println("qual ref visit");
+        ref.ref.visit(this, arg);
         Declaration context = ref.ref.decl;
         if (context == null) {
             this.reporter.reportError("no context found for reference " + ref.id.spelling);
@@ -273,10 +274,10 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
             Declaration idDecl = (Declaration)context.visit(this, ref.id);
             if (idDecl instanceof MemberDecl) {
                 MemberDecl md = (MemberDecl)idDecl;
-                if (!md.isStatic) {
-                    this.reporter.reportError("Attempt to access non-static member in class context " + classDeclContext.name);
-                    throw new IdentificationError();
-                }
+//                if (!md.isStatic) {
+//                    this.reporter.reportError("Attempt to access non-static member in class context " + classDeclContext.name);
+//                    throw new IdentificationError();
+//                }
                 if (md.isPrivate && currMethodContext.inClass != md.classContext) {
                     this.reporter.reportError("Attempt to access private member " + md.name + " in context " + currMethodContext.inClass.name);
                     throw new IdentificationError();
@@ -298,16 +299,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                         this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + ((ClassType)ld.type).classDecl.name);
                         throw new IdentificationError();
                     }
-                    if (member instanceof MemberDecl) {
-                        MemberDecl memberDecl = (MemberDecl)member;
-                        if (memberDecl.isPrivate && currMethodContext.inClass != memberDecl.classContext) {
-                            this.reporter.reportError("Attempt to access private member " + memberDecl.name + " in context " + currMethodContext.inClass.name);
-                            throw new IdentificationError();
-                        }
-                        ref.id.decl = member;
-                        ref.decl = ref.id.decl;
-                        break;
-                    }
+                    if (checkMember(ref, currMethodContext, member)) break;
                     throw new IdentificationError();
                 case ARRAY:
                     if (ref.id.spelling.equals("length")) {
@@ -330,16 +322,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                         this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + md.classContext.name);
                         throw new IdentificationError();
                     }
-                    if (member instanceof MemberDecl) {
-                        MemberDecl memberDecl = (MemberDecl)member;
-                        if (memberDecl.isPrivate && currMethodContext.inClass != memberDecl.classContext) {
-                            this.reporter.reportError("Attempt to access private member " + memberDecl.name + " in context " + currMethodContext.inClass.name);
-                            throw new IdentificationError();
-                        }
-                        ref.id.decl = member;
-                        ref.decl = ref.id.decl;
-                        break;
-                    }
+                    if (checkMember(ref, currMethodContext, member)) break;
                     throw new IdentificationError();
                 case ARRAY:
                     // int[] x = new int[5]; x.length();
@@ -355,6 +338,20 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
             }
         }
         return null;
+    }
+
+    private boolean checkMember(QualRef ref, MethodDecl currMethodContext, Declaration member) {
+        if (member instanceof MemberDecl) {
+            MemberDecl memberDecl = (MemberDecl)member;
+            if (memberDecl.isPrivate && currMethodContext.inClass != memberDecl.classContext) {
+                this.reporter.reportError("Attempt to access private member " + memberDecl.name + " in context " + currMethodContext.inClass.name);
+                throw new IdentificationError();
+            }
+            ref.id.decl = member;
+            ref.decl = ref.id.decl;
+            return true;
+        }
+        return false;
     }
 
     @Override
