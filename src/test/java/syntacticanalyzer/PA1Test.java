@@ -3,6 +3,7 @@ package syntacticanalyzer;
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
 import miniJava.ContextualAnalysis.ScopedIdentification;
+import miniJava.ContextualAnalysis.TypeChecker;
 import miniJava.ErrorReporter;
 import miniJava.IdentificationError;
 import miniJava.SyntacticAnalyzer.*;
@@ -50,7 +51,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/pass400.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail396.java")) {
             ErrorReporter reporter = new ErrorReporter();
             LexerImpl lexer = new LexerImpl(in, reporter);
             ParserImpl parser = new ParserImpl(lexer, reporter);
@@ -62,7 +63,6 @@ class PA1Test {
                 e.printStackTrace();
             } finally {
                 if (!reporter.hasErrors()) {
-                    display.showTree(ast);
                     try {
                         ScopedIdentification sI = new ScopedIdentification(reporter, ast);
                     } catch (IdentificationError e) {
@@ -72,11 +72,17 @@ class PA1Test {
                             System.out.println("Error");
                             reporter.outputErrors();
                         } else {
-                            if (reporter.hasErrors()) {
+                            display.showTree(ast);
+                            try {
+                                TypeChecker typeChecker = new TypeChecker(ast, reporter);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            if (!reporter.hasErrors()) {
+                                System.out.println("Success");
+                            } else {
                                 System.out.println("Error");
                                 reporter.outputErrors();
-                            } else {
-                                System.out.println("Success");
                             }
                         }
                     }
@@ -94,7 +100,7 @@ class PA1Test {
 
     @Test
     void compile() {
-        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa2_tests");
+        File folder = new File("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests");
         File[] files = folder.listFiles();
         ErrorReporter reporter = new ErrorReporter();
         System.out.println("testing...");
@@ -118,6 +124,24 @@ class PA1Test {
                 if (!reporter.hasErrors()) {
                     ASTDisplay astDisplay = new ASTDisplay();
                     astDisplay.showTree(syntaxTree);
+                    try {
+                        ScopedIdentification scopedIdentification = new ScopedIdentification(reporter, syntaxTree);
+                    } catch (IdentificationError e) {
+
+                    } finally {
+                        if (reporter.hasErrors()) {
+                            System.out.println("Error");
+                            reporter.outputErrors();
+                        } else {
+                            TypeChecker typeChecker = new TypeChecker(syntaxTree, reporter);
+                            if (reporter.hasErrors()) {
+                                System.out.println("Error");
+                                reporter.outputErrors();
+                            } else {
+                                System.out.println("Success");
+                            }
+                        }
+                    }
                 }
                 else {
                     System.out.println("Error");

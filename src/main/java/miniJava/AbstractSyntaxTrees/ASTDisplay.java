@@ -321,7 +321,7 @@ public class ASTDisplay implements Visitor<String,Object> {
 	///////////////////////////////////////////////////////////////////////////////
 	
     public Object visitThisRef(ThisRef ref, String arg) {
-    	show(arg,ref);
+    	show(arg, ref + " " + "references " + ref.decl.name);
     	return null;
     }
     
@@ -344,7 +344,7 @@ public class ASTDisplay implements Visitor<String,Object> {
 	///////////////////////////////////////////////////////////////////////////////
     
     public Object visitIdentifier(Identifier id, String arg){
-        show(arg, quote(id.spelling) + " " + id.toString());
+        show(arg, quote(id.spelling) + " " + id.toString() + " Declared " + id.decl);
         return null;
     }
     
