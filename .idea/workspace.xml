@@ -5,19 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/LexerImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa3_tests/pass328.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass328.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa3_tests/pass372.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass372.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pa3_tests/pass400.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass400.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Reference.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/Reference.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Lexer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/LexerInterface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/SyntacticAnalyzer/ParserInterface.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,6 +87,8 @@
     &quot;JUnit.PA1Test.scan.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -135,7 +130,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.parse">
+  <component name="RunManager" selected="JUnit.PA1Test.compile">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -207,8 +202,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.PA1Test.compile" />
+        <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.scan" />
       </list>
@@ -275,6 +270,10 @@
       <workItem from="1711765444893" duration="1341000" />
       <workItem from="1711771402757" duration="23000" />
       <workItem from="1711771530086" duration="6757000" />
+      <workItem from="1712174414779" duration="13350000" />
+      <workItem from="1712526296415" duration="21242000" />
+      <workItem from="1712616681478" duration="7405000" />
+      <workItem from="1712684450908" duration="20732000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -348,7 +347,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708831161170</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Working on null handling">
+      <option name="closed" value="true" />
+      <created>1712785666157</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1712785666157</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,29 +427,44 @@
     <MESSAGE value="created source package and began working on Lexer class" />
     <MESSAGE value="finished ErrorReporter class" />
     <MESSAGE value="Added NullLiteral and NullRef AST classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added NullLiteral and NullRef AST classes" />
+    <MESSAGE value="Working on null handling" />
+    <option name="LAST_COMMIT_MESSAGE" value="Working on null handling" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>50</line>
+          <line>52</line>
           <properties class="syntacticanalyzer.PA1Test" method="parse">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>101</line>
+          <properties class="syntacticanalyzer.PA1Test" method="compile">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>90</line>
+          <line>102</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>108</line>
+          <line>120</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java</url>
+          <line>24</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

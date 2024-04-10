@@ -14,7 +14,6 @@ class Pass328 {
         }
         else
             x = 4;
-
         System.out.println(x);
     }
 }

@@ -24,7 +24,8 @@ public class ClassDecl extends Declaration {
   public <A,R> R visit(Visitor<A, R> v, A o) {
       return v.visitClassDecl(this, o);
   }
-      
+
+
   public FieldDeclList fieldDeclList;
   public MethodDeclList methodDeclList;
 }

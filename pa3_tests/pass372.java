@@ -10,7 +10,7 @@ class TestClass {
          */
 
         // QualifiedRef 
-        // x = t.pubfield;
+        x = t.pubfield;
         x = t.privfield;
     }
         
