@@ -575,7 +575,7 @@ public class ParserImpl implements Parser {
                     acceptIt();
                     expr = parseExpr();
                     accept(RSQUARE);
-                    return new NewArrayExpr(new ClassType(id, posn), expr, posn);
+                    return new NewArrayExpr(new ArrayType(new ClassType(id, null), null), expr,null);
                 } else {
                     parseError("Expression syntax error");
                 }
@@ -587,7 +587,7 @@ public class ParserImpl implements Parser {
                 accept(TokenType.LSQUARE);
                 expr = parseExpr();
                 accept(RSQUARE);
-                return new NewArrayExpr(new BaseType(TypeKind.INT, posn), expr, posn);
+                return new NewArrayExpr(new ArrayType(new BaseType(TypeKind.INT, posn), null), expr, null);
             default:
                 parseError("Incorrect Type for new Object: " + currToken.getTokenText());
                 return null;

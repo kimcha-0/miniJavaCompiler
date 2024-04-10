@@ -50,14 +50,9 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     private boolean matchType(TypeDenoter type1, TypeDenoter type2) {
         if (type1.typeKind == TypeKind.CLASS || type2.typeKind == TypeKind.CLASS) {
-            if (!(type1 instanceof ClassType) || !(type2 instanceof ClassType)) {
+            if (!(type1.typeKind != TypeKind.CLASS) || !(type2.typeKind != TypeKind.CLASS)) {
                 reportTypeError("Invalid class comparison");
-            } else if (!((ClassType) type1).classDecl.name.equals(((ClassType) type2).classDecl.name)) {
-                reportTypeError("Class references do not point to the same object");
-
             }
-
-
         }
         return type1.typeKind == type2.typeKind;
     }
@@ -102,17 +97,17 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     @Override
     public TypeDenoter visitBaseType(BaseType type, Object arg) {
-        return null;
+        return type;
     }
 
     @Override
     public TypeDenoter visitClassType(ClassType type, Object arg) {
-        return null;
+        return type;
     }
 
     @Override
     public TypeDenoter visitArrayType(ArrayType type, Object arg) {
-        return null;
+        return type;
     }
 
     @Override
@@ -126,9 +121,9 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         TypeDenoter varDeclType = stmt.varDecl.visit(this, null);
         if (stmt.initExp != null) {
             TypeDenoter initExpType = stmt.initExp.visit(this, null);
-            if (!matchType(varDeclType, initExpType)){
+            if (initExpType.typeKind != varDeclType.typeKind){
                 reportTypeError("Variable declaration " + stmt.varDecl.name + " of type " +
-                        varDeclType.typeKind.name() + " assigned value of type " + initExpType.typeKind);
+                        varDeclType.typeKind + " assigned value of type " + initExpType.typeKind);
             }
         }
         return null;
@@ -265,7 +260,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         if (ixType.typeKind != TypeKind.INT) {
             reportTypeError("Index expression is of type " + ixType.typeKind);
         }
-        return arrRefType;
+        return ((ArrayType)arrRefType).eltType;
     }
 
     @Override
@@ -323,7 +318,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     @Override
     public TypeDenoter visitQRef(QualRef ref, Object arg) {
-        return ref.ref.decl.type;
+        return ref.id.decl.type;
     }
 
     @Override
@@ -353,6 +348,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         // return ClassType
         Identifier nullIdentifier = new Identifier(new Token(nil.kind, "null", null), null);
         ClassType nullType = new ClassType(nullIdentifier, null);
-        return null;
+        nullType.classDecl = new ClassDecl("Null", new FieldDeclList(), new MethodDeclList(), null);
+        return nullType;
     }
 }

@@ -105,6 +105,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     @Override
     public Declaration visitClassType(ClassType type, Object arg) {
         type.classDecl = tables.retrieve(type.className, null);
+        type.className.decl = type.classDecl;
 
         return null;
     }
