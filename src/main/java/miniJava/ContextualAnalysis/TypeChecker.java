@@ -3,6 +3,7 @@ package miniJava.ContextualAnalysis;
 import miniJava.AbstractSyntaxTrees.Package;
 import miniJava.AbstractSyntaxTrees.*;
 import miniJava.ErrorReporter;
+import miniJava.SyntacticAnalyzer.Token;
 
 public class TypeChecker implements Visitor<Object, TypeDenoter> {
     private ErrorReporter reporter;
@@ -49,7 +50,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     private boolean matchType(TypeDenoter type1, TypeDenoter type2) {
         if (type1.typeKind == TypeKind.CLASS || type2.typeKind == TypeKind.CLASS) {
-            if (!(type1 instanceof ClassType) && !(type2 instanceof ClassType)) {
+            if (!(type1 instanceof ClassType) || !(type2 instanceof ClassType)) {
                 reportTypeError("Invalid class comparison");
             } else if (!((ClassType) type1).classDecl.name.equals(((ClassType) type2).classDecl.name)) {
                 reportTypeError("Class references do not point to the same object");
@@ -274,17 +275,15 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         MethodDecl originalMethodDecl = (MethodDecl) expr.functionRef.decl;
         if (originalMethodDecl.parameterDeclList.size() != expr.argList.size()) {
             this.reporter.reportError("Attempt to call method " + originalMethodDecl.name + " with incorrect number of arguments");
-            return null;
         }
         for (int i = 0; i < expr.argList.size(); i++) {
             TypeDenoter argType = expr.argList.get(i).visit(this, null);
             TypeDenoter methodDeclParamType = originalMethodDecl.parameterDeclList.get(i).type;
             if (!matchType(argType, methodDeclParamType)) {
                 reportTypeError("Attempt to call method " + originalMethodDecl.name + " with incorrect type for argument " + originalMethodDecl.parameterDeclList.get(i));
-                return null;
             }
         }
-        return null;
+        return originalMethodDecl.type;
     }
 
     @Override
@@ -324,7 +323,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     @Override
     public TypeDenoter visitQRef(QualRef ref, Object arg) {
-        return null;
+        return ref.ref.decl.type;
     }
 
     @Override
@@ -351,6 +350,9 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     @Override
     public TypeDenoter visitNullLiteral(NullLiteral nil, Object arg) {
+        // return ClassType
+        Identifier nullIdentifier = new Identifier(new Token(nil.kind, "null", null), null);
+        ClassType nullType = new ClassType(nullIdentifier, null);
         return null;
     }
 }
