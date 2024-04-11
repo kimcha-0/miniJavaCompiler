@@ -130,7 +130,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.compile">
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -202,8 +202,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.scan" />
       </list>
@@ -273,7 +273,7 @@
       <workItem from="1712174414779" duration="13350000" />
       <workItem from="1712526296415" duration="21242000" />
       <workItem from="1712616681478" duration="7405000" />
-      <workItem from="1712684450908" duration="26075000" />
+      <workItem from="1712684450908" duration="30895000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -371,7 +371,23 @@
       <option name="project" value="LOCAL" />
       <updated>1712789001594</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Achieved 72/94 on full grader">
+      <option name="closed" value="true" />
+      <created>1712808069444</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1712808069444</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Initialize ClassType TypeDenoter for Class Declarations.">
+      <option name="closed" value="true" />
+      <created>1712808099395</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1712808099395</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -445,7 +461,9 @@
     <MESSAGE value="Added NullLiteral and NullRef AST classes" />
     <MESSAGE value="Working on null handling" />
     <MESSAGE value="Fixed IxExpr return value in TypeDenoter." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed IxExpr return value in TypeDenoter." />
+    <MESSAGE value="Achieved 72/94 on full grader" />
+    <MESSAGE value="Initialize ClassType TypeDenoter for Class Declarations." />
+    <option name="LAST_COMMIT_MESSAGE" value="Initialize ClassType TypeDenoter for Class Declarations." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
