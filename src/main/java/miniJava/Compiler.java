@@ -2,6 +2,8 @@ package miniJava;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.ContextualAnalysis.ScopedIdentification;
+import miniJava.ContextualAnalysis.TypeChecker;
 import miniJava.SyntacticAnalyzer.LexerImpl;
 import miniJava.SyntacticAnalyzer.ParserImpl;
 import miniJava.SyntacticAnalyzer.SyntaxError;
@@ -32,17 +34,23 @@ public class Compiler {
                 reporter.outputErrors();
             } else {
                 ASTDisplay astDisplay = new ASTDisplay();
-                // astDisplay.showTree(syntaxTree);
-                if (reporter.hasErrors()) {
-                    System.out.println("Error");
-                    reporter.outputErrors();
-                } else {
+                try {
+                    ScopedIdentification sI = new ScopedIdentification(reporter, syntaxTree);
+                } catch (IdentificationError e) {
+                } finally {
                     if (reporter.hasErrors()) {
                         System.out.println("Error");
                         reporter.outputErrors();
                     } else {
-                        System.out.println("Success");
-                    }
+                        TypeChecker typeChecker = new TypeChecker(syntaxTree, reporter);
+                        if (reporter.hasErrors()) {
+                            System.out.println("Error");
+                            reporter.outputErrors();
+                        } else {
+                            System.out.println("Success");
+                        }
+                }
+                // astDisplay.showTree(syntaxTree);
                 }
 
             }

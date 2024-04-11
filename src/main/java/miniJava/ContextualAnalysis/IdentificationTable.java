@@ -72,8 +72,17 @@ public class IdentificationTable {
         }
     }
 
-    public Declaration retrieve(Identifier iden, Declaration context) {
+    public Declaration retrieve(Identifier iden, Object context) {
         Declaration ret = null;
+        if (context == "class") {
+            if (this.tables.get(0).containsKey(iden.spelling)) {
+                ret = this.tables.get(0).get(iden.spelling);
+                return ret;
+            } else {
+                this.reporter.reportError("No declaration found for identifier " + iden.spelling);
+                return null;
+            }
+        }
 
         for (int i = this.tables.size() - 1; i > -1; i--) {
             if (this.tables.get(i).containsKey(iden.spelling)) {

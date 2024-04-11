@@ -104,7 +104,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 
     @Override
     public Declaration visitClassType(ClassType type, Object arg) {
-        type.classDecl = tables.retrieve(type.className, null);
+        type.classDecl = tables.retrieve(type.className, "class");
         type.className.decl = type.classDecl;
 
         return null;
@@ -169,15 +169,29 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     public Declaration visitIfStmt(IfStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.cond.visit(this, context);
+        if (stmt.thenStmt instanceof VarDeclStmt)
+            idError("Variable cannot be declared in its own scope in if statement.");
         stmt.thenStmt.visit(this, context);
-        if (stmt.elseStmt != null) stmt.elseStmt.visit(this, context);
+        if (stmt.elseStmt != null) {
+            if (stmt.elseStmt instanceof VarDeclStmt)
+                idError("Variable cannot be declared in its own scope in else statement.");
+            stmt.elseStmt.visit(this, context);
+        }
         return null;
+    }
+
+    private void idError(String msg) {
+        this.reporter.reportError("Id Error: " + msg);
+        throw new IdentificationError();
     }
 
     @Override
     public Declaration visitWhileStmt(WhileStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.cond.visit(this, context);
+        if (stmt.body instanceof VarDeclStmt) {
+            idError("Variable cannot be declared in its own scope in while statement");
+        }
         stmt.body.visit(this, context);
         return null;
     }
@@ -363,7 +377,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 
     @Override
     public Declaration visitIdentifier(Identifier id, Object arg) {
-        Declaration ret = this.tables.retrieve(id, null);
+        Declaration ret;
+        ret = this.tables.retrieve(id, null);
         id.decl = ret;
         return ret;
     }

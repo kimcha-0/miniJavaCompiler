@@ -53,6 +53,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
             if (type1.typeKind != TypeKind.CLASS || type2.typeKind != TypeKind.CLASS) {
                 reportTypeError("Invalid class comparison");
             }
+            return ((ClassType)type1).classDecl == ((ClassType)type2).classDecl;
         }
         return type1.typeKind == type2.typeKind;
     }
@@ -257,6 +258,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         TypeDenoter arrRefType = expr.ref.visit(this, null);
         if (arrRefType.typeKind != TypeKind.ARRAY) {
             reportTypeError("Attempt to index reference " + expr.ref.decl.name + " of type " + arrRefType.typeKind);
+            return new BaseType(TypeKind.UNSUPPORTED, null);
         }
         // verify reference is an array
         TypeDenoter ixType = expr.ixExpr.visit(this, null);
