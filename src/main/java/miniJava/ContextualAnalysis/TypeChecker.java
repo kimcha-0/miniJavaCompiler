@@ -54,13 +54,15 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
     private boolean matchType(TypeDenoter type1, TypeDenoter type2) {
         if (type1.typeKind == TypeKind.CLASS || type2.typeKind == TypeKind.CLASS) {
             if (type1.typeKind != TypeKind.CLASS || type2.typeKind != TypeKind.CLASS) {
-                reportTypeError("Invalid class comparison");
+                reportTypeError("Attempt to compare class with non-class instance");
                 return false;
             }
             ClassType classType1 = (ClassType)type1;
             ClassType classType2 = (ClassType)type2;
 //            System.out.println(classType1.className + " " + classType2.className);
-            if (classType1.className.spelling.equals(classType2.className.spelling))
+            if (classType1.className.spelling.equals("null") || classType2.className.spelling.equals("null"))
+                return true;
+            else if (classType1.className.spelling.equals(classType2.className.spelling))
                 return true;
             else
                 reportTypeError("Cannot compare instance of class " + classType1.className.spelling + " and "
