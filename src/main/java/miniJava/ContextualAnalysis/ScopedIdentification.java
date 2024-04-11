@@ -280,7 +280,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 //                    throw new IdentificationError();
 //                }
                 if (md.isPrivate && currMethodContext.inClass != md.classContext) {
-                    this.reporter.reportError("Attempt to access private member " + md.name + " in context " + currMethodContext.inClass.name);
+                    this.reporter.reportError("Attempt to access private member " + md.name + " in context "
+                            + currMethodContext.inClass.name);
                     throw new IdentificationError();
                 }
                 ref.id.decl = idDecl;
@@ -297,14 +298,16 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 //                    System.out.println("referencing class member");
                     Declaration member = (Declaration) ((ClassType)ld.type).classDecl.visit(this, ref.id);
                     if (member == null) {
-                        this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + ((ClassType)ld.type).classDecl.name);
+                        this.reporter.reportError("Attempt to reference " + ref.id.spelling +
+                                " but not found in context " + ((ClassType)ld.type).classDecl.name);
                         throw new IdentificationError();
                     }
                     if (checkMember(ref, currMethodContext, member)) break;
                     throw new IdentificationError();
                 case ARRAY:
                     if (ref.id.spelling.equals("length")) {
-                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null), "length", null);
+                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null),
+                                "length", null);
                         ref.decl = ref.id.decl;
                         break;
                     }
@@ -320,7 +323,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 //                    System.out.println("referencing class member");
                     Declaration member = (Declaration)((ClassType)md.type).classDecl.visit(this, ref.id);
                     if (member == null) {
-                        this.reporter.reportError("Attempt to reference " + ref.id.spelling + " but not found in context " + md.classContext.name);
+                        this.reporter.reportError("Attempt to reference " + ref.id.spelling +
+                                " but not found in context " + md.classContext.name);
                         throw new IdentificationError();
                     }
                     if (checkMember(ref, currMethodContext, member)) break;
@@ -329,7 +333,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                     // int[] x = new int[5]; x.length();
 //                    System.out.println("referencing length method");
                     if (ref.id.spelling.equals("length")) {
-                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null), "length", null);
+                        ref.id.decl = new FieldDecl(false, false, new BaseType(TypeKind.INT, null),
+                                "length", null);
                         ref.decl = ref.id.decl;
                         break;
                     }
@@ -345,7 +350,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
         if (member instanceof MemberDecl) {
             MemberDecl memberDecl = (MemberDecl)member;
             if (memberDecl.isPrivate && currMethodContext.inClass != memberDecl.classContext) {
-                this.reporter.reportError("Attempt to access private member " + memberDecl.name + " in context " + currMethodContext.inClass.name);
+                this.reporter.reportError("Attempt to access private member " + memberDecl.name +
+                        " in context " + currMethodContext.inClass.name);
                 throw new IdentificationError();
             }
             ref.id.decl = member;

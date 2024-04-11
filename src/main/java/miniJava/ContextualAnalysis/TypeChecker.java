@@ -50,7 +50,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     private boolean matchType(TypeDenoter type1, TypeDenoter type2) {
         if (type1.typeKind == TypeKind.CLASS || type2.typeKind == TypeKind.CLASS) {
-            if (!(type1.typeKind != TypeKind.CLASS) || !(type2.typeKind != TypeKind.CLASS)) {
+            if (type1.typeKind != TypeKind.CLASS || type2.typeKind != TypeKind.CLASS) {
                 reportTypeError("Invalid class comparison");
             }
         }
@@ -154,7 +154,8 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         }
         TypeDenoter valType = stmt.exp.visit(this, null);
         if (valType.typeKind != ((ArrayType)arrayType).eltType.typeKind) {
-            reportTypeError("Attempt to assign value of type " + valType.typeKind + " to array of type " +((ArrayType)arrayType).eltType.typeKind);
+            reportTypeError("Attempt to assign value of type " + valType.typeKind +
+                    " to array of type " +((ArrayType)arrayType).eltType.typeKind);
         }
         return valType;
     }
@@ -165,14 +166,16 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         // verify param count and types are valid with function declaration
         MethodDecl originalMethodDecl = (MethodDecl) stmt.methodRef.decl;
         if (originalMethodDecl.parameterDeclList.size() != stmt.argList.size()) {
-            this.reporter.reportError("Attempt to call method " + originalMethodDecl.name + " with incorrect number of arguments");
+            this.reporter.reportError("Attempt to call method " + originalMethodDecl.name +
+                    " with incorrect number of arguments");
             return null;
         }
         for (int i = 0; i < stmt.argList.size(); i++) {
             TypeDenoter argType = stmt.argList.get(i).visit(this, null);
             TypeDenoter methodDeclParamType = originalMethodDecl.parameterDeclList.get(i).type;
             if (!matchType(argType, methodDeclParamType)) {
-                reportTypeError("Attempt to call method " + originalMethodDecl.name + " with incorrect type for argument " + originalMethodDecl.parameterDeclList.get(i));
+                reportTypeError("Attempt to call method " + originalMethodDecl.name +
+                        " with incorrect type for argument " + originalMethodDecl.parameterDeclList.get(i));
                 return null;
             }
         }
@@ -269,13 +272,15 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         // return the return type
         MethodDecl originalMethodDecl = (MethodDecl) expr.functionRef.decl;
         if (originalMethodDecl.parameterDeclList.size() != expr.argList.size()) {
-            this.reporter.reportError("Attempt to call method " + originalMethodDecl.name + " with incorrect number of arguments");
+            this.reporter.reportError("Attempt to call method " + originalMethodDecl.name +
+                    " with incorrect number of arguments");
         }
         for (int i = 0; i < expr.argList.size(); i++) {
             TypeDenoter argType = expr.argList.get(i).visit(this, null);
             TypeDenoter methodDeclParamType = originalMethodDecl.parameterDeclList.get(i).type;
             if (!matchType(argType, methodDeclParamType)) {
-                reportTypeError("Attempt to call method " + originalMethodDecl.name + " with incorrect type for argument " + originalMethodDecl.parameterDeclList.get(i));
+                reportTypeError("Attempt to call method " + originalMethodDecl.name +
+                        " with incorrect type for argument " + originalMethodDecl.parameterDeclList.get(i));
             }
         }
         return originalMethodDecl.type;
