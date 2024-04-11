@@ -6,12 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pa3_tests/pass328.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass328.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pa3_tests/pass372.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass372.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pa3_tests/pass400.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass400.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/ASTDisplay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +39,11 @@
         </map>
       </branch-storage>
     </excluded-from-favorite>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="code-gen" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -79,33 +78,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Compiler.executor": "Run",
-    "JUnit.PA1Test.compile.executor": "Run",
-    "JUnit.PA1Test.parse.executor": "Run",
-    "JUnit.PA1Test.scan.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.compile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.parse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.scan.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="miniJava.ContextualAnalysis" />
@@ -130,7 +129,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.parse">
+  <component name="RunManager" selected="JUnit.PA1Test.compile">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -202,10 +201,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PA1Test.compile" />
+        <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.PA1Test.compile" />
-        <item itemvalue="Application.Compiler" />
-        <item itemvalue="JUnit.PA1Test.scan" />
       </list>
     </recent_temporary>
   </component>
@@ -274,6 +274,8 @@
       <workItem from="1712526296415" duration="21242000" />
       <workItem from="1712616681478" duration="7405000" />
       <workItem from="1712684450908" duration="30895000" />
+      <workItem from="1712808296656" duration="1073000" />
+      <workItem from="1712846493711" duration="4946000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -401,6 +403,11 @@
             <list>
               <RecentGroup>
                 <option name="FILTER_VALUES">
+                  <option value="origin/main" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
                   <option value="main" />
                 </option>
               </RecentGroup>
@@ -409,9 +416,21 @@
                   <option value="HEAD" />
                 </option>
               </RecentGroup>
+            </list>
+          </value>
+        </entry>
+        <entry key="Paths">
+          <value>
+            <list>
               <RecentGroup>
                 <option name="FILTER_VALUES">
-                  <option value="origin/main" />
+                  <option value="dir:/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src" />
+                </option>
+              </RecentGroup>
+              <RecentGroup>
+                <option name="FILTER_VALUES">
+                  <option value="dir:/Users/davidkim/spring-2024/comp520/miniJavaCompiler/.idea" />
+                  <option value="dir:/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src" />
                 </option>
               </RecentGroup>
             </list>
@@ -435,6 +454,13 @@
                     <value>
                       <list>
                         <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="structure">
+                    <value>
+                      <list>
+                        <option value="dir:/Users/davidkim/spring-2024/comp520/miniJavaCompiler/src" />
                       </list>
                     </value>
                   </entry>
@@ -464,40 +490,6 @@
     <MESSAGE value="Achieved 72/94 on full grader" />
     <MESSAGE value="Initialize ClassType TypeDenoter for Class Declarations." />
     <option name="LAST_COMMIT_MESSAGE" value="Initialize ClassType TypeDenoter for Class Declarations." />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>52</line>
-          <properties class="syntacticanalyzer.PA1Test" method="parse">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>101</line>
-          <properties class="syntacticanalyzer.PA1Test" method="compile">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>102</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>120</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

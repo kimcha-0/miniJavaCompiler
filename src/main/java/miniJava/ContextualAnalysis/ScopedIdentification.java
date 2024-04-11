@@ -58,6 +58,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                     return md;
                 }
             }
+            return null;
         }
         return null;
     }
@@ -215,6 +216,10 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     public Declaration visitRefExpr(RefExpr expr, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         expr.ref.visit(this, context);
+        if (expr.ref.decl instanceof MethodDecl) {
+            idError("Attempt to reference method");
+            throw new IdentificationError();
+        }
         return null;
     }
 
@@ -377,8 +382,9 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 
     @Override
     public Declaration visitIdentifier(Identifier id, Object arg) {
+        MethodDecl md = (MethodDecl)arg;
         Declaration ret;
-        ret = this.tables.retrieve(id, null);
+        ret = this.tables.retrieve(id, md);
         id.decl = ret;
         return ret;
     }

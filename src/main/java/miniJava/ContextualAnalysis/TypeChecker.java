@@ -19,16 +19,16 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
 
     private TypeDenoter verifyBinaryExpr(TypeDenoter type1, TypeDenoter type2, String operator) {
         switch (operator) {
+            case "||":
+            case "&&":
+                if (type1.typeKind == TypeKind.BOOLEAN && type2.typeKind == TypeKind.BOOLEAN)
+                    return new BaseType(TypeKind.BOOLEAN, null);
             case "+":
             case "-":
             case "/":
             case "*":
-                if (type1.typeKind == TypeKind.UNSUPPORTED || type2.typeKind == TypeKind.UNSUPPORTED) {
-                    // UNSUPPORTED op UNSUPPORTED -> UNSUPPORTED
-                    return new BaseType(TypeKind.UNSUPPORTED, null);
-                } else if (type1.typeKind == TypeKind.INT && type2.typeKind == TypeKind.INT) {
+                if (type1.typeKind == TypeKind.INT && type2.typeKind == TypeKind.INT)
                     return new BaseType(TypeKind.INT, null);
-                }
             case ">":
             case ">=":
             case "<":
@@ -40,8 +40,11 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
             case "==":
             case "!=":
                 // a op a -> bool
-                if (matchType(type1, type2)) return new BaseType(TypeKind.BOOLEAN, null);
+                if (matchType(type1, type2))
+                    return new BaseType(TypeKind.BOOLEAN, null);
             default:
+                if (type1.typeKind == TypeKind.UNSUPPORTED || type2.typeKind == TypeKind.UNSUPPORTED)
+                    return new BaseType(TypeKind.UNSUPPORTED, null);
                 reportTypeError("Invalid binary Expression: " + type1.typeKind + " " + operator
                 + " " + type2.typeKind + "-> UNSUPPORTED");
                 return new BaseType(TypeKind.UNSUPPORTED, null);
@@ -52,8 +55,16 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         if (type1.typeKind == TypeKind.CLASS || type2.typeKind == TypeKind.CLASS) {
             if (type1.typeKind != TypeKind.CLASS || type2.typeKind != TypeKind.CLASS) {
                 reportTypeError("Invalid class comparison");
+                return false;
             }
-            return ((ClassType)type1).classDecl == ((ClassType)type2).classDecl;
+            ClassType classType1 = (ClassType)type1;
+            ClassType classType2 = (ClassType)type2;
+//            System.out.println(classType1.className + " " + classType2.className);
+            if (classType1.className.spelling.equals(classType2.className.spelling))
+                return true;
+            else
+                reportTypeError("Cannot compare instance of class " + classType1.className.spelling + " and "
+                + classType2.className.spelling);
         }
         return type1.typeKind == type2.typeKind;
     }
@@ -122,7 +133,8 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         TypeDenoter varDeclType = stmt.varDecl.visit(this, null);
         if (stmt.initExp != null) {
             TypeDenoter initExpType = stmt.initExp.visit(this, null);
-            if (initExpType.typeKind != varDeclType.typeKind){
+//            System.out.println(initExpType);
+            if (!matchType(varDeclType, initExpType)){
                 reportTypeError("Variable declaration " + stmt.varDecl.name + " of type " +
                         varDeclType.typeKind + " assigned value of type " + initExpType.typeKind);
             }
@@ -313,7 +325,7 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
     @Override
     public TypeDenoter visitThisRef(ThisRef ref, Object arg) {
         // return ClassType of "this" instance
-        return null;
+        return ref.decl.type;
     }
 
     @Override

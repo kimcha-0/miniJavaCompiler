@@ -2,6 +2,7 @@ package miniJava.ContextualAnalysis;
 
 import miniJava.AbstractSyntaxTrees.*;
 import miniJava.ErrorReporter;
+import miniJava.IdentificationError;
 import miniJava.SyntacticAnalyzer.Token;
 import miniJava.SyntacticAnalyzer.TokenType;
 
@@ -58,18 +59,20 @@ public class IdentificationTable {
 
     public void enter(Declaration decl) {
         Map<String, Declaration> idTable = this.tables.peek();
-        if (idTable.containsKey(decl.name)) {
-            if (decl instanceof MemberDecl) {
-                if (((MemberDecl)idTable.get(decl.name)).classContext != ((MemberDecl) decl).classContext) {
+        // search up to level 2 table
+        for (int i = this.tables.size() - 1; i > 1; i--) {
+            idTable = tables.get(i);
+            if (idTable.containsKey(decl.name)) {
+                if (((MemberDecl) idTable.get(decl.name)).classContext != ((MemberDecl) decl).classContext) {
                     idTable.put(decl.name, decl);
                     return;
+                } else {
+                    this.reporter.reportError(decl.name + " has already been declared as a " + this.tables.peek().get(decl.name));
+                    throw new IdentificationError();
                 }
             }
-            this.reporter.reportError(decl.name + " has already been declared as a " + this.tables.peek().get(decl.name));
-        } else {
-            this.tables.peek().put(decl.name, decl);
-//            System.out.println("entering: " + tables);
         }
+        this.tables.peek().put(decl.name, decl);
     }
 
     public Declaration retrieve(Identifier iden, Object context) {
@@ -83,7 +86,6 @@ public class IdentificationTable {
                 return null;
             }
         }
-
         for (int i = this.tables.size() - 1; i > -1; i--) {
             if (this.tables.get(i).containsKey(iden.spelling)) {
                 ret = this.tables.get(i).get(iden.spelling);
@@ -94,6 +96,12 @@ public class IdentificationTable {
         if (ret == null) {
             this.reporter.reportError("No declaration found for identifier " + iden.spelling);
             return null;
+        }
+        if (context instanceof MethodDecl && ret instanceof MemberDecl) {
+            if (((MethodDecl) context).isStatic && !((MemberDecl) ret).isStatic) {
+                this.reporter.reportError("Attempt to reference non-static member " + ret.name + " in static context");
+                return null;
+            }
         }
         return ret;
     }
