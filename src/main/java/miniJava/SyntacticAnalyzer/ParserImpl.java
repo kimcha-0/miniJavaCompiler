@@ -79,9 +79,8 @@ public class ParserImpl implements Parser {
         ParameterDeclList paramDeclList = new ParameterDeclList();
         StatementList statementList = new StatementList();
 
-        if (!matchType(TokenType.RPAREN)) {
+        if (!matchType(TokenType.RPAREN))
             paramDeclList = parseParamList();
-        }
         accept(TokenType.RPAREN);
 
         accept(TokenType.LCURLY);
@@ -217,18 +216,16 @@ public class ParserImpl implements Parser {
                 posn = currToken.getTokenPosition();
                 acceptIt();
                 StatementList blockStmtList = new StatementList();
-                while (!matchType(TokenType.RCURLY)) {
+                while (!matchType(TokenType.RCURLY))
                     blockStmtList.add(parseStatement());
-                }
                 acceptIt();
                 return new BlockStmt(blockStmtList, posn);
             case RETURN:
                 posn = currToken.getTokenPosition();
                 acceptIt();
                 // Expression?
-                if (!matchType(SEMICOLON)) {
+                if (!matchType(SEMICOLON))
                     expression = parseExpr();
-                }
                 accept(SEMICOLON);
                 return new ReturnStmt(expression, posn);
             case IF:
@@ -298,9 +295,8 @@ public class ParserImpl implements Parser {
                     // Ref ( ArgList?);
                     acceptIt();
                     ExprList eL = new ExprList();
-                    if (currToken.getTokenType() != RPAREN) {
+                    if (currToken.getTokenType() != RPAREN)
                         eL = parseArgList();
-                    }
                     accept(RPAREN);
                     accept(SEMICOLON);
                     return new CallStmt(ref, eL, posn);
@@ -384,9 +380,8 @@ public class ParserImpl implements Parser {
                             // id.id();
                             accept(LPAREN);
                             ExprList exprList1 = new ExprList();
-                            if (currToken.getTokenType() != RPAREN) {
+                            if (currToken.getTokenType() != RPAREN)
                                 exprList1 = parseArgList();
-                            }
                             acceptIt();
                             accept(SEMICOLON);
                             return new CallStmt(qualRef, exprList1, null);
@@ -402,9 +397,8 @@ public class ParserImpl implements Parser {
                         // id();
                         acceptIt();
                         ExprList exprList2 = new ExprList();
-                        if (currToken.getTokenType() != RPAREN) {
+                        if (currToken.getTokenType() != RPAREN)
                             exprList2 = parseArgList();
-                        }
                         acceptIt();
                         accept(SEMICOLON);
                         return new CallStmt(new IdRef(id, posn), exprList2, posn);
@@ -601,9 +595,9 @@ public class ParserImpl implements Parser {
     private void accept(TokenType expect) throws SyntaxError {
 //        System.out.println("expected token '" + expect
 //                + "' but received '" + currToken.getType() + "'");
-        if (expect == currToken.getTokenType()) {
+        if (expect == currToken.getTokenType())
             currToken = lexer.scan();
-        } else {
+        else {
             parseError("expected token '" + expect + "' but received '" + currToken.getTokenType() + "'");
             throw new SyntaxError();
         }
