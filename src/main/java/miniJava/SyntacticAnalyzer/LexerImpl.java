@@ -36,14 +36,9 @@ public class LexerImpl implements Lexer {
     public Token scan() {
 //        System.out.println("scanning...");
         stringBuf.setLength(0);
-        while (!eot && (charBuf == ' ' || charBuf == '\t' || charBuf == eolUnix || charBuf == eolWindows)) {
-            // System.out.println("skipping whitespace");
+        while (!eot && (charBuf == ' ' || charBuf == '\t' || charBuf == eolUnix || charBuf == eolWindows))
             this.skipIt();
-        }
-        // handle windows carry return
-
         if (eot) return new Token(EOT, null, new SourcePosition(currLine, currCol));
-        // TODO: refactor token handling code to decrease indent levels once I get a working lexer
         switch (charBuf) {
             // simple single character cases
             case '(':
@@ -90,10 +85,9 @@ public class LexerImpl implements Lexer {
             case '>':
             case '<':
                 takeIt();
-                if (charBuf == '=') {
+                if (charBuf == '=')
                     takeIt();
 //                    System.out.println("operator: " + stringBuf.toString());
-                }
 //                System.out.println("operator: " + stringBuf.toString());
                 return new Token(OPERATOR, stringBuf.toString(), new SourcePosition(currLine, currCol));
             // two character lexemes
@@ -119,9 +113,8 @@ public class LexerImpl implements Lexer {
                 stringBuf.setLength(0);
                 if (charBuf == '/') {
                     skipIt();
-                    while (charBuf != '\n' && !eot) {
+                    while (charBuf != '\n' && !eot)
                         skipIt();
-                    }
                     stringBuf.setLength(0);
                     return scan();
                 } else if (charBuf == '*') {
@@ -135,9 +128,8 @@ public class LexerImpl implements Lexer {
                         if (charBuf == '*') {
                             skipIt();
                             endComment = charBuf == '/';
-                        } else {
+                        } else
                             skipIt();
-                        }
                     }
                     skipIt();
                     return scan();
@@ -152,14 +144,12 @@ public class LexerImpl implements Lexer {
             case '7':
             case '8':
             case '9':
-                while (isDigit(charBuf)) {
+                while (isDigit(charBuf))
                     takeIt();
-                }
                 return new Token(INTLITERAL, stringBuf.toString(), new SourcePosition(currLine, currCol));
             default:
-                if (isAlpha(charBuf)) {
+                if (isAlpha(charBuf))
                     return handleIdentifier();
-                }
                 lexError("Unrecognized character '" + charBuf + "' in input");
                 return new Token(ERROR, stringBuf.toString(), new SourcePosition(currLine, currCol));
         }
@@ -188,9 +178,8 @@ public class LexerImpl implements Lexer {
     }
 
     private Token handleIdentifier() {
-        while (isAlphaNumeric(charBuf)) {
+        while (isAlphaNumeric(charBuf))
             takeIt();
-        }
         TokenType type = keywordMap.get(stringBuf.toString());
         if (stringBuf.charAt(0) == '_') {
             lexError("cannot start identifier with underscore" + stringBuf.toString());
@@ -201,25 +190,23 @@ public class LexerImpl implements Lexer {
 
     private boolean peek(char expected) {
         nextChar();
-        if (charBuf == expected) {
+        if (charBuf == expected)
             return true;
-        }
         return false;
     }
 
 
     private void nextChar() {
-        if (!eot) {
+        if (!eot)
             readChar();
-        }
     }
 
     private void readChar() {
         try {
             int c = in.read();
-            if (c == -1) {
+            if (c == -1)
                 eot = true;
-            } else if (c == '\n') {
+            else if (c == '\n') {
                 currLine++;
                 currCol = 0;
             }
