@@ -6,6 +6,8 @@
 package miniJava.AbstractSyntaxTrees;
 
 import miniJava.SyntacticAnalyzer.SourcePosition;
+import miniJava.SyntacticAnalyzer.Token;
+import miniJava.SyntacticAnalyzer.TokenType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,7 @@ public class ClassDecl extends Declaration {
     public List<FieldDecl> toInitialize;
 
     public ClassDecl(String cn, FieldDeclList fdl, MethodDeclList mdl, SourcePosition posn) {
-	  super(cn, null, posn);
+	  super(cn, new ClassType(new Identifier(new Token(TokenType.CLASS, cn, null), null), null), posn);
 	  fieldDeclList = fdl;
 	  methodDeclList = mdl;
       toInitialize = new ArrayList<>();
