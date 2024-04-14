@@ -130,6 +130,7 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
         MethodDecl context = (MethodDecl)arg;
         stmt.varDecl.visit(this, context);
         stmt.initExp.visit(this, context);
+        stmt.varDecl.init = true;
         return null;
     }
 
@@ -154,6 +155,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     public Declaration visitCallStmt(CallStmt stmt, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         stmt.methodRef.visit(this, context);
+        if (!(stmt.methodRef.decl instanceof MethodDecl))
+            idError("Attempt to call a non method");
         stmt.argList.forEach(args -> args.visit(this, context));
         return null;
     }
@@ -218,8 +221,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
         expr.ref.visit(this, context);
         if (expr.ref.decl instanceof MethodDecl) {
             idError("Attempt to reference method");
-            throw new IdentificationError();
-        }
+        } else if (expr.ref.decl instanceof ClassDecl && !(expr.ref instanceof ThisRef))
+            idError("Attempt to reference Class but not allowed in this context");
         return null;
     }
 
@@ -274,6 +277,10 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
     public Declaration visitIdRef(IdRef ref, Object arg) {
         MethodDecl context = (MethodDecl)arg;
         ref.decl = (Declaration) ref.id.visit(this, arg);
+        if (context.isStatic && ref.decl instanceof MemberDecl) {
+            if (!((MemberDecl)ref.decl).isStatic)
+               idError("Attempt to reference non-static " + ref + " in static method");
+        }
         return ref.decl;
     }
 
@@ -288,7 +295,9 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
         if (context == null) {
             this.reporter.reportError("no context found for reference " + ref.id.spelling);
             throw new IdentificationError();
-        } else if (context instanceof ClassDecl) {
+        } else if (context instanceof MethodDecl)
+            idError("Cannot reference method in qualref");
+        else if (context instanceof ClassDecl) {
             // can only access static members
             ClassDecl classDeclContext = (ClassDecl)context;
             Declaration idDecl = (Declaration)context.visit(this, ref.id);
@@ -299,9 +308,12 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
 //                    throw new IdentificationError();
 //                }
                 if (md.isPrivate && currMethodContext.inClass != md.classContext) {
-                    this.reporter.reportError("Attempt to access private member " + md.name + " in context "
-                            + currMethodContext.inClass.name);
+                    this.reporter.reportError("Attempt to access private member " + md.name 
+                            + " in context " + currMethodContext.inClass.name);
                     throw new IdentificationError();
+                }
+                if (!md.isStatic && !(ref.ref instanceof ThisRef)) {
+                    idError("Atempt to access non-static member from a static context");
                 }
                 ref.id.decl = idDecl;
                 ref.decl = ref.id.decl;
@@ -331,7 +343,8 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                         break;
                     }
                 default:
-                    this.reporter.reportError("attempt to reference " + ref.id.spelling + " for type " + ld.type.typeKind);
+                    this.reporter.reportError("attempt to reference " + ref.id.spelling + " for type " 
+                            + ld.type.typeKind);
                     throw new IdentificationError();
             }
         } else if (context instanceof MemberDecl) {
@@ -358,7 +371,10 @@ public class ScopedIdentification implements Visitor<Object, Declaration> {
                         break;
                     }
                 default:
-                    this.reporter.reportError("attempt to reference " + ref.id.spelling + " for type " + md.type.typeKind);
+                    this.reporter.reportError(
+                            "attempt to reference " + ref.id.spelling + " for type " 
+                            + md.type.typeKind
+                            );
                     throw new IdentificationError();
             }
         }

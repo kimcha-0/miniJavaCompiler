@@ -17,5 +17,5 @@ public class VarDecl extends LocalDecl {
 		return v.visitVarDecl(this, o);
 	}
 
-	public boolean isInitialized;
+	public boolean init;
 }

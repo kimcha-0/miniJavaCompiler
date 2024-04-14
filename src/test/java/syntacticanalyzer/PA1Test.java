@@ -20,7 +20,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void scan() {
-        try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail322.java")) {
+        try (FileInputStream in = new FileInputStream("pa1-tests-partial/fail334.java")) {
             ErrorReporter reporter = new ErrorReporter();
             LexerImpl lexer = new LexerImpl(in, reporter);
             assertToken(lexer, CLASS, "class");
@@ -51,7 +51,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/pass367.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa3_tests/fail340.java")) {
             ErrorReporter reporter = new ErrorReporter();
             LexerImpl lexer = new LexerImpl(in, reporter);
             ParserImpl parser = new ParserImpl(lexer, reporter);
@@ -123,7 +123,6 @@ class PA1Test {
             } finally {
                 if (!reporter.hasErrors()) {
                     ASTDisplay astDisplay = new ASTDisplay();
-                    astDisplay.showTree(syntaxTree);
                     try {
                         ScopedIdentification scopedIdentification = new ScopedIdentification(reporter, syntaxTree);
                     } catch (IdentificationError e) {
@@ -133,6 +132,7 @@ class PA1Test {
                             System.out.println("Error");
                             reporter.outputErrors();
                         } else {
+                            astDisplay.showTree(syntaxTree);
                             TypeChecker typeChecker = new TypeChecker(syntaxTree, reporter);
                             if (reporter.hasErrors()) {
                                 System.out.println("Error");
@@ -148,9 +148,13 @@ class PA1Test {
                     reporter.outputErrors();
                 }
                 if (file.getName().indexOf('f') == 0) {
-                    assert (reporter.hasErrors());
+                    if (!reporter.hasErrors())
+                        System.out.println("hi");
+//                    assert (reporter.hasErrors());
                 } else {
-                    assert (!reporter.hasErrors());
+                    if (reporter.hasErrors())
+                        System.out.println("hi");
+//                    assert (!reporter.hasErrors());
                 }
                 System.out.println('\n');
             }

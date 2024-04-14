@@ -6,6 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa3_tests/pass400.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass400.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,7 +134,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.compile">
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
     <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
       <module name="miniJavaCompiler" />
@@ -201,8 +206,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.PA1Test.compile" />
@@ -275,7 +280,9 @@
       <workItem from="1712616681478" duration="7405000" />
       <workItem from="1712684450908" duration="30895000" />
       <workItem from="1712808296656" duration="1073000" />
-      <workItem from="1712846493711" duration="5889000" />
+      <workItem from="1712846493711" duration="10727000" />
+      <workItem from="1712946624477" duration="4027000" />
+      <workItem from="1713127972504" duration="3026000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />

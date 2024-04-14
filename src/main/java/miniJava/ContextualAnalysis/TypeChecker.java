@@ -373,3 +373,20 @@ public class TypeChecker implements Visitor<Object, TypeDenoter> {
         return nullType;
     }
 }
+
+class A {
+    boolean p;
+    int a;
+    int b;
+    int c;
+    private A d;
+    static A[] v;
+
+    void f(int x) {
+        {
+            int A = 1;
+            A b = d;
+        }
+
+    }
+}

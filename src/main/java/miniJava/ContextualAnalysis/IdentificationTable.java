@@ -28,15 +28,23 @@ public class IdentificationTable {
         // int n
         printlnParams.add(new ParameterDecl(new BaseType(TypeKind.INT, null), "n", null));
         // public void println( int n ) { }
-        MethodDecl println = new MethodDecl(new FieldDecl(false, false, new BaseType(TypeKind.VOID, null), "println", null),
+        MethodDecl println = new MethodDecl(new FieldDecl(false, false, new BaseType(TypeKind.VOID,
+                null), "println", null),
                 printlnParams, new StatementList(), null);
+
         printlnMethodList.add(println);
-        ClassDecl printStreamDecl = new ClassDecl("_PrintStream", new FieldDeclList(), printlnMethodList, null);
+
+        ClassDecl printStreamDecl = new ClassDecl("_PrintStream", new FieldDeclList(),
+                printlnMethodList, null);
+
         println.classContext = printStreamDecl;
 
+
         ClassDecl stringDecl = new ClassDecl("String", new FieldDeclList(), new MethodDeclList(), null);
+
         FieldDeclList systemFieldDeclList = new FieldDeclList();
-        ClassType printStreamType = new ClassType(new Identifier(new Token(TokenType.IDENTIFIER, "_PrintStream", null)), null);
+        ClassType printStreamType = new ClassType(new Identifier(new Token(TokenType.IDENTIFIER,
+                "_PrintStream", null)), null);
         printStreamType.classDecl = printStreamDecl;
         FieldDecl out = new FieldDecl(false, true, printStreamType, "out", null);
         ClassDecl systemDecl = new ClassDecl("System", systemFieldDeclList, new MethodDeclList(), null);
@@ -58,32 +66,39 @@ public class IdentificationTable {
     }
 
     public void enter(Declaration decl) {
-        Map<String, Declaration> idTable = this.tables.peek();
         // search up to level 2 table
         // TODO: fix this method!
-        if (tables.size() > 2) {
-            for (int i = this.tables.size() - 1; i > 1; i--) {
-                idTable = tables.get(i);
-                if (idTable.containsKey(decl.name)) {
-                    checkMemberDuplicate(decl, idTable);
-                    return;
-                }
+        if (decl instanceof ClassDecl) {
+            if (this.tables.peek().containsKey(decl.name)) {
+                this.reporter.reportError("Id Error: Class Decl already exists");
+                throw new IdentificationError();
             }
-        } else {
-            if (tables.peek().containsKey(decl)) {
-                checkMemberDuplicate(decl, idTable);
+            this.tables.peek().put(decl.name, decl);
+        } else if (decl instanceof MemberDecl) {
+            if (this.tables.peek().containsKey(decl.name)) {
+                checkMemberDuplicate(decl, this.tables.peek());
                 return;
             }
+            this.tables.peek().put(decl.name, decl);
+        } else {
+            // search up to level 2 table
+            for (int i = this.tables.size() - 1; i > 1; i--) {
+                if (this.tables.get(i).containsKey(decl.name)) {
+                    this.reporter.reportError("Id Error: " + decl.name + " already exists");
+                    throw new IdentificationError();
+                }
+            }
+            this.tables.peek().put(decl.name, decl);
         }
-        this.tables.peek().put(decl.name, decl);
     }
+
 
     private void checkMemberDuplicate(Declaration decl, Map<String, Declaration> idTable) {
         if (((MemberDecl) idTable.get(decl.name)).classContext != ((MemberDecl) decl).classContext) {
             idTable.put(decl.name, decl);
-            return;
         } else {
-            this.reporter.reportError(decl.name + " has already been declared as a " + this.tables.peek().get(decl.name));
+            this.reporter.reportError(decl.name + " has already been declared as a "
+                    + this.tables.peek().get(decl.name));
             throw new IdentificationError();
         }
     }
@@ -102,17 +117,22 @@ public class IdentificationTable {
         for (int i = this.tables.size() - 1; i > -1; i--) {
             if (this.tables.get(i).containsKey(iden.spelling)) {
                 ret = this.tables.get(i).get(iden.spelling);
-//                System.out.println("Declaration " + this.tables.get(i).get(iden.spelling) + " found for identifier " + iden.spelling);
+//                System.out.println("Declaration " + this.tables.get(i).get(iden.spelling) 
+//                + " found for identifier " + iden.spelling);
                 break;
             }
         }
         if (ret == null) {
             this.reporter.reportError("No declaration found for identifier " + iden.spelling);
             return null;
+        } else if (ret instanceof VarDecl && !(((VarDecl) ret).init)){
+            this.reporter.reportError("Attempt to reference variable that has not yet been initialized");
+            return null;
         }
         if (context instanceof MethodDecl && ret instanceof MemberDecl) {
             if (((MethodDecl) context).isStatic && !((MemberDecl) ret).isStatic) {
-                this.reporter.reportError("Attempt to reference non-static member " + ret.name + " in static context");
+                this.reporter.reportError("Attempt to reference non-static member " + ret.name
+                        + " in static context");
                 return null;
             }
         }
