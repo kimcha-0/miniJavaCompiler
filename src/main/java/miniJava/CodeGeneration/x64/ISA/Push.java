@@ -8,6 +8,9 @@ import miniJava.CodeGeneration.x64.x64;
 public class Push extends Instruction {
 	public Push(int imm) {
 		// TODO: how can we do a push imm32?
+		//68 id -> immediate dword (imm32)
+		opcodeBytes.write(0x68);
+		x64.writeInt(immBytes, imm);
 	}
 	
 	public Push(Reg64 reg) {
@@ -20,10 +23,12 @@ public class Push extends Instruction {
 	public Push(R modrmsib) {
 		// no need to set rexW, push is always r64 (cannot access ecx/r9d)
 		opcodeBytes.write(0xFF);
-		
+
+		// set r to rsi
 		modrmsib.SetRegR(x64.mod543ToReg(6));
 		byte[] rmsib = modrmsib.getBytes();
 		importREX(modrmsib);
+		// writing rmsib into immediate bytes
 		x64.writeBytes(immBytes,rmsib);
 	}
 }

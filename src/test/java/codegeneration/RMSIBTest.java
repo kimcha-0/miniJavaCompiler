@@ -1,5 +1,11 @@
 package codegeneration;
 
+import miniJava.CodeGeneration.x64.ISA.Mov_ri64;
+import miniJava.CodeGeneration.x64.ISA.Pop;
+import miniJava.CodeGeneration.x64.ISA.Push;
+import miniJava.CodeGeneration.x64.ISA.Ret;
+import miniJava.CodeGeneration.x64.Instruction;
+import miniJava.CodeGeneration.x64.InstructionList;
 import miniJava.CodeGeneration.x64.R;
 import miniJava.CodeGeneration.x64.Reg64;
 import org.junit.jupiter.api.Test;
@@ -7,6 +13,19 @@ import org.junit.jupiter.api.Test;
 import static miniJava.CodeGeneration.x64.Reg64.RegFromIdx;
 
 public class RMSIBTest {
+
+    @Test
+    void instructions() {
+        InstructionList instructionList = new InstructionList();
+        Instruction push = new Push(500);
+        Instruction pop = new Pop(Reg64.R9);
+        Instruction movri64 = new Mov_ri64(Reg64.RAX, 0xFF0000000000000FL);
+        Instruction ret = new Ret((short) 2);
+        printHexString(push.getBytes());
+        printHexString(ret.getBytes());
+        printHexString(pop.getBytes());
+        printHexString(movri64.getBytes());
+    }
     @Test
     void makeRMR() {
         // rm, r
@@ -68,6 +87,14 @@ public class RMSIBTest {
 
     String getHexString(int n) {
         return String.format("0x%016x", n);
+    }
+
+    void printHexString(byte[] encoding) {
+        System.out.print("0x");
+        for (byte b : encoding) {
+            System.out.print(String.format("%04x", b) + " ");
+        }
+        System.out.println();
     }
 
     byte[] getEncoding(R reg) {
