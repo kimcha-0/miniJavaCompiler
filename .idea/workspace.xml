@@ -4,31 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Add.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Add.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/And.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/And.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Call.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Call.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Cmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Cmp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Idiv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Idiv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Imul.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Imul.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Jmp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Jmp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Lea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Lea.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rmi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rmi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rmr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rmr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rrm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_rrm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Neg.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Neg.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Not.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Not.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Or.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Or.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Pop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Pop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Push.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Push.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/SimpleMathInstruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/SimpleMathInstruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Sub.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Sub.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Xor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Xor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/Instruction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/Instruction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ModRMSIB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" afterDir="false" />
-    </list>
+    <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -95,33 +71,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PA1Test.compile.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PA1Test.parse.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.PA1Test.scan.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;code-gen&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Compiler.executor": "Run",
+    "JUnit.PA1Test.compile.executor": "Run",
+    "JUnit.PA1Test.parse.executor": "Run",
+    "JUnit.PA1Test.scan.executor": "Run",
+    "JUnit.RMSIBTest.executor": "Run",
+    "JUnit.RMSIBTest.make.executor": "Run",
+    "JUnit.RMSIBTest.makeRDisp.executor": "Run",
+    "JUnit.RMSIBTest.makeRDispMult.executor": "Run",
+    "JUnit.RMSIBTest.makeRMR.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "code-gen",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
-      &quot;directory&quot;,
-      &quot;module&quot;,
-      &quot;repository&quot;
+  "keyToStringList": {
+    "GitStage.ChangesTree.GroupingKeys": [
+      "directory",
+      "module",
+      "repository"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="miniJava.ContextualAnalysis" />
@@ -146,82 +127,100 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PA1Test.parse">
-    <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
+  <component name="RunManager" selected="JUnit.RMSIBTest.makeRDispMult">
+    <configuration name="RMSIBTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="miniJava.*" />
+          <option name="PATTERN" value="codegeneration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PA1Test.compile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.make" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="PATTERN" value="codegeneration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="11" />
-      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
-      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
-      <option name="METHOD_NAME" value="compile" />
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="make" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PA1Test.parse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.makeRDisp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="PATTERN" value="codegeneration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
-      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
-      <option name="METHOD_NAME" value="parse" />
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="makeRDisp" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PA1Test.scan" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.makeRDispMult" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="PATTERN" value="codegeneration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
-      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
-      <option name="METHOD_NAME" value="scan" />
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="makeRDispMult" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RMSIBTest.makeRMR" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="codegeneration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="makeRMR" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Compiler" />
-      <item itemvalue="JUnit.PA1Test.compile" />
-      <item itemvalue="JUnit.PA1Test.parse" />
-      <item itemvalue="JUnit.PA1Test.scan" />
+      <item itemvalue="JUnit.RMSIBTest" />
+      <item itemvalue="JUnit.RMSIBTest.make" />
+      <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
+      <item itemvalue="JUnit.RMSIBTest.makeRDispMult" />
+      <item itemvalue="JUnit.RMSIBTest.makeRMR" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PA1Test.parse" />
-        <item itemvalue="JUnit.PA1Test.compile" />
-        <item itemvalue="Application.Compiler" />
-        <item itemvalue="JUnit.PA1Test.scan" />
+        <item itemvalue="JUnit.RMSIBTest.makeRDispMult" />
+        <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
+        <item itemvalue="JUnit.RMSIBTest.makeRMR" />
+        <item itemvalue="JUnit.RMSIBTest" />
+        <item itemvalue="JUnit.RMSIBTest.make" />
       </list>
     </recent_temporary>
   </component>
@@ -292,6 +291,7 @@
       <workItem from="1712684450908" duration="30895000" />
       <workItem from="1713137587640" duration="9036000" />
       <workItem from="1713382590734" duration="1842000" />
+      <workItem from="1713452639012" duration="7592000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />

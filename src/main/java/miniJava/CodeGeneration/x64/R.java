@@ -159,7 +159,10 @@ public class R {
 	private void Make(Reg64 rdisp, int disp, Reg r) {
 		// TODO: construct the byte and write to _b
 		// Operands: [rdisp+disp],r
-		int mod;
+		// mod = 2 | 1 | 0
+		int mod = disp >= 1 << 7 ? 2 : disp > 0 ? 1 : 0;
+		int regByte = ( mod << 6 ) | ( getIdx(r) << 3 ) | getIdx(rdisp);
+		_b.write( regByte );
 	}
 	
 	// [ridx*mult+disp],r
@@ -171,7 +174,10 @@ public class R {
 		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [ridx*mult + disp], r
-		int mod, ss;
+		int mod = disp >= 1 << 7 ? 2 : disp > 0 ? 1 : 0;
+		int ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
+		int regByte = ( ss << 6 ) | ( getIdx(ridx) << 3 ) | getIdx(Reg64.RSP);
+		_b.write(regByte);
 	}
 	
 	// [rdisp+ridx*mult+disp],r
@@ -183,7 +189,10 @@ public class R {
 		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [rdisp + ridx*mult + disp], r
-		int mod, ss;
+		int mod;
+		int ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
+		int regByte = ( ss << 6 ) | ( getIdx(ridx) << 3 ) | getIdx(rdisp);
+		_b.write(regByte);
 	}
 	
 	// [disp],r
