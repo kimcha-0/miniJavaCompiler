@@ -17,7 +17,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 	public void parse(Package prog) {
 		_asm = new InstructionList();
 		
-		// If you haven't refactored the name "ModRMSIB" to something like "R",
+		// If you haven't refactored the name "R" to something like "R",
 		//  go ahead and do that now. You'll be needing that object a lot.
 		// Here is some example code.
 		
@@ -26,25 +26,25 @@ public class CodeGenerator implements Visitor<Object, Object> {
 		// _asm.add( new Pop(Reg64.RCX) ); // pop the top of the stack into RCX
 		
 		// Fancier operations:
-		// _asm.add( new Cmp(new ModRMSIB(Reg64.RCX,Reg64.RDI)) ); // cmp rcx,rdi
-		// _asm.add( new Cmp(new ModRMSIB(Reg64.RCX,0x10,Reg64.RDI)) ); // cmp [rcx+0x10],rdi
-		// _asm.add( new Add(new ModRMSIB(Reg64.RSI,Reg64.RCX,4,0x1000,Reg64.RDX)) ); // add [rsi+rcx*4+0x1000],rdx
+		// _asm.add( new Cmp(new R(Reg64.RCX,Reg64.RDI)) ); // cmp rcx,rdi
+		// _asm.add( new Cmp(new R(Reg64.RCX,0x10,Reg64.RDI)) ); // cmp [rcx+0x10],rdi
+		// _asm.add( new Add(new R(Reg64.RSI,Reg64.RCX,4,0x1000,Reg64.RDX)) ); // add [rsi+rcx*4+0x1000],rdx
 		
 		// Thus:
-		// new ModRMSIB( ... ) where the "..." can be:
+		// new R( ... ) where the "..." can be:
 		//  RegRM, RegR						== rm, r
 		//  RegRM, int, RegR				== [rm+int], r
 		//  RegRD, RegRI, intM, intD, RegR	== [rd+ ri*intM + intD], r
 		// Where RegRM/RD/RI are just Reg64 or Reg32 or even Reg8
 		//
-		// Note there are constructors for ModRMSIB where RegR is skipped.
+		// Note there are constructors for R where RegR is skipped.
 		// This is usually used by instructions that only need one register operand, and often have an immediate
 		//   So they actually will set RegR for us when we create the instruction. An example is:
-		// _asm.add( new Mov_rmi(new ModRMSIB(Reg64.RDX,true), 3) ); // mov rdx,3
+		// _asm.add( new Mov_rmi(new R(Reg64.RDX,true), 3) ); // mov rdx,3
 		//   In that last example, we had to pass in a "true" to indicate whether the passed register
 		//    is the operand RM or R, in this case, true means RM
 		//  Similarly:
-		// _asm.add( new Push(new ModRMSIB(Reg64.RBP,16)) );
+		// _asm.add( new Push(new R(Reg64.RBP,16)) );
 		//   This one doesn't specify RegR because it is: push [rbp+16] and there is no second operand register needed
 		
 		// Patching example:
@@ -79,14 +79,14 @@ public class CodeGenerator implements Visitor<Object, Object> {
 	}
 	
 	private int makeMalloc() {
-		int idxStart = _asm.add( new Mov_rmi(new ModRMSIB(Reg64.RAX,true),0x09) ); // mmap
+		int idxStart = _asm.add( new Mov_rmi(new R(Reg64.RAX,true),0x09) ); // mmap
 		
-		_asm.add( new Xor(		new ModRMSIB(Reg64.RDI,Reg64.RDI)) 	); // addr=0
-		_asm.add( new Mov_rmi(	new ModRMSIB(Reg64.RSI,true),0x1000) ); // 4kb alloc
-		_asm.add( new Mov_rmi(	new ModRMSIB(Reg64.RDX,true),0x03) 	); // prot read|write
-		_asm.add( new Mov_rmi(	new ModRMSIB(Reg64.R10,true),0x22) 	); // flags= private, anonymous
-		_asm.add( new Mov_rmi(	new ModRMSIB(Reg64.R8, true),-1) 	); // fd= -1
-		_asm.add( new Xor(		new ModRMSIB(Reg64.R9,Reg64.R9)) 	); // offset=0
+		_asm.add( new Xor(		new R(Reg64.RDI,Reg64.RDI)) 	); // addr=0
+		_asm.add( new Mov_rmi(	new R(Reg64.RSI,true),0x1000) ); // 4kb alloc
+		_asm.add( new Mov_rmi(	new R(Reg64.RDX,true),0x03) 	); // prot read|write
+		_asm.add( new Mov_rmi(	new R(Reg64.R10,true),0x22) 	); // flags= private, anonymous
+		_asm.add( new Mov_rmi(	new R(Reg64.R8, true),-1) 	); // fd= -1
+		_asm.add( new Xor(		new R(Reg64.R9,Reg64.R9)) 	); // offset=0
 		_asm.add( new Syscall() );
 		
 		// pointer to newly allocated memory is in RAX
