@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="" />
+    <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,8 +22,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -83,6 +88,7 @@
     "JUnit.RMSIBTest.makeRDisp.executor": "Run",
     "JUnit.RMSIBTest.makeRDispMult.executor": "Run",
     "JUnit.RMSIBTest.makeRMR.executor": "Run",
+    "JUnit.RMSIBTest.mov.executor": "Run",
     "JUnit.RMSIBTest.pop.executor": "Run",
     "JUnit.RMSIBTest.stackManagement.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -130,7 +136,23 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.RMSIBTest.instructions">
+  <component name="RunManager" selected="JUnit.RMSIBTest.mov">
+    <configuration name="PA1Test.parse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
+      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
+      <option name="METHOD_NAME" value="parse" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="RMSIBTest.instructions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
@@ -163,7 +185,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RMSIBTest.makeRDispMult" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.makeRMR" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
@@ -173,13 +195,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="codegeneration" />
       <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
-      <option name="METHOD_NAME" value="makeRDispMult" />
+      <option name="METHOD_NAME" value="makeRMR" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RMSIBTest.pop" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.mov" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
@@ -189,42 +211,26 @@
       </extension>
       <option name="PACKAGE_NAME" value="codegeneration" />
       <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
-      <option name="METHOD_NAME" value="pop" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="RMSIBTest.stackManagement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="miniJavaCompiler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="codegeneration.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="codegeneration" />
-      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
-      <option name="METHOD_NAME" value="stackManagement" />
+      <option name="METHOD_NAME" value="mov" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="JUnit.RMSIBTest.instructions" />
+      <item itemvalue="JUnit.RMSIBTest.makeRMR" />
+      <item itemvalue="JUnit.RMSIBTest.mov" />
       <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
-      <item itemvalue="JUnit.RMSIBTest.makeRDispMult" />
-      <item itemvalue="JUnit.RMSIBTest.pop" />
-      <item itemvalue="JUnit.RMSIBTest.stackManagement" />
+      <item itemvalue="JUnit.RMSIBTest.instructions" />
+      <item itemvalue="JUnit.PA1Test.parse" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.RMSIBTest.instructions" />
-        <item itemvalue="JUnit.RMSIBTest.stackManagement" />
-        <item itemvalue="JUnit.RMSIBTest.pop" />
-        <item itemvalue="JUnit.RMSIBTest.makeRDispMult" />
+        <item itemvalue="JUnit.RMSIBTest.mov" />
+        <item itemvalue="JUnit.RMSIBTest.makeRMR" />
         <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
+        <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.RMSIBTest.instructions" />
       </list>
     </recent_temporary>
   </component>
@@ -295,7 +301,9 @@
       <workItem from="1712684450908" duration="30895000" />
       <workItem from="1713137587640" duration="9036000" />
       <workItem from="1713382590734" duration="1842000" />
-      <workItem from="1713452639012" duration="16433000" />
+      <workItem from="1713452639012" duration="27503000" />
+      <workItem from="1713552255547" duration="1616000" />
+      <workItem from="1713813530432" duration="3467000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -456,7 +464,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="code-gen" />
                       </list>
                     </value>
                   </entry>

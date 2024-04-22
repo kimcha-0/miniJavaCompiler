@@ -160,9 +160,10 @@ public class R {
 		// TODO: construct the byte and write to _b
 		// Operands: [rdisp+disp],r
 		// mod = 2 | 1 | 0
-		int mod = disp >= 1 << 7 ? 2 : disp > 0 ? 1 : 0;
+		int mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
 		int regByte = ( mod << 6 ) | ( getIdx(r) << 3 ) | getIdx(rdisp);
 		_b.write( regByte );
+		x64.writeInt(_b, disp);
 	}
 	
 	// [ridx*mult+disp],r
@@ -174,10 +175,13 @@ public class R {
 		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [ridx*mult + disp], r
-		int mod = disp >= 1 << 7 ? 2 : disp > 0 ? 1 : 0;
+		int mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
 		int ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
-		int regByte = ( ss << 6 ) | ( getIdx(ridx) << 3 ) | getIdx(Reg64.RSP);
+		int regByte = (mod << 6) | (getIdx(r) << 3) | getIdx(Reg64.RSP);
+		int sibByte = (ss << 6) | getIdx(Reg64.RSP) << 3 | getIdx(ridx);
 		_b.write(regByte);
+		_b.write(sibByte);
+		x64.writeInt(_b, disp);
 	}
 	
 	// [rdisp+ridx*mult+disp],r
@@ -189,31 +193,24 @@ public class R {
 		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [rdisp + ridx*mult + disp], r
-		int mod;
-		int ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
-		int regByte = ( ss << 6 ) | ( getIdx(ridx) << 3 ) | getIdx(rdisp);
+		int mod, ss;
+		mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
+		ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
+		int regByte = (mod << 6) | (getIdx(r) << 3) | getIdx(Reg64.RSP);
+		int sibByte = (ss << 6) | getIdx(rdisp) | getIdx(ridx);
 		_b.write(regByte);
+		_b.write(sibByte);
+		x64.writeInt(_b, disp);
 	}
 	
 	// [disp],r
 	private void Make( int disp, Reg r ) {
 		_b.write( ( getIdx(r) << 3 ) | 4 );
 		_b.write( ( 4 << 3 ) | 5 ); // ss doesn't matter
-		writeInt(_b,disp);
+		x64.writeInt(_b,disp);
 	}
 	
 	private int getIdx(Reg r) {
 		return x64.getIdx(r);
-	}
-	
-	// TODO: This is a duplicate declaration from x64.writeInt
-	//  You should remove this, but the reason it is here is so that
-	//  you can immediately see what it does, and so you know what
-	//  is available to you in the x64 class.
-	private void writeInt(ByteArrayOutputStream b, int n) {
-		for( int i = 0; i < 4; ++i ) {
-			b.write( n & 0xFF );
-			n >>= 8;
-		}
 	}
 }

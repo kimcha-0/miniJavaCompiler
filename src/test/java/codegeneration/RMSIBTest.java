@@ -1,9 +1,6 @@
 package codegeneration;
 
-import miniJava.CodeGeneration.x64.ISA.Mov_ri64;
-import miniJava.CodeGeneration.x64.ISA.Pop;
-import miniJava.CodeGeneration.x64.ISA.Push;
-import miniJava.CodeGeneration.x64.ISA.Ret;
+import miniJava.CodeGeneration.x64.ISA.*;
 import miniJava.CodeGeneration.x64.Instruction;
 import miniJava.CodeGeneration.x64.InstructionList;
 import miniJava.CodeGeneration.x64.R;
@@ -33,7 +30,7 @@ public class RMSIBTest {
             for (int j = 0; j < 8; j++) {
                 Reg64 rm = (Reg64) RegFromIdx(j, false);
                 Reg64 r = (Reg64) RegFromIdx(i, false);
-                R reg = new R(rm, r);
+                R reg = new R(r, rm);
                 byte[] regEncoding = getEncoding(reg);
                 System.out.println("r: " + r.toString() + ", rm: " + rm.toString() + " " + getHexString(regEncoding[0]));
             }
@@ -58,27 +55,14 @@ public class RMSIBTest {
     }
 
     @Test
-    void makeRDispMult() {
-        for (int i = 0; i < 3; i++) {
-            for (int n = 0; n < 4; n++) {
-                for (int j = 0; j < 8; j++) {
-                    for (int k = 0; k < 8; k++) {
-                        Reg64 r = (Reg64) RegFromIdx(j, false);
-                        Reg64 rm = (Reg64) RegFromIdx(k, false);
-                        if (k == 4)
-                            // ridx is rsp
-                            continue;
-                        int disp = i == 2 ? 1 << 8 : i == 1 ? i << 1 : 0;
-                        int mult = (int) Math.pow(2, n);
-                        R reg = new R(Reg64.RSP, rm, mult, disp, r);
-                        byte[] regEncoding = getEncoding(reg);
-                        System.out.println("r: " + r.toString() + ", rm: " + rm.toString() + ", disp: " + disp +
-                                ", mult: " + mult + " "
-                                + getHexString(regEncoding[0]));
-                    }
-                }
-            }
-        }
+    void mov() {
+        // mov r11, [r10 + r8*8+2222]
+        R r = new R(Reg64.R10, Reg64.R8, 8, 2222, Reg64.R11);
+        Instruction rrmMov = new Mov_rrm(r);
+        byte[] instructionEncoding = rrmMov.getBytes();
+//        System.out.println(Arrays.toString(rrmMov.getBytes()));
+        printHexString(instructionEncoding);
+
     }
 
     @Test
@@ -92,7 +76,7 @@ public class RMSIBTest {
     void printHexString(byte[] encoding) {
         System.out.print("0x");
         for (byte b : encoding) {
-            System.out.print(String.format("%04x", b) + " ");
+            System.out.print(String.format("%02x", b) + " ");
         }
         System.out.println();
     }

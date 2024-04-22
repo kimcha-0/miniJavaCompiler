@@ -16,7 +16,6 @@ public class CodeGenerator implements Visitor<Object, Object> {
 	
 	public void parse(Package prog) {
 		_asm = new InstructionList();
-		
 		// If you haven't refactored the name "R" to something like "R",
 		//  go ahead and do that now. You'll be needing that object a lot.
 		// Here is some example code.
@@ -59,7 +58,6 @@ public class CodeGenerator implements Visitor<Object, Object> {
 		// patch method 2: let the jmp calculate the offset
 		//  Note the false means that it is a 32-bit immediate for jumping (an int)
 		//     _asm.patch( someJump.listIdx, new Jmp(asm.size(), someJump.startAddress, false) );
-		
 		prog.visit(this,null);
 		
 		// Output the file "a.out" if no errors
@@ -70,11 +68,14 @@ public class CodeGenerator implements Visitor<Object, Object> {
 	@Override
 	public Object visitPackage(Package prog, Object arg) {
 		// TODO: visit relevant parts of our AST
+		prog.classDeclList.forEach(cd -> cd.visit(this, null));
 		return null;
 	}
 
 	@Override
 	public Object visitClassDecl(ClassDecl cd, Object arg) {
+		cd.fieldDeclList.forEach(fd -> fd.visit(this, null));
+		cd.methodDeclList.forEach(md -> md.visit(this, null));
 		return null;
 	}
 
@@ -85,6 +86,13 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
 	@Override
 	public Object visitMethodDecl(MethodDecl md, Object arg) {
+		if (!md.patchList.isEmpty()) {
+			for (Instruction i : md.patchList) {
+				// replace instruction with proper jump location
+			}
+		}
+		md.parameterDeclList.forEach(pd -> pd.visit(this, md));
+		md.statementList.forEach(stmt -> stmt.visit(this, md));
 		return null;
 	}
 
@@ -250,12 +258,19 @@ public class CodeGenerator implements Visitor<Object, Object> {
 		_asm.add( new Syscall() );
 		
 		// pointer to newly allocated memory is in RAX
+
 		// return the index of the first instruction in this method, if needed
 		return idxStart;
 	}
 	
 	private int makePrintln() {
 		// TODO: how can we generate the assembly to println?
+		// write(int fildes, const void *buf, size_t nbyte)
+		// rax := 1
+		new Mov_ri64(Reg64.RAX, 1);
+		// rdi := fildes (stdout = 1)
+		// rsi := *buf (int value in exprList)
+		// rdx := 4
 		return -1;
 	}
 }
