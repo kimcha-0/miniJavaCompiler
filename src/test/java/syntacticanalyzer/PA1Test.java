@@ -2,6 +2,7 @@ package syntacticanalyzer;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.CodeGeneration.CodeGenerator;
 import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ContextualAnalysis.TypeChecker;
 import miniJava.ErrorReporter;
@@ -80,6 +81,7 @@ class PA1Test {
                             }
                             if (!reporter.hasErrors()) {
                                 System.out.println("Success");
+                                CodeGenerator generator = new CodeGenerator(reporter, ast);
                             } else {
                                 System.out.println("Error");
                                 reporter.outputErrors();

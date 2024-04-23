@@ -12,8 +12,10 @@ public class CodeGenerator implements Visitor<Object, Object> {
     private boolean hasMainMethod;
     private int mainMethodAddr;
 
-    public CodeGenerator(ErrorReporter errors) {
+    public CodeGenerator(ErrorReporter errors, AST ast) {
         this._errors = errors;
+        hasMainMethod = false;
+        parse((Package)ast);
     }
 
     public void parse(Package prog) {
@@ -99,17 +101,20 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // offset = base + currSize - base;
         fieldRT.setOffset(classRT.getBase() - classRT.getSize());
         fd.runtimeEntity = fieldRT;
-        // push 0
+        // create stack space for value
         _asm.add( new Push(0) );
         return null;
     }
 
     @Override
     public Object visitMethodDecl(MethodDecl md, Object arg) {
-        if (md.name.equals("main")) {
+        // callee
+        // create stack space for method
+        _asm.add( new Push(0) );
+        if (md.name.equals("main") && md.isStatic && md.parameterDeclList.size() == 1) {
+            System.out.println("main method gen");
             this.hasMainMethod = true;
             this.mainMethodAddr = _asm.getSize();
-            this._asm.markOutputStart();
         }
         if (md.patchList != null) {
             for (Instruction instruction : md.patchList) {
@@ -134,7 +139,8 @@ public class CodeGenerator implements Visitor<Object, Object> {
         paramRT.setSize(8);
         methodRT.setSize(methodRT.getSize() + paramRT.getSize());
         paramRT.setOffset(paramRT.getBase() - methodRT.getSize());
-        // push space for pointer to array or class object or primitive
+
+        // create space for pointer to array or class object or primitive
         _asm.add( new Push(0) );
         return null;
     }
@@ -149,7 +155,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         methodRT.setSize(methodRT.getSize() + varRT.getSize());
         varRT.setOffset(varRT.getBase() - methodRT.getSize());
         decl.runtimeEntity = varRT;
-        // LocalDecl so push enough space on stack
+        // push space on stack
         _asm.add( new Push(0) );
         return null;
     }
@@ -177,19 +183,18 @@ public class CodeGenerator implements Visitor<Object, Object> {
     @Override
     public Object visitVardeclStmt(VarDeclStmt stmt, Object arg) {
         // visit varDecl -> allocates space for variable push 0
-        stmt.varDecl.visit(this, null);
+        RuntimeEntity methodRT = (RuntimeEntity)arg;
+        stmt.varDecl.visit(this, methodRT);
         // visit expr -> push val
+        if (stmt.varDecl.type.typeKind == TypeKind.CLASS) {
+            // class type variable; if constructor, call malloc and store pointer to memory on stack
+        }
         if (stmt.initExp != null) {
-            // pop rcx
-            // mov rax, [rsp]
-            // mov [rax], rcx
-            stmt.initExp.visit(this, null);
-            // rsp is the value of the expression
-            // rcx holds the value of the expression
-            _asm.add( new Pop(Reg64.RCX) );
-            // [rsp] is where x is stored
-            // mov [rsp], rcx; moves value of expression into the address of x
-            _asm.add( new Mov_rmr(new R(Reg64.RSP, Reg64.RCX)));
+            stmt.initExp.visit(this, methodRT);
+            // pop rax; rax := val
+            _asm.add( new Pop(Reg64.RAX) );
+            // mov rsp, rax; rsp := val
+            _asm.add( new Mov_rmr(new R(Reg64.RSP, Reg64.RAX)));
         }
         return null;
     }
@@ -231,6 +236,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
     @Override
     public Object visitCallStmt(CallStmt stmt, Object arg) {
+        // if method has not been visited yet, patch
         return null;
     }
 
@@ -280,6 +286,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
     @Override
     public Object visitCallExpr(CallExpr expr, Object arg) {
+        // patch if method has not been visited yet
         return null;
     }
 

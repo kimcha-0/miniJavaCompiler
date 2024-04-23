@@ -5,6 +5,6 @@
 class MainClass {
    public static void main (String [] args) {
       int tstvar = 49;
-      System.out.println (tstvar);
+//      System.out.println (tstvar);
    }
 }
