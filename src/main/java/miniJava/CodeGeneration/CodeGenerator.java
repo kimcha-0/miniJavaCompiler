@@ -10,6 +10,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
     private ErrorReporter _errors;
     private InstructionList _asm; // our list of instructions that are used to make the code section
     private boolean hasMainMethod;
+    private int mainMethodAddr;
 
     public CodeGenerator(ErrorReporter errors) {
         this._errors = errors;
@@ -107,6 +108,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
     public Object visitMethodDecl(MethodDecl md, Object arg) {
         if (md.name.equals("main")) {
             this.hasMainMethod = true;
+            this.mainMethodAddr = _asm.getSize();
             this._asm.markOutputStart();
         }
         if (md.patchList != null) {
@@ -345,7 +347,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
     public void makeElf(String fname) {
         ELFMaker elf = new ELFMaker(_errors, _asm.getSize(), 8); // bss ignored until PA5, set to 8
-        elf.outputELF(fname, _asm.getBytes(), 0); // TODO: set the location of the main method
+        elf.outputELF(fname, _asm.getBytes(), this.mainMethodAddr); // TODO: set the location of the main method
     }
 
     private int makeMalloc() {
