@@ -52,7 +52,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
         // Patching example:
         // Instruction someJump = new Jmp((int)0); // 32-bit offset jump to nowhere
-        // _asm.add( someJump ); // populate listIdx and startAddress for the instruction
+        // _asm.add( someJump ); // populate listIdx and startAPddress for the instruction
         // ...
         // ... visit some code that probably uses _asm.add
         // ...
@@ -61,8 +61,9 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // -=-=-=-
         // patch method 2: let the jmp calculate the offset
         //  Note the false means that it is a 32-bit immediate for jumping (an int)
-        //     _asm.patch( someJump.listIdx, new Jmp(asm.size(), someJump.startAddress, false) );
+//             _asm.patch( someJump.listIdx, new Jmp(asm.size(), someJump.startAddress, false) );
         prog.visit(this, null);
+        _asm.add( new Mov_rmr(new R(Reg64.RBP, Reg64.RSP)));
         if (!this.hasMainMethod)
             reportCodeGenError("main method not found for this program");
 
@@ -206,11 +207,11 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // push val
         stmt.val.visit(this, null);
         // pop rcx
-        _asm.add( new Pop(new R(Reg64.RCX, false)) );
+        _asm.add( new Pop(Reg64.RCX) );
         // pop rax
-        _asm.add( new Pop(new R(Reg64.RAX, false)));
+        _asm.add( new Pop(Reg64.RAX));
         // mov [rax], rcx
-        // [ref] = val
+        _asm.add( new Mov_rmr(new R(Reg64.RAX, 0, Reg64.RCX)));
         return null;
     }
 
