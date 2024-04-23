@@ -8,4 +8,3 @@ class MainClass {
       System.out.println (tstvar);
    }
 }
-

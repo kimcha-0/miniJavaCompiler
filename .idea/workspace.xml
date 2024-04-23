@@ -123,6 +123,7 @@
       <recent name="syntacticanalyzer" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="miniJava.AbstractSyntaxTrees" />
       <recent name="miniJava.ContextualAnalysis" />
       <recent name="comp520" />
     </key>
@@ -136,7 +137,7 @@
       <command value="node --version" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.RMSIBTest.mov">
+  <component name="RunManager" selected="JUnit.PA1Test.parse">
     <configuration name="PA1Test.parse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
@@ -226,11 +227,11 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PA1Test.parse" />
+        <item itemvalue="JUnit.RMSIBTest.instructions" />
         <item itemvalue="JUnit.RMSIBTest.mov" />
         <item itemvalue="JUnit.RMSIBTest.makeRMR" />
         <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
-        <item itemvalue="JUnit.PA1Test.parse" />
-        <item itemvalue="JUnit.RMSIBTest.instructions" />
       </list>
     </recent_temporary>
   </component>
@@ -303,7 +304,7 @@
       <workItem from="1713382590734" duration="1842000" />
       <workItem from="1713452639012" duration="27503000" />
       <workItem from="1713552255547" duration="1616000" />
-      <workItem from="1713813530432" duration="3467000" />
+      <workItem from="1713813530432" duration="26852000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />

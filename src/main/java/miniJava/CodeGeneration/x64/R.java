@@ -190,7 +190,6 @@ public class R {
 			throw new IllegalArgumentException("Invalid multiplier value: " + mult);
 		if( ridx == Reg64.RSP )
 			throw new IllegalArgumentException("Index cannot be rsp");
-		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [rdisp + ridx*mult + disp], r
 		int mod, ss;

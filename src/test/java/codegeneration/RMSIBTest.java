@@ -1,6 +1,8 @@
 package codegeneration;
 
-import miniJava.CodeGeneration.x64.ISA.*;
+import miniJava.CodeGeneration.x64.ISA.Mov_ri64;
+import miniJava.CodeGeneration.x64.ISA.Mov_rrm;
+import miniJava.CodeGeneration.x64.ISA.Push;
 import miniJava.CodeGeneration.x64.Instruction;
 import miniJava.CodeGeneration.x64.InstructionList;
 import miniJava.CodeGeneration.x64.R;
@@ -14,13 +16,10 @@ public class RMSIBTest {
     @Test
     void instructions() {
         InstructionList instructionList = new InstructionList();
-        Instruction push = new Push(500);
-        Instruction pop = new Pop(Reg64.R9);
-        Instruction movri64 = new Mov_ri64(Reg64.RAX, 0xFF0000000000000FL);
-        Instruction ret = new Ret((short) 2);
+        R r = new R(Reg64.R11, Reg64.R8, 8, 4096);
+        Instruction push = new Push(r);
+        Instruction movri64 = new Mov_ri64(Reg64.RAX, 0x1000000000000000L);
         printHexString(push.getBytes());
-        printHexString(ret.getBytes());
-        printHexString(pop.getBytes());
         printHexString(movri64.getBytes());
     }
     @Test
