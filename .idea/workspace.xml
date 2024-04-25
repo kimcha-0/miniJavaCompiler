@@ -6,10 +6,17 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
       <change beforePath="$PROJECT_DIR$/pa3_tests/pass400.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3_tests/pass400.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/IdentificationTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/ScopedIdentification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/ContextualAnalysis/TypeChecker.java" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" afterDir="false" />
+>>>>>>> code-gen
       <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +31,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Interface" />
         <option value="JUnit5 Test Class" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -83,6 +90,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
@@ -101,6 +109,35 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Compiler.executor": "Run",
+    "JUnit.PA1Test.compile.executor": "Run",
+    "JUnit.PA1Test.parse.executor": "Run",
+    "JUnit.PA1Test.scan.executor": "Run",
+    "JUnit.RMSIBTest.executor": "Run",
+    "JUnit.RMSIBTest.instructions.executor": "Run",
+    "JUnit.RMSIBTest.make.executor": "Run",
+    "JUnit.RMSIBTest.makeRDisp.executor": "Run",
+    "JUnit.RMSIBTest.makeRDispMult.executor": "Run",
+    "JUnit.RMSIBTest.makeRMR.executor": "Run",
+    "JUnit.RMSIBTest.mov.executor": "Run",
+    "JUnit.RMSIBTest.pop.executor": "Run",
+    "JUnit.RMSIBTest.stackManagement.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "code-gen",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
+>>>>>>> code-gen
   },
   &quot;keyToStringList&quot;: {
     &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
@@ -121,6 +158,7 @@
       <recent name="syntacticanalyzer" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="miniJava.AbstractSyntaxTrees" />
       <recent name="miniJava.ContextualAnalysis" />
       <recent name="comp520" />
     </key>
@@ -135,37 +173,6 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.PA1Test.parse">
-    <configuration name="Compiler" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="miniJava.Compiler" />
-      <module name="miniJavaCompiler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="miniJava.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="PA1Test.compile" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="miniJavaCompiler" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="syntacticanalyzer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="ALTERNATIVE_JRE_PATH" value="11" />
-      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
-      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
-      <option name="METHOD_NAME" value="compile" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="PA1Test.parse" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
@@ -182,35 +189,91 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PA1Test.scan" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="RMSIBTest.instructions" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="miniJavaCompiler" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="syntacticanalyzer.*" />
+          <option name="PATTERN" value="codegeneration.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="syntacticanalyzer" />
-      <option name="MAIN_CLASS_NAME" value="syntacticanalyzer.PA1Test" />
-      <option name="METHOD_NAME" value="scan" />
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="instructions" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RMSIBTest.makeRDisp" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="codegeneration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="makeRDisp" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RMSIBTest.makeRMR" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="codegeneration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="makeRMR" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="RMSIBTest.mov" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="miniJavaCompiler" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="codegeneration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="codegeneration" />
+      <option name="MAIN_CLASS_NAME" value="codegeneration.RMSIBTest" />
+      <option name="METHOD_NAME" value="mov" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Compiler" />
-      <item itemvalue="JUnit.PA1Test.compile" />
+      <item itemvalue="JUnit.RMSIBTest.makeRMR" />
+      <item itemvalue="JUnit.RMSIBTest.mov" />
+      <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
+      <item itemvalue="JUnit.RMSIBTest.instructions" />
       <item itemvalue="JUnit.PA1Test.parse" />
-      <item itemvalue="JUnit.PA1Test.scan" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.PA1Test.parse" />
+<<<<<<< HEAD
         <item itemvalue="JUnit.PA1Test.compile" />
         <item itemvalue="Application.Compiler" />
         <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.PA1Test.compile" />
+=======
+        <item itemvalue="JUnit.RMSIBTest.instructions" />
+        <item itemvalue="JUnit.RMSIBTest.mov" />
+        <item itemvalue="JUnit.RMSIBTest.makeRMR" />
+        <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
+>>>>>>> code-gen
       </list>
     </recent_temporary>
   </component>
@@ -279,10 +342,21 @@
       <workItem from="1712526296415" duration="21242000" />
       <workItem from="1712616681478" duration="7405000" />
       <workItem from="1712684450908" duration="30895000" />
+<<<<<<< HEAD
       <workItem from="1712808296656" duration="1073000" />
       <workItem from="1712846493711" duration="10727000" />
       <workItem from="1712946624477" duration="4027000" />
       <workItem from="1713127972504" duration="3026000" />
+=======
+      <workItem from="1713137587640" duration="9036000" />
+      <workItem from="1713382590734" duration="1842000" />
+      <workItem from="1713452639012" duration="27503000" />
+      <workItem from="1713552255547" duration="1616000" />
+      <workItem from="1713813530432" duration="36089000" />
+      <workItem from="1713864359459" duration="11516000" />
+      <workItem from="1713988513307" duration="6160000" />
+      <workItem from="1713994707112" duration="21061000" />
+>>>>>>> code-gen
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -460,7 +534,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="code-gen" />
                       </list>
                     </value>
                   </entry>
@@ -498,6 +572,34 @@
     <MESSAGE value="Initialize ClassType TypeDenoter for Class Declarations." />
     <option name="LAST_COMMIT_MESSAGE" value="Initialize ClassType TypeDenoter for Class Declarations." />
   </component>
+<<<<<<< HEAD
+=======
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>106</line>
+          <properties class="syntacticanalyzer.PA1Test" method="compile">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>107</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
+          <line>125</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+>>>>>>> code-gen
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />

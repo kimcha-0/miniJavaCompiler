@@ -2,6 +2,7 @@ package miniJava;
 
 import miniJava.AbstractSyntaxTrees.AST;
 import miniJava.AbstractSyntaxTrees.ASTDisplay;
+import miniJava.CodeGeneration.CodeGenerator;
 import miniJava.ContextualAnalysis.ScopedIdentification;
 import miniJava.ContextualAnalysis.TypeChecker;
 import miniJava.SyntacticAnalyzer.LexerImpl;
@@ -39,15 +40,15 @@ public class Compiler {
                 } catch (IdentificationError e) {
                 } finally {
                     if (reporter.hasErrors()) {
-                        System.out.println("Error");
+//                        System.out.println("Error");
                         reporter.outputErrors();
                     } else {
                         TypeChecker typeChecker = new TypeChecker(syntaxTree, reporter);
                         if (reporter.hasErrors()) {
-                            System.out.println("Error");
+//                            System.out.println("Error");
                             reporter.outputErrors();
                         } else {
-                            System.out.println("Success");
+                                CodeGenerator codeGen = new CodeGenerator(reporter, syntaxTree);
                         }
                 }
                 // astDisplay.showTree(syntaxTree);

@@ -5,7 +5,10 @@
  */
 package miniJava.AbstractSyntaxTrees;
 
+import miniJava.CodeGeneration.x64.Instruction;
 import miniJava.SyntacticAnalyzer.SourcePosition;
+
+import java.util.ArrayList;
 
 public class MethodDecl extends MemberDecl {
 
@@ -15,6 +18,7 @@ public class MethodDecl extends MemberDecl {
     super(md,posn);
     parameterDeclList = pl;
     statementList = sl;
+    patchList = new ArrayList<>();
 	}
 	
 	public <A, R> R visit(Visitor<A, R> v, A o) {
@@ -23,4 +27,5 @@ public class MethodDecl extends MemberDecl {
 	
 	public ParameterDeclList parameterDeclList;
 	public StatementList statementList;
+    public ArrayList<Instruction> patchList;
 }
