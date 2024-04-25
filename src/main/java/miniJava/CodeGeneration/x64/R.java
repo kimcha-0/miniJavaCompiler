@@ -160,6 +160,9 @@ public class R {
 		// TODO: construct the byte and write to _b
 		// Operands: [rdisp+disp],r
 		// mod = 2 | 1 | 0
+		if (rdisp == Reg64.RSP) {
+			// output SIB Byte
+		}
 		int mod = Math.abs(disp) > 1 << 7 - 1 ? 2 : Math.abs(disp) > 0 ? 1 : 0;
 		int regByte = ( mod << 6 ) | ( getIdx(r) << 3 ) | getIdx(rdisp);
 		_b.write( regByte );
@@ -196,7 +199,7 @@ public class R {
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [rdisp + ridx*mult + disp], r
 		int mod, ss;
-		mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
+		mod = Math.abs(disp) > 1 << 7 - 1 ? 2 : Math.abs(disp) > 0 ? 1 : 0;
 		ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
 		int regByte = (mod << 6) | (getIdx(r) << 3) | getIdx(Reg64.RSP);
 		int sibByte = (ss << 6) | getIdx(rdisp) | getIdx(ridx);

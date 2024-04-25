@@ -151,9 +151,6 @@ public class CodeGenerator implements Visitor<Object, Object> {
         _asm.add(new Mov_rmr(new R(Reg64.RSP, Reg64.RBP)));
         // return rbp to caller
         _asm.add(new Pop(Reg64.RBP));
-        if (!md.name.equals("main")) {
-            _asm.add(new Ret());
-        }
         return null;
     }
 
@@ -172,7 +169,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         RuntimeEntity methodRT = (RuntimeEntity) arg;
         RuntimeEntity paramRT = new RuntimeEntity();
         paramRT.size = 8;
-        paramRT.offset = paramRT.getSize() + methodRT.getSize();
+        paramRT.offset = paramRT.size + methodRT.size;
         methodRT.size += paramRT.size;
         pd.runtimeEntity = paramRT;
         return null;
@@ -560,6 +557,10 @@ public class CodeGenerator implements Visitor<Object, Object> {
         _asm.add(new Pop(Reg64.RCX));
         // nbyte = 4;
         _asm.add(new Mov_rmi(new R(Reg64.RDX, true), 0x1));
+        _asm.add(new Syscall());
+        _asm.add(new Push(0));
+        _asm.add(new Mov_rmr(new R(Reg64.RSI, Reg64.RSP)));
+        _asm.add( new Pop(Reg64.RCX));
         _asm.add(new Syscall());
         // return start index of first instruction in write() procedure
         return idxStart;

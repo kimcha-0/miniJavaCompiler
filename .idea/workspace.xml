@@ -44,6 +44,11 @@
         </map>
       </branch-storage>
     </excluded-from-favorite>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="420aa27ceffe8196b0a960239d6446ae18f53930" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -231,9 +236,9 @@
       <list>
         <item itemvalue="JUnit.PA1Test.parse" />
         <item itemvalue="JUnit.RMSIBTest.instructions" />
+        <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
         <item itemvalue="JUnit.RMSIBTest.mov" />
         <item itemvalue="JUnit.RMSIBTest.makeRMR" />
-        <item itemvalue="JUnit.RMSIBTest.makeRDisp" />
       </list>
     </recent_temporary>
   </component>
