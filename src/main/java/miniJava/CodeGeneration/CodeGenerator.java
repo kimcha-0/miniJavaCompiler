@@ -280,8 +280,6 @@ public class CodeGenerator implements Visitor<Object, Object> {
             a.visit(this, null);
         }
         if (stmt.methodRef.decl.name.equals("println")) {
-            // pushes arg
-            stmt.argList.get(0).visit(this, null);
             makePrintln();
         }
         // if method has not been visited yet, patch
@@ -557,9 +555,9 @@ public class CodeGenerator implements Visitor<Object, Object> {
         int idxStart = _asm.add(new Mov_rmi(new R(Reg64.RAX, true), 0x1));
         // fidles = 1;
         _asm.add(new Mov_rmi(new R(Reg64.RDI, true), 0x1));
-        _asm.add(new Pop(Reg64.RCX));
         // *buf = val;
         _asm.add(new Mov_rmr(new R(Reg64.RSI, Reg64.RSP)));
+        _asm.add(new Pop(Reg64.RCX));
         // nbyte = 4;
         _asm.add(new Mov_rmi(new R(Reg64.RDX, true), 0x1));
         _asm.add(new Syscall());
