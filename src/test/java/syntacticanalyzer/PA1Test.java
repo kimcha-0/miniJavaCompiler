@@ -82,6 +82,9 @@ class PA1Test {
                             if (!reporter.hasErrors()) {
                                 System.out.println("Success");
                                 CodeGenerator generator = new CodeGenerator(reporter, ast);
+                                if (reporter.hasErrors()) {
+                                    reporter.outputErrors();
+                                }
                             } else {
                                 System.out.println("Error");
                                 reporter.outputErrors();

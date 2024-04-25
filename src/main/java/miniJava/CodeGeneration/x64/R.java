@@ -160,10 +160,13 @@ public class R {
 		// TODO: construct the byte and write to _b
 		// Operands: [rdisp+disp],r
 		// mod = 2 | 1 | 0
-		int mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
+		int mod = Math.abs(disp) > 1 << 7 - 1 ? 2 : Math.abs(disp) > 0 ? 1 : 0;
 		int regByte = ( mod << 6 ) | ( getIdx(r) << 3 ) | getIdx(rdisp);
 		_b.write( regByte );
-		x64.writeInt(_b, disp);
+		if (mod == 2)
+			x64.writeInt(_b, disp);
+		else if (mod == 1)
+			_b.write((byte)disp);
 	}
 	
 	// [ridx*mult+disp],r

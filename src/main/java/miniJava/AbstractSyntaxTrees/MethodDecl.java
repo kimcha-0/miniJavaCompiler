@@ -9,7 +9,6 @@ import miniJava.CodeGeneration.x64.Instruction;
 import miniJava.SyntacticAnalyzer.SourcePosition;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MethodDecl extends MemberDecl {
 
@@ -28,5 +27,5 @@ public class MethodDecl extends MemberDecl {
 	
 	public ParameterDeclList parameterDeclList;
 	public StatementList statementList;
-    public List<Instruction> patchList;
+    public ArrayList<Instruction> patchList;
 }

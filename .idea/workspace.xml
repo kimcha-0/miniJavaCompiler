@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
@@ -101,7 +103,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "preferences.keymap",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -304,7 +306,10 @@
       <workItem from="1713382590734" duration="1842000" />
       <workItem from="1713452639012" duration="27503000" />
       <workItem from="1713552255547" duration="1616000" />
-      <workItem from="1713813530432" duration="36028000" />
+      <workItem from="1713813530432" duration="36089000" />
+      <workItem from="1713864359459" duration="11516000" />
+      <workItem from="1713988513307" duration="6160000" />
+      <workItem from="1713994707112" duration="18774000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -501,16 +506,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>53</line>
-          <properties class="syntacticanalyzer.PA1Test" method="parse">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>103</line>
+          <line>106</line>
           <properties class="syntacticanalyzer.PA1Test" method="compile">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -519,12 +515,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>104</line>
+          <line>107</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>122</line>
+          <line>125</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>
