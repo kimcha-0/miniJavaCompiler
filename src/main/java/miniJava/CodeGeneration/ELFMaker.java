@@ -94,7 +94,7 @@ public class ELFMaker {
 		
 		text.data = textSection;
 		
-		phdr.p_type = PT_LOAD; // TODO: what is the type of the program header segment?
+		phdr.p_type = PT_PHDR; // TODO: what is the type of the program header segment?
 		phdr.p_flags = PF_X | PF_R; // TODO: what are the flags of the program header segment?
 		phdr.p_offset = phStartAddress;
 		phdr.p_vaddr = phStartAddress;

@@ -8,8 +8,8 @@ class MainClass {
        if (tstvar == 50) {
            tstvar = 51;
        }
-       else
-           tstvar = 21;
+//       else
+//           tstvar = 21;
        System.out.println(tstvar);
    }
 }

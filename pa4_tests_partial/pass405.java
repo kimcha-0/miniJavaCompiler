@@ -7,9 +7,9 @@ class MainClass {
 
        FirstClass f = new FirstClass ();
        f.n = 48;
-       int tstvar = 5 + f.n;
+       int tstvar = 5;
 
-       System.out.println(tstvar);
+       System.out.println(tstvar + f.n);
    }
 }
 

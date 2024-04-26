@@ -22,6 +22,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         this.numMainMethods = 0;
     }
 
+
     public void parse(Package prog) {
         _asm = new InstructionList();
         // If you haven't refactored the name "R" to something like "R",
@@ -66,10 +67,12 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // patch method 2: let the jmp calculate the offset
         //  Note the false means that it is a 32-bit immediate for jumping (an int)
 //             _asm.patch( someJump.listIdx, new Jmp(asm.size(), someJump.startAddress, false) );
+        _asm.markOutputStart();
         prog.visit(this, null);
 //        _asm.add( new Push(90));
 //        makePrintln();
         makeExit();
+        _asm.outputFromMark();
         if (!this.hasMainMethod || this.numMainMethods > 1)
             reportCodeGenError("main method error");
 
@@ -145,7 +148,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         md.runtimeEntity = methodRT;
         // TODO: patching method jump location
         md.patchList.forEach(patch -> {
-            _asm.patch(patch.listIdx, new Jmp(methodStartAddr));
+            _asm.patch(patch.listIdx, new Call(patch.startAddress, methodStartAddr));
         });
         // allocate space for local variables
         // method prologue
@@ -239,7 +242,8 @@ public class CodeGenerator implements Visitor<Object, Object> {
         stmt.varDecl.visit(this, arg);
         // push val
         stmt.initExp.visit(this, null);
-        _asm.add(new Pop(Reg64.RAX));
+        if (!(stmt.initExp instanceof NewObjectExpr))
+            _asm.add(new Pop(Reg64.RAX));
         // pop rax = val;
         // mov [rbp - offset], rax; store val in varDecl
         // pop offset
@@ -255,7 +259,8 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // expression visit
         stmt.val.visit(this, null);
         // pop the value off the stack
-        _asm.add(new Pop(Reg64.RAX));
+        if (!(stmt.val instanceof NewObjectExpr))
+            _asm.add(new Pop(Reg64.RAX));
         _asm.add(new Pop(Reg64.RDX));
         _asm.add(new Mov_rmr(new R(Reg64.RDX,0, Reg64.RAX)));
         // store value at memory address of reference
@@ -469,9 +474,10 @@ public class CodeGenerator implements Visitor<Object, Object> {
     @Override
     public Object visitRefExpr(RefExpr expr, Object arg) {
         // retrieve runtime entity of reference
-        RuntimeEntity refRT = (RuntimeEntity) expr.ref.visit(this, null);
+        // RuntimeEntity refRT = (RuntimeEntity) expr.ref.visit(this, null);
+        expr.ref.visit(this, null);
         // push [rbp - offset]
-        _asm.add(new Push(new R(Reg64.RBP, expr.ref.decl.runtimeEntity.offset)));
+//        _asm.add(new Push(new R(Reg64.RBP, expr.ref.decl.runtimeEntity.offset)));
         return null;
     }
 
@@ -517,8 +523,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
     @Override
     public Object visitLiteralExpr(LiteralExpr expr, Object arg) {
         // push literal value
-        int literal = (int) expr.lit.visit(this, null);
-        _asm.add(new Push(literal));
+        expr.lit.visit(this, null);
         return null;
     }
 
@@ -531,6 +536,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
     @Override
     public Object visitNewArrayExpr(NewArrayExpr expr, Object arg) {
+        makeMalloc();
         return null;
     }
 
@@ -541,17 +547,24 @@ public class CodeGenerator implements Visitor<Object, Object> {
 
     @Override
     public Object visitIdRef(IdRef ref, Object arg) {
-        RuntimeEntity idRT = (RuntimeEntity) ref.id.visit(this, null);
-//        _asm.add(new Push(new R(Reg64.RBP, idRT.offset)));
-        return idRT;
+//        RuntimeEntity idRT = (RuntimeEntity) ref.id.visit(this, null);
+        if (arg != null) {
+            if ((boolean)arg)
+                // effective address
+                _asm.add( new Lea(new R(Reg64.RBP, ref.id.decl.runtimeEntity.offset, Reg64.RAX)));
+        } else
+            _asm.add(new Mov_rrm(new R(Reg64.RBP, ref.id.decl.runtimeEntity.offset, Reg64.RAX)));
+        _asm.add(new Push(Reg64.RAX));
+        return ref.id.decl.runtimeEntity;
     }
 
     @Override
     public Object visitQRef(QualRef ref, Object arg) {
-        ref.ref.visit(this, (Object)false);
+        ref.ref.visit(this, null);
         //Get the field declaration of the current id
         FieldDecl decl = (FieldDecl)ref.id.decl;
         //Get the value of the previous register
+        // base case pops ref pushed by refVisit
         _asm.add(new Pop(Reg64.RAX));
         //Add the current
         //_asm.add(new Mov_rmi(new ModRMSIB(Reg64.RBX,true), decl.indexInClass*8));
@@ -609,17 +622,20 @@ public class CodeGenerator implements Visitor<Object, Object> {
     @Override
     public Object visitIntLiteral(IntLiteral num, Object arg) {
         String val = num.spelling;
-        return Integer.parseInt(val);
+        _asm.add( new Push(Integer.parseInt(val)) );
+        return null;
     }
 
     @Override
     public Object visitBooleanLiteral(BooleanLiteral bool, Object arg) {
-        return bool.spelling.equals("true") ? 1 : 0;
+        _asm.add( new Push(bool.spelling.equals("true") ? 1 : 0) );
+        return null;
     }
 
     @Override
     public Object visitNullLiteral(NullLiteral nil, Object arg) {
-        return 0;
+        _asm.add( new Push(0));
+        return null;
     }
 
     public void makeElf(String fname) {
@@ -628,6 +644,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
     }
 
     private int makeMalloc() {
+        System.out.println("malloc");
         // void *mmap(int addr, size_t len, int prot, int flags, int fd, off_t offset);
         int idxStart = _asm.add(new Mov_rmi(new R(Reg64.RAX, true), 0x09)); // mmap
         _asm.add(new Xor(new R(Reg64.RDI, Reg64.RDI))); // addr=0

@@ -52,7 +52,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa4_tests_partial/pass406.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa4_tests_partial/pass407.java")) {
             ErrorReporter reporter = new ErrorReporter();
             LexerImpl lexer = new LexerImpl(in, reporter);
             ParserImpl parser = new ParserImpl(lexer, reporter);
@@ -81,7 +81,9 @@ class PA1Test {
                             }
                             if (!reporter.hasErrors()) {
                                 System.out.println("Success");
-                                CodeGenerator generator = new CodeGenerator(reporter, ast);
+//                                CodeGenerate generator = new CodeGenerate(reporter);
+//                                generator.parse((Package)ast);
+                                CodeGenerator gen = new CodeGenerator(reporter, ast);
                                 if (reporter.hasErrors()) {
                                     reporter.outputErrors();
                                 }
@@ -147,8 +149,7 @@ class PA1Test {
                             }
                         }
                     }
-                }
-                else {
+                } else {
                     System.out.println("Error");
                     reporter.outputErrors();
                 }

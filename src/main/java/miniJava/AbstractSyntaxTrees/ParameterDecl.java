@@ -8,7 +8,8 @@ package miniJava.AbstractSyntaxTrees;
 import miniJava.SyntacticAnalyzer.SourcePosition;
 
 public class ParameterDecl extends LocalDecl {
-	
+
+	public int offset;
 	public ParameterDecl(TypeDenoter t, String name, SourcePosition posn){
 		super(name, t, posn);
 	}

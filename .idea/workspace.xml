@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="93951f99-afeb-4901-a062-4da1977e72ac" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass401.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/AbstractSyntaxTrees/MethodDecl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass402.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass402.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass403.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass403.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pa4_tests_partial/pass405.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa4_tests_partial/pass405.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/R.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/ELFMaker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/ELFMaker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_ri64.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/x64/ISA/Mov_ri64.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -83,42 +85,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Compiler.executor": "Run",
-    "JUnit.PA1Test.compile.executor": "Run",
-    "JUnit.PA1Test.parse.executor": "Run",
-    "JUnit.PA1Test.scan.executor": "Run",
-    "JUnit.RMSIBTest.executor": "Run",
-    "JUnit.RMSIBTest.instructions.executor": "Run",
-    "JUnit.RMSIBTest.make.executor": "Run",
-    "JUnit.RMSIBTest.makeRDisp.executor": "Run",
-    "JUnit.RMSIBTest.makeRDispMult.executor": "Run",
-    "JUnit.RMSIBTest.makeRMR.executor": "Run",
-    "JUnit.RMSIBTest.mov.executor": "Run",
-    "JUnit.RMSIBTest.pop.executor": "Run",
-    "JUnit.RMSIBTest.stackManagement.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "com.intellij.ide.FileNotInSourceRootChecker.no.check": "true",
-    "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "code-gen",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.Compiler.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.compile.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.parse.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PA1Test.scan.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.instructions.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.make.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.makeRDisp.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.makeRDispMult.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.makeRMR.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.mov.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.pop.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.RMSIBTest.stackManagement.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;com.intellij.ide.FileNotInSourceRootChecker.no.check&quot;: &quot;true&quot;,
+    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;code-gen&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="miniJava.ContextualAnalysis" />
@@ -315,6 +318,8 @@
       <workItem from="1713864359459" duration="11516000" />
       <workItem from="1713988513307" duration="6160000" />
       <workItem from="1713994707112" duration="21061000" />
+      <workItem from="1714108777138" duration="2294000" />
+      <workItem from="1714154023692" duration="7259000" />
     </task>
     <task id="LOCAL-00001" summary="writing boilerplate with error handling">
       <option name="closed" value="true" />
@@ -511,7 +516,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>106</line>
+          <line>108</line>
           <properties class="syntacticanalyzer.PA1Test" method="compile">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -520,12 +525,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>107</line>
+          <line>109</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/syntacticanalyzer/PA1Test.java</url>
-          <line>125</line>
+          <line>127</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -540,7 +545,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java</url>
-          <line>577</line>
+          <line>590</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>

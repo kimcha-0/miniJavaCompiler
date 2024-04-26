@@ -12,11 +12,9 @@ class MainClass {
         f.n = 5;
         f.s.n = 48 + 1;
 
-//      int tstvar = f.n + f.s.n;
-//      int x = f.n;
+        int tstvar = f.n + f.s.n;
 
-//      System.out.println(tstvar);
-        System.out.println(f.n);
+        System.out.println(tstvar);
     }
 }
 
