@@ -8,6 +8,7 @@ class MainClass {
        int test = 7;
        int [] aa = new int [test];
 	   test = 8;
+
        System.out.println(48 + test);
    }
 }
