@@ -52,7 +52,7 @@ class PA1Test {
 
     @org.junit.jupiter.api.Test
     void parse() {
-        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa4_tests_partial/pass401.java")) {
+        try (FileInputStream in = new FileInputStream("/Users/davidkim/spring-2024/comp520/miniJavaCompiler/pa4_tests_partial/pass406.java")) {
             ErrorReporter reporter = new ErrorReporter();
             LexerImpl lexer = new LexerImpl(in, reporter);
             ParserImpl parser = new ParserImpl(lexer, reporter);

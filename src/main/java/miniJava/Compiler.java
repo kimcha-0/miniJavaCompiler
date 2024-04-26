@@ -31,7 +31,7 @@ public class Compiler {
             e.printStackTrace();
         } finally {
             if (reporter.hasErrors()) {
-                System.out.println("Error");
+//                System.out.println("Error");
                 reporter.outputErrors();
             } else {
                 ASTDisplay astDisplay = new ASTDisplay();
@@ -49,6 +49,9 @@ public class Compiler {
                             reporter.outputErrors();
                         } else {
                                 CodeGenerator codeGen = new CodeGenerator(reporter, syntaxTree);
+                                if (reporter.hasErrors()) {
+                                    reporter.outputErrors();
+                                }
                         }
                 }
                 // astDisplay.showTree(syntaxTree);

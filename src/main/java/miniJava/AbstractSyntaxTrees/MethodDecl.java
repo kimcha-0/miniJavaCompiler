@@ -11,6 +11,7 @@ import miniJava.SyntacticAnalyzer.SourcePosition;
 import java.util.ArrayList;
 
 public class MethodDecl extends MemberDecl {
+    public int address;
 
     public ClassDecl inClass;
 
