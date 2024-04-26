@@ -242,8 +242,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         stmt.varDecl.visit(this, arg);
         // push val
         stmt.initExp.visit(this, null);
-        if (!(stmt.initExp instanceof NewObjectExpr))
-            _asm.add(new Pop(Reg64.RAX));
+        _asm.add(new Pop(Reg64.RAX));
         // pop rax = val;
         // mov [rbp - offset], rax; store val in varDecl
         // pop offset
@@ -259,8 +258,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // expression visit
         stmt.val.visit(this, null);
         // pop the value off the stack
-        if (!(stmt.val instanceof NewObjectExpr))
-            _asm.add(new Pop(Reg64.RAX));
+        _asm.add(new Pop(Reg64.RAX));
         _asm.add(new Pop(Reg64.RDX));
         _asm.add(new Mov_rmr(new R(Reg64.RDX,0, Reg64.RAX)));
         // store value at memory address of reference
@@ -275,6 +273,8 @@ public class CodeGenerator implements Visitor<Object, Object> {
         // push refAddr
 
         int offset = stmt.ref.decl.runtimeEntity.offset;
+        // push refAddr
+        stmt.ref.visit(this, true);
         // push ix
         stmt.ix.visit(this, null);
         // push val
@@ -283,19 +283,8 @@ public class CodeGenerator implements Visitor<Object, Object> {
         _asm.add(new Pop(Reg64.RDX));
         // pop rcx; rcx = ix
         _asm.add(new Pop(Reg64.RCX));
-
-        // rax := rbp - offset (address of arr)
-        if (stmt.ref instanceof QualRef) {
-            QualRef qRef = (QualRef) stmt.ref;
-            // mov rsi, [rbp + refRT.offset]
-            _asm.add(new Mov_rrm(new R(Reg64.RBP, qRef.ref.decl.runtimeEntity.offset, Reg64.RSI)));
-            _asm.add(new Mov_rrm(new R(Reg64.RSI, qRef.id.decl.runtimeEntity.offset, Reg64.RSI)));
-            _asm.add(new Mov_rmr(new R(Reg64.RSI, Reg64.RCX, 4, 0, Reg64.RDX)));
-            //            // mov [rsi + ref.id.decl.runtimeEntity.offset], rax
-        } else {
-            _asm.add(new Mov_rmr(new R(Reg64.RBP, offset, Reg64.RAX)));
-            _asm.add(new Mov_rmr(new R(Reg64.RAX, Reg64.RCX, 4, 0, Reg64.RDX)));
-        }
+        _asm.add(new Pop(Reg64.RAX));
+        _asm.add( new Mov_rmr(new R(Reg64.RAX, Reg64.RCX, 4, 0, Reg64.RDX)));
         return null;
     }
 
@@ -485,14 +474,15 @@ public class CodeGenerator implements Visitor<Object, Object> {
     public Object visitIxExpr(IxExpr expr, Object arg) {
         // ref[ix]
         // push refAddr
-        expr.ref.visit(this, null);
+        expr.ref.visit(this, true);
         // push ix
         expr.ixExpr.visit(this, null);
         // pop ix
         _asm.add(new Pop(Reg64.RCX));
         // pop refAddr
         _asm.add(new Pop(Reg64.RAX));
-        expr.ref.visit(this, null);
+        _asm.add(new Mov_rrm(new R(Reg64.RAX, Reg64.RCX, 4, 0, Reg64.RAX)));
+        _asm.add(new Push(Reg64.RAX));
         return null;
     }
 
@@ -656,6 +646,7 @@ public class CodeGenerator implements Visitor<Object, Object> {
         _asm.add(new Syscall());
 
         // pointer to newly allocated memory is in RAX
+        _asm.add(new Push(Reg64.RAX));
 
         // return the index of the first instruction in this method, if needed
         return idxStart;

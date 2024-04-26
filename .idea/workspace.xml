@@ -545,7 +545,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/miniJava/CodeGeneration/CodeGenerator.java</url>
-          <line>590</line>
+          <line>580</line>
           <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
