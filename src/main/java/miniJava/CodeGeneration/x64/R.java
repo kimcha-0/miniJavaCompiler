@@ -181,13 +181,14 @@ public class R {
 		
 		// TODO: construct the modrm byte and SIB byte
 		// Operands: [ridx*mult + disp], r
-		int mod = disp > 1 << 7 - 1 ? 2 : disp > 0 ? 1 : 0;
+		int mod = Math.abs(disp) > 1 << 7 - 1 ? 2 : Math.abs(disp) > 0 ? 1 : 0;
 		int ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
 		int regByte = (mod << 6) | (getIdx(r) << 3) | getIdx(Reg64.RSP);
-		int sibByte = (ss << 6) | getIdx(Reg64.RSP) << 3 | getIdx(ridx);
+		int sibByte = (ss << 6) | (getIdx(ridx) << 3) | getIdx(Reg64.RSP);
 		_b.write(regByte);
 		_b.write(sibByte);
-		x64.writeInt(_b, disp);
+		if (disp != 0)
+			x64.writeInt(_b, disp);
 	}
 	
 	// [rdisp+ridx*mult+disp],r
@@ -202,10 +203,11 @@ public class R {
 		mod = Math.abs(disp) > 1 << 7 - 1 ? 2 : Math.abs(disp) > 0 ? 1 : 0;
 		ss = mult == 8 ? 3 : mult == 4 ? 2 : mult == 2 ? 1 : 0;
 		int regByte = (mod << 6) | (getIdx(r) << 3) | getIdx(Reg64.RSP);
-		int sibByte = (ss << 6) | getIdx(rdisp) | getIdx(ridx);
+		int sibByte = (ss << 6) | (getIdx(ridx) << 3) | getIdx(rdisp);
 		_b.write(regByte);
 		_b.write(sibByte);
-		x64.writeInt(_b, disp);
+		if (disp != 0)
+			x64.writeInt(_b, disp);
 	}
 	
 	// [disp],r

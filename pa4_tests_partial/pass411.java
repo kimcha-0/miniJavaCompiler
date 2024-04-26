@@ -19,9 +19,9 @@ class FirstClass
    SecondClass s;
 
    public void testme ()
+           // TODO: add this as a param to non-static methods so that they can resolve properly
    {
       int tstvar = 48;
-
       n = 49;
       tstvar = s.f.n;
       System.out.println(tstvar);
